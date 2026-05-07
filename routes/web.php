@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\AgendaController;
-
+use App\Http\Controllers\Auth\LoginController;
 // 1. Route Halaman Utama (Home)
 Route::get('/', function () {
     return view('home');
@@ -14,7 +14,6 @@ Route::get('/berita-kota', [BeritaController::class, 'index'])->name('berita.ind
 
 // 3. Route Untuk Detail Berita (Berdasarkan Slug)
 Route::get('/berita-kota/{slug}', [BeritaController::class, 'show'])->name('berita.show');
-
 // Pastikan URL-nya sama dengan yang ada di link menu kamu
 Route::get('/agenda-pimpinan', [AgendaController::class, 'index'])->name('agenda.pimpinan');
 
@@ -134,3 +133,74 @@ Route::get('/pelayanan/kerja-sama', function () {
 Route::get('/pelayanan/bantuan-hukum', function () {
     return view('pages.bantuanhukum');
 })->name('bantuanhukum');
+
+Route::get('/galeri/photos', function () {
+    return view('pages.photos');
+})->name('photos');
+
+Route::get('/galeri/video', function () {
+    return view('pages.video');
+})->name('video');
+
+Route::get('/informasi/penghargaan', function () {
+    return view('pages.penghargaan');
+})->name('penghargaan');
+
+Route::get('/informasi/surat-edaran', function () {
+    return view('pages.suratedaran'); 
+})->name('surat.edaran');
+
+Route::get('/informasi/download', function () {
+    return view('pages.download');
+})->name('download.index');
+
+Route::get('/informasi/hibah', function () {
+    return view('pages.hibah');
+})->name('hibah.index');
+
+
+/*
+|--------------------------------------------------------------------------
+| 1. AREA PUBLIK (Bebas Diakses)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', function () { 
+    return view('home'); 
+});
+
+// Pintu Masuk Login (WAJIB di luar middleware auth)
+Route::get('/pintu-setda', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/pintu-setda', [LoginController::class, 'login'])->name('login.post');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+/*
+|--------------------------------------------------------------------------
+| 2. AREA PROTEKSI (Harus Login Dulu)
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->group(function () {
+
+    // --- AREA ADMIN ---
+    Route::prefix('admin')->group(function () {
+        Route::get('/dashboard', function () {
+            if (auth()->user()->role !== 'admin') {
+                return redirect('/pintu-setda')->withErrors('Akses Ditolak: Khusus Admin');
+            }
+            return view('auth.admin');
+        })->name('auth.admin');
+    });
+
+    // --- AREA STAFF ---
+    Route::prefix('staff')->group(function () {
+        Route::get('/agenda', function () {
+            if (auth()->user()->role !== 'staff') {
+                return redirect('/pintu-setda')->withErrors('Akses Ditolak: Khusus Staff');
+            }
+            return view('auth.staffagenda');
+        })->name('auth.staffagenda');
+    });
+
+});

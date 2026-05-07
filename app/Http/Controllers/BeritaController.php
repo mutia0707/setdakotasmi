@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Berita; // Pastikan Model Berita di-import
 use Illuminate\Http\Request;
-use App\Models\Berita; // Pastikan Model Berita sudah dibuat
 
 class BeritaController extends Controller
 {
     public function index()
     {
-        // Mengambil semua data berita dari database
-        $berita = Beritas::all(); 
-
-        // Mengirim data ke view (ganti 'berita.index' sesuai nama file blade kamu)
+        $beritas = Berita::all();
         return view('berita.index', compact('beritas'));
     }
 }

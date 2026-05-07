@@ -265,9 +265,11 @@
 
     <nav class="navbar navbar-expand-xl">
         <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="{{ asset('img/logosetda.png') }}" alt="Logo Setda">
-            </a>
+           <a class="navbar-brand" href="javascript:void(0)" 
+   onclick="window.location.href='{{ url('/') }}'" 
+   ondblclick="window.location.href='{{ route('login') }}'">
+    <img src="{{ asset('img/logosetda.png') }}" alt="Logo Setda" style="height: 100px; width: auto;">
+</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
             </button>
@@ -476,15 +478,21 @@
                             <li class="dropdown-submenu">
                                 <a class="dropdown-item" href="#">Galeri <i class="fa-solid fa-chevron-right"></i></a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Photos</a></li>
-                                    <li><a class="dropdown-item" href="#">Video</a></li>
+                                   <li>
+                                    <a class="dropdown-item" href="{{ route('photos') }}">Photos</a>
+                                </li>
+                                     <li>
+                                    <a class="dropdown-item" href="{{ route('video') }}">Video</a>
+                                </li>
                                 </ul>
                             </li>
-                            <li><a class="dropdown-item" href="{{ route('agenda.pimpinan') }}">Agenda Pimpinan</a></li>
-                            <li><a class="dropdown-item" href="#">Penghargaan</a></li>
-                            <li><a class="dropdown-item" href="#">Surat Edaran Walikota Sukabumi</a></li>
-                            <li><a class="dropdown-item" href="#">Download</a></li>
-                            <li><a class="dropdown-item" href="#">Daftar Pengusul & Penerima Hibah Sekretariat Daerah 2026</a></li>
+                           <li>
+    <a class="dropdown-item" href="{{ route('login') }}">Agenda Pimpinan</a>
+</li>
+                            <li><a class="dropdown-item" href="{{ route('penghargaan') }}">Penghargaan</a></li>
+                            <li><a class="dropdown-item" href="{{ route('surat.edaran') }}">Surat Edaran Wali Kota</a></li>
+                            <li><a class="dropdown-item" href="{{ route('download.index') }}">Download</a></li>
+                            <li><a class="dropdown-item" href="{{ route('hibah.index') }}">Pengusul Penerima Hibah</a></li>
                         </ul>
                     </li>
 
@@ -629,5 +637,25 @@
         });
     </script>
 </body>
+@auth
+        <div style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
+            <a href="{{ auth()->user()->role == 'admin' ? route('auth.admin') : route('auth.staffagenda') }}" 
+               class="btn btn-dark shadow-lg d-flex align-items-center px-4 py-3 border-0" 
+               style="border-radius: 50px; background: #212529; transition: 0.3s; color: white; text-decoration: none;">
+                <i class="bi bi-speedometer2 fs-4 me-2"></i> 
+                <div class="text-start">
+                    <small class="d-block text-uppercase" style="font-size: 10px; opacity: 0.7;">Kembali Ke</small>
+                    <span class="fw-bold">PANEL KENDALI</span>
+                </div>
+            </a>
+        </div>
+        <style>
+            .btn-dark:hover { background: #0056b3 !important; transform: translateY(-5px); color: white; }
+        </style>
+    @endauth
+
+    <script src="..."></script>
+
+</body> </html>
 
 </html>

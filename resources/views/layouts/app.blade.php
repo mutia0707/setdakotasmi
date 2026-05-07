@@ -19,7 +19,6 @@
             color: #333;
         }
 
-        /* Navbar Solid & Elegant */
         .navbar {
             background-color: #ffffff !important;
             border-bottom: 3px solid var(--primary-color);
@@ -34,14 +33,12 @@
             font-size: 1.1rem;
         }
 
-        /* Header Section */
         .header-title {
             border-left: 5px solid var(--primary-color);
             padding-left: 15px;
             margin-bottom: 40px;
         }
 
-        /* Card Styling */
         .card { 
             border: none; 
             border-radius: 0; 
@@ -100,6 +97,7 @@
             font-weight: 600;
             padding: 10px 20px;
             transition: 0.3s;
+            text-decoration: none;
         }
 
         .btn-read-more:hover {
@@ -121,7 +119,6 @@
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="#">
             <img src="{{ asset('img/logosetda.png') }}" alt="Logo" width="45" class="me-3"> 
-            
             <span>SETDA KOTA SUKABUMI</span>
         </a>
         <a href="/" class="btn btn-outline-dark btn-sm fw-bold px-4">
@@ -131,13 +128,18 @@
 </nav>
 
 <div class="container mt-5">
-    <div class="header-title">
-        <h1 class="fw-bold m-0">Berita Kota</h1>
-        <p class="text-muted m-0">Menyajikan informasi resmi dari Pemerintah Kota Sukabumi</p>
+    <div class="header-title d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="fw-bold m-0">Berita Kota</h1>
+            <p class="text-muted m-0">Menyajikan informasi resmi dari Pemerintah Kota Sukabumi</p>
+        </div>
+        <!-- Perbaikan variabel menjadi $beritas -->
+        <span class="badge bg-primary px-3 py-2">{{ count($beritas) }} Total Berita</span>
     </div>
 
     <div class="row">
-        @forelse($berita as $item)
+        <!-- Perbaikan variabel menjadi $beritas -->
+        @forelse($beritas as $item)
             <div class="col-md-4 mb-5">
                 <div class="card h-100">
                     <div class="card-img-container">
@@ -163,7 +165,8 @@
                         
                         <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
                             <small class="text-muted">
-                                <i class="bi bi-calendar3 me-1"></i> {{ $item->created_at->format('d M Y') }}
+                                <i class="bi bi-calendar3 me-1"></i> 
+                                {{ $item->created_at ? $item->created_at->format('d M Y') : '-' }}
                             </small>
                             
                             <a href="{{ route('berita.show', $item->id) }}" class="btn btn-read-more btn-sm">
@@ -178,7 +181,7 @@
                 <div class="p-5 bg-white shadow-sm border-top border-primary">
                     <i class="bi bi-newspaper text-muted" style="font-size: 4rem;"></i>
                     <h3 class="mt-3 fw-bold">Belum Ada Berita</h3>
-                    <!-- <p class="text-muted">Data di tabel <code>berita_kota</code> masih kosong.</p> -->
+                    <p class="text-muted">Data di database masih kosong.</p>
                 </div>
             </div>
         @endforelse
