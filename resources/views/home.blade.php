@@ -84,7 +84,8 @@
 
         .nav-link:hover,
         .nav-link.show {
-            color: #ffc107 !important;
+            color:  # 0.7rem;
+            color: #00aaff!important;
         }
 
         /* --- STYLE DROPDOWN & SUBMENU SAMPING --- */
@@ -163,7 +164,7 @@
             bottom: 0;
             width: 50px;
             height: 3px;
-            background-color: #ffc107;
+            background-color: #4d56d8;
         }
 
         /* --- STYLE BERITA --- */
