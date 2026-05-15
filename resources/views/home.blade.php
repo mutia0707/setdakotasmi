@@ -260,15 +260,17 @@
                 <a href="https://www.instagram.com/setda_kotasukabumi?igsh=YjRyaDAxYTh1MDR1" class="ms-2" target="_blank"><i class="fa-brands fa-instagram" style="color:white"></i></a>
                 <a href="https://x.com/Pemkot_Sukabumi" class="ms-2" target="_blank"><i class="fa-brands fa-x-twitter" style="color:white"></i></a>
                 <a href="https://www.youtube.com/channel/UCc5UtomjUXmcqD1Ic8xUkPQ" class="ms-2" target="_blank"><i class="fa-brands fa-youtube" style="color:white"></i></a>
+
+                <a href="{{ route('login') }}" style="margin-left: 15px; color: white; text-decoration: none; font-size: 14px;">
+        <i class="fas fa-lock"></i> Login
+    </a>
             </div>
         </div>
     </div>
 
     <nav class="navbar navbar-expand-xl">
         <div class="container">
-           <a class="navbar-brand" href="javascript:void(0)" 
-   onclick="window.location.href='{{ url('/') }}'" 
-   ondblclick="window.location.href='{{ route('login') }}'">
+           <a class="navbar-brand" href="{{ url('/') }}">
     <img src="{{ asset('img/logosetda.png') }}" alt="Logo Setda" style="height: 100px; width: auto;">
 </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -487,9 +489,7 @@
                                 </li>
                                 </ul>
                             </li>
-                           <li>
-    <a class="dropdown-item" href="{{ route('login') }}">Agenda Pimpinan</a>
-</li>
+                            <li><a class="dropdown-item" href="{{ route('agenda.pimpinan') }}">Agenda Pimpinan</a></li>
                             <li><a class="dropdown-item" href="{{ route('penghargaan') }}">Penghargaan</a></li>
                             <li><a class="dropdown-item" href="{{ route('surat.edaran') }}">Surat Edaran Wali Kota</a></li>
                             <li><a class="dropdown-item" href="{{ route('download.index') }}">Download</a></li>

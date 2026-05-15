@@ -4,19 +4,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\Auth\LoginController;
+
 // 1. Route Halaman Utama (Home)
 Route::get('/', function () {
     return view('home');
-}); // <-- Pastikan ada tutup kurung dan titik koma di sini
+})->name('home');
 
-// 2. Route Untuk Berita Kota (Daftar Berita)
+// 2. Route Untuk Berita Kota
 Route::get('/berita-kota', [BeritaController::class, 'index'])->name('berita.index');
-
-// 3. Route Untuk Detail Berita (Berdasarkan Slug)
 Route::get('/berita-kota/{slug}', [BeritaController::class, 'show'])->name('berita.show');
-// Pastikan URL-nya sama dengan yang ada di link menu kamu
+
+// 3. Route Agenda Pimpinan
 Route::get('/agenda-pimpinan', [AgendaController::class, 'index'])->name('agenda.pimpinan');
 
+// 4. Profil & Tentang
 Route::get('/tentang/visi-misi', function () {
     return view('pages.visi-misi');
 })->name('visi-misi');
@@ -29,6 +30,11 @@ Route::get('/analis-kebijakan', function () {
     return view('pages.analis-kebijakan');
 })->name('analis-kebijakan');
 
+Route::get('/struktur-organisasi', function () {
+    return view('pages.struktur');
+})->name('struktur');
+
+// 5. Bidang ASDA
 Route::get('/asda-1', function () {
     return view('pages.asda1');
 })->name('asda1');
@@ -41,10 +47,7 @@ Route::get('/asda-3', function () {
     return view('pages.asda3');
 })->name('asda3');
 
-Route::get('/struktur-organisasi', function () {
-    return view('pages.struktur');
-})->name('struktur');
-
+// 6. Program & Kegiatan
 Route::get('/program/renstra', function () {
     return view('pages.renstra');
 })->name('renstra');
@@ -53,9 +56,7 @@ Route::get('/program/rpd', function () {
     return view('pages.rpd');
 })->name('rpd');
 
-
 Route::get('/program/fokus-utama', function () {
-    // Karena nama filenya fokusutama.blade.php
     return view('pages.fokusutama'); 
 })->name('fokus_utama');
 
@@ -67,16 +68,15 @@ Route::get('/program/lakip', function () {
     return view('pages.lakip');
 })->name('lakip');
 
-// Halaman LPPD (File: lpdd.blade.php)
-    Route::get('/lppd', function () {
-        return view('pages.lppd');
-    })->name('lppd');
+Route::get('/lppd', function () {
+    return view('pages.lppd');
+})->name('lppd');
 
 Route::get('/program/spm', function () {
     return view('pages.spm');
 })->name('spm');
 
-// Route untuk halaman Alur Surat
+// 7. Pelayanan
 Route::get('/alursurat', function () {
     return view('pages.alursurat');
 })->name('alursurat');
@@ -126,7 +126,6 @@ Route::get('/pelayanan/pemilu-pilkada', function () {
 })->name('pemilu');
 
 Route::get('/pelayanan/kerja-sama', function () {
-    // Pastikan menggunakan 'pages.kerjasama' (sesuai folder.nama_file)
     return view('pages.kerjasama'); 
 })->name('kerjasama');
 
@@ -134,6 +133,7 @@ Route::get('/pelayanan/bantuan-hukum', function () {
     return view('pages.bantuanhukum');
 })->name('bantuanhukum');
 
+// 8. Galeri
 Route::get('/galeri/photos', function () {
     return view('pages.photos');
 })->name('photos');
@@ -142,6 +142,7 @@ Route::get('/galeri/video', function () {
     return view('pages.video');
 })->name('video');
 
+// 9. Informasi
 Route::get('/informasi/penghargaan', function () {
     return view('pages.penghargaan');
 })->name('penghargaan');
@@ -161,29 +162,19 @@ Route::get('/informasi/hibah', function () {
 
 /*
 |--------------------------------------------------------------------------
-| 1. AREA PUBLIK (Bebas Diakses)
+| AREA LOGIN & PROTEKSI
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () { 
-    return view('home'); 
-});
-
-// Pintu Masuk Login (WAJIB di luar middleware auth)
+// Pintu Masuk Login
 Route::get('/pintu-setda', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/pintu-setda', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
-/*
-|--------------------------------------------------------------------------
-| 2. AREA PROTEKSI (Harus Login Dulu)
-|--------------------------------------------------------------------------
-*/
-
+// Area Harus Login
 Route::middleware(['auth'])->group(function () {
 
-    // --- AREA ADMIN ---
+    // Akses Admin
     Route::prefix('admin')->group(function () {
         Route::get('/dashboard', function () {
             if (auth()->user()->role !== 'admin') {
@@ -193,7 +184,7 @@ Route::middleware(['auth'])->group(function () {
         })->name('auth.admin');
     });
 
-    // --- AREA STAFF ---
+    // Akses Staff
     Route::prefix('staff')->group(function () {
         Route::get('/agenda', function () {
             if (auth()->user()->role !== 'staff') {

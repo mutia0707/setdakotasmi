@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class BeritaController extends Controller
 {
-    public function index()
-    {
-        $beritas = Berita::all();
-        return view('berita.index', compact('beritas'));
-    }
+    public function index() {
+    $beritas = Berita::all();
+    // Pastikan ini mengarah ke file yang isinya kartu-kartu berita tadi
+    return view('pages.berita', compact('beritas')); 
+}
 }

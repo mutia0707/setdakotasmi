@@ -79,15 +79,15 @@
             <form action="{{ route('login.post') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label class="form-label small fw-bold text-muted">EMAIL ADDRESS</label>
-                    <input type="email" name="email" class="form-control" placeholder="nama@sukabumikota.go.id" value="{{ old('email') }}" required autofocus>
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="Masukkan email" value="{{ old('email') }}" required autofocus>
                 </div>
                 <div class="mb-4">
-                    <label class="form-label small fw-bold text-muted">PASSWORD</label>
-                    <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
                 </div>
                 <button type="submit" class="btn btn-login w-100">
-                    Masuk Ke Sistem <i class="bi bi-box-arrow-in-right ms-2"></i>
+                    Masuk <i class="bi bi-box-arrow-in-right ms-2"></i>
                 </button>
             </form>
         </div>

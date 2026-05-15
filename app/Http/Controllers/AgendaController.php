@@ -8,11 +8,10 @@ use Illuminate\Http\Request;
 class AgendaController extends Controller
 {
     public function index()
-    {
-        // Mengambil semua data agenda dan mengurutkan berdasarkan tanggal terbaru
-        $agendas = Agenda::orderBy('tanggal', 'desc')->get();
-        
-        // Membuka file di resources/views/informasi/agenda.blade.php
-        return view('informasi.agenda', compact('agendas'));
-    }
+{
+    // Pastikan variabel ini selalu ada, meskipun isinya kosong
+    $agendas = Agenda::orderBy('tanggal', 'desc')->get() ?? collect();
+    
+    return view('pages.agenda_pimpinan', compact('agendas'));
+}
 }

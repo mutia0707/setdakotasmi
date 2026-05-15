@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Berita extends Model
 {
-    // SESUAIKAN DENGAN GAMBAR PHPMYADMIN KAMU:
-    protected $table = 'berita_kota'; 
+    protected $table = 'beritas'; 
 
     protected $fillable = ['judul', 'isi', 'gambar', 'pejabat'];
 }
