@@ -5,13 +5,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\DB;
 
 // 1. Route Halaman Utama (Home)
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-// 2. Route Untuk Berita Kota
+// 2. Route Untuk Berita Kota (Hanya untuk Melihat Berita)
 Route::get('/berita-kota', [BeritaController::class, 'index'])->name('berita.index');
 Route::get('/berita-kota/{slug}', [BeritaController::class, 'show'])->name('berita.show');
 
@@ -139,6 +140,7 @@ Route::get('/galeri/photos', function () {
     return view('pages.photos');
 })->name('photos');
 
+// TAMBAHKAN BARIS INI (Membalikkan rute video yang terhapus):
 Route::get('/galeri/video', function () {
     return view('pages.video');
 })->name('video');
@@ -172,44 +174,40 @@ Route::get('/pintu-setda', [LoginController::class, 'showLoginForm'])->name('log
 Route::post('/pintu-setda', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Area Harus Login
+
+// AREA AMAN: Harus Login Baru Bisa Akses Rute di Bawah Ini
 Route::middleware(['auth'])->group(function () {
+
+    // PERBAIKAN: Memindahkan rute store ke dalam jaminan Auth agar session terbaca aman
+    Route::post('/upload-berita-sekarang', [BeritaController::class, 'store'])->name('admin.berita.store');
 
     // Akses Admin
     Route::prefix('admin')->group(function () {
         Route::get('/dashboard', function () {
-            if (auth()->user()->role !== 'admin') {
+            if (auth()->user()->role !== 'Admin') {
                 return redirect('/pintu-setda')->withErrors('Akses Ditolak: Khusus Admin');
             }
             return view('auth.admin');
         })->name('auth.admin');
     });
 
-// Akses Staff
-Route::prefix('staff')->group(function () {
-    
-    // 1. ROUTE UTAMA: Menampilkan Form & Tabel Riwayat Agenda Staff
-    Route::get('/agenda', function () {
-        if (auth()->user()->role !== 'staff') {
-            return redirect('/pintu-setda')->withErrors('Akses Ditolak: Khusus Staff');
-        }
-        $agendas = DB::table('agendas')->orderBy('tanggal', 'desc')->get();
-        return view('staff.agenda', compact('agendas')); 
-    })->name('staff.agenda.index'); // <-- Ini nama utama yang dicari-cari!
+    // Akses Staff
+    Route::prefix('staff')->group(function () {
+        
+        Route::get('/agenda', function () {
+            if (auth()->user()->role !== 'Staff') {
+                return redirect('/pintu-setda')->withErrors('Akses Ditolak: Khusus Staff');
+            }
+            $agendas = DB::table('agendas')->orderBy('tanggal', 'desc')->get();
+            return view('staff.agenda', compact('agendas')); 
+        })->name('staff.agenda.index');
 
-    // 2. ROUTE ALIAS: Biar aman kalau kode lama temanmu memanggil nama ini
-    Route::get('/auth-agenda-alias', function () {
-        return redirect()->route('staff.agenda.index');
-    })->name('auth.staffagenda');
+        Route::get('/auth-agenda-alias', function () {
+            return redirect()->route('staff.agenda.index');
+        })->name('auth.staffagenda');
 
-    // 3. ROUTE PROSES: Menyimpan Agenda Baru ke Database
-    Route::post('/agenda', [LoginController::class, 'storeAgenda'])->name('staff.agenda.store');
-    
-    // 4. ROUTE PROSES: Memperbarui (Edit) Data Agenda
-    Route::post('/agenda/update/{id}', [LoginController::class, 'updateAgenda'])->name('staff.agenda.update');
-    
-    // 5. ROUTE PROSES: Menghapus Data Agenda
-    Route::get('/agenda/delete/{id}', [LoginController::class, 'deleteAgenda'])->name('staff.agenda.delete');
-    
-});
+        Route::post('/agenda', [LoginController::class, 'storeAgenda'])->name('staff.agenda.store');
+        Route::post('/agenda/update/{id}', [LoginController::class, 'updateAgenda'])->name('staff.agenda.update');
+        Route::get('/agenda/delete/{id}', [LoginController::class, 'deleteAgenda'])->name('staff.agenda.delete');
+    });
 });

@@ -640,7 +640,7 @@
 </body>
 @auth
         <div style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
-            <a href="{{ auth()->user()->role == 'admin' ? route('auth.admin') : route('auth.staffagenda') }}" 
+            <a href="{{ auth()->user()->role == 'admin' ? route('auth.Admin') : route('auth.staffagenda') }}" 
                class="btn btn-dark shadow-lg d-flex align-items-center px-4 py-3 border-0" 
                style="border-radius: 50px; background: #212529; transition: 0.3s; color: white; text-decoration: none;">
                 <i class="bi bi-speedometer2 fs-4 me-2"></i> 

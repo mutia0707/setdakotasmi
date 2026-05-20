@@ -28,12 +28,12 @@ class LoginController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            // 3. Pengalihan Berdasarkan Role (Pintu Masuk Otomatis)
-            if ($user->role === 'admin') {
+            // 3. Pengalihan Berdasarkan Role (SUDAH DISAMAKAN HURUF KAPITALNYA SAMA DATABASE)
+            if ($user->role === 'Admin') { // <--- PAKAI A BESAR
                 return redirect()->intended('/admin/dashboard');
             } 
             
-            if ($user->role === 'staff') {
+            if ($user->role === 'Staff') { // <--- PAKAI S BESAR
                 return redirect()->intended('/staff/agenda');
             }
 
@@ -72,14 +72,13 @@ class LoginController extends Controller
         $namaHari = Carbon::parse($request->tanggal)->locale('id')->dayName;
 
         // 3. TRIK PENYELAMAT: Gabungkan Divisi dengan nama kegiatan agar rapi di halaman depan
-        // Hasilnya nanti di DB: "[ASDA I (Pemerintahan & Kesejahteraan Rakyat)] - Rapat Koordinasi..."
         $kegiatanLengkap = "[" . $request->divisi . "] " . $request->nama_kegiatan;
 
         // 4. Simpan ke database menggunakan string gabungan tadi
         DB::table('agendas')->insert([
             'tanggal'       => $request->tanggal,
             'hari'          => $namaHari,
-            'nama_kegiatan' => $kegiatanLengkap, // Menyimpan teks yang sudah dibumbui nama divisi
+            'nama_kegiatan' => $kegiatanLengkap, 
             'created_at'    => now(),
             'updated_at'    => now(),
         ]);
@@ -87,6 +86,7 @@ class LoginController extends Controller
         // 5. Kembali ke form dengan membawa pesan sukses berwujud alert hijau
         return redirect()->back()->with('success', 'Jadwal agenda berhasil disimpan dan otomatis muncul di halaman publik!');
     }
+
     /**
      * FUNGSI BARU: Memproses Update Agenda
      */

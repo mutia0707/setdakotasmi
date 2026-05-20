@@ -78,7 +78,7 @@
                     </div>
                     <h5 class="fw-bold">Kelola Berita</h5>
                     <p class="text-muted small">Tambah, edit, atau hapus berita seputar Kota Sukabumi.</p>
-                    <a href="#" class="btn btn-outline-primary btn-sm mt-auto stretched-link">Buka Menu</a>
+                   <a href="{{ url('/berita-kota') }}" class="btn btn-primary">Buka Menu</a>
                 </div>
             </div>
 

@@ -60,6 +60,44 @@
 </style>
 
 <div class="container mt-5">
+    
+    @auth
+    <div class="card shadow-sm border-0 mb-5 bg-white">
+        <div class="card-header bg-primary text-white py-3">
+            <h5 class="mb-0 fw-bold"><i class="bi bi-cloud-arrow-up-fill me-2"></i>Upload Berita Hari Ini</h5>
+        </div>
+        <div class="card-body p-4">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="row align-items-end">
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <label class="form-label fw-bold small text-secondary">Judul Berita</label>
+                        <input type="text" name="judul" class="form-control" required placeholder="Ketik judul berita...">
+                    </div>
+                    <div class="col-md-5 mb-3 mb-md-0">
+                        <label class="form-label fw-bold small text-secondary">Isi Berita</label>
+                        <textarea name="isi" class="form-control" rows="1" required placeholder="Tulis rincian berita hari ini..."></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small text-secondary">Foto Pendukung</label>
+                        <div class="input-group">
+                            <input type="file" name="gambar" class="form-control" accept="image/*" required>
+                            <button type="submit" class="btn btn-primary px-4 fw-bold">UPLOAD</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    @endauth
+
     <div class="header-title d-flex justify-content-between align-items-center">
         <div>
             <h1 class="fw-bold m-0">Berita Kota</h1>
@@ -73,8 +111,9 @@
             <div class="col-md-4 mb-5">
                 <div class="card h-100">
                     <div class="card-img-container">
-                        @if($item["gambar"])
-                            <img src="{{ asset('storage/'.$item["gambar"]) }}" class="card-img-top" alt="{{ $item["judul"] }}">
+                        {{-- PERBAIKAN STRUKTUR: Sekarang sudah dipisah rapi pakai @else --}}
+                        @if($item->gambar)
+                            <img src="/img_berita/{{ $item->gambar }}" class="card-img-top" alt="{{ $item->judul }}">
                         @else
                             <div class="bg-secondary text-white d-flex align-items-center justify-content-center h-100">
                                 <i class="bi bi-image" style="font-size: 3rem;"></i>
@@ -83,18 +122,18 @@
                     </div>
                     <div class="card-body d-flex flex-column">
                         <span class="category-tag">
-                            <i class="bi bi-person-fill me-1"></i> {{ $item["pejabat"] ?? 'Admin Kota' }}
+                            <i class="bi bi-person-fill me-1"></i> {{ $item->pejabat ?? 'Admin Kota' }}
                         </span>
-                        <h5 class="card-title text-dark">{{ $item["judul"] }}</h5>
+                        <h5 class="card-title text-dark">{{ $item->judul }}</h5>
                         <p class="card-text text-secondary small mb-4">
-                            {{ Str::limit($item["isi"], 120) }}
+                            {{ Str::limit($item->isi, 120) }}
                         </p>
                         <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
                             <small class="text-muted">
                                 <i class="bi bi-calendar3 me-1"></i> 
-                                {{ isset($item["created_at"]) ? \Carbon\Carbon::parse($item["created_at"])->format('d M Y') : '-' }}
+                                {{ isset($item->created_at) ? \Carbon\Carbon::parse($item->created_at)->format('d M Y') : '-' }}
                             </small>
-                            <a href="{{ route('berita.show', $item['id']) }}" class="btn btn-read-more btn-sm">SELENGKAPNYA</a>
+                            <a href="{{ route('berita.show', $item->id) }}" class="btn btn-read-more btn-sm">SELENGKAPNYA</a>
                         </div>
                     </div>
                 </div>
