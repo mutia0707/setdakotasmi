@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Agenda;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\AgendaController;
@@ -184,14 +185,31 @@ Route::middleware(['auth'])->group(function () {
         })->name('auth.admin');
     });
 
-    // Akses Staff
-    Route::prefix('staff')->group(function () {
-        Route::get('/agenda', function () {
-            if (auth()->user()->role !== 'staff') {
-                return redirect('/pintu-setda')->withErrors('Akses Ditolak: Khusus Staff');
-            }
-            return view('auth.staffagenda');
-        })->name('auth.staffagenda');
-    });
+// Akses Staff
+Route::prefix('staff')->group(function () {
+    
+    // 1. ROUTE UTAMA: Menampilkan Form & Tabel Riwayat Agenda Staff
+    Route::get('/agenda', function () {
+        if (auth()->user()->role !== 'staff') {
+            return redirect('/pintu-setda')->withErrors('Akses Ditolak: Khusus Staff');
+        }
+        $agendas = DB::table('agendas')->orderBy('tanggal', 'desc')->get();
+        return view('staff.agenda', compact('agendas')); 
+    })->name('staff.agenda.index'); // <-- Ini nama utama yang dicari-cari!
 
+    // 2. ROUTE ALIAS: Biar aman kalau kode lama temanmu memanggil nama ini
+    Route::get('/auth-agenda-alias', function () {
+        return redirect()->route('staff.agenda.index');
+    })->name('auth.staffagenda');
+
+    // 3. ROUTE PROSES: Menyimpan Agenda Baru ke Database
+    Route::post('/agenda', [LoginController::class, 'storeAgenda'])->name('staff.agenda.store');
+    
+    // 4. ROUTE PROSES: Memperbarui (Edit) Data Agenda
+    Route::post('/agenda/update/{id}', [LoginController::class, 'updateAgenda'])->name('staff.agenda.update');
+    
+    // 5. ROUTE PROSES: Menghapus Data Agenda
+    Route::get('/agenda/delete/{id}', [LoginController::class, 'deleteAgenda'])->name('staff.agenda.delete');
+    
+});
 });
