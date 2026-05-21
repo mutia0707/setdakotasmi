@@ -639,8 +639,10 @@
     </script>
 </body>
 @auth
-        <div style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
-            <a href="{{ auth()->user()->role == 'admin' ? route('auth.Admin') : route('auth.staffagenda') }}" 
+       <div style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
+    @auth
+        @if(strtolower(auth()->user()->role) == 'admin')
+            <a href="{{ url('/admin/dashboard') }}" 
                class="btn btn-dark shadow-lg d-flex align-items-center px-4 py-3 border-0" 
                style="border-radius: 50px; background: #212529; transition: 0.3s; color: white; text-decoration: none;">
                 <i class="bi bi-speedometer2 fs-4 me-2"></i> 
@@ -649,7 +651,19 @@
                     <span class="fw-bold">PANEL KENDALI</span>
                 </div>
             </a>
-        </div>
+        @else
+            <a href="{{ url('/staff/agenda') }}" 
+               class="btn btn-dark shadow-lg d-flex align-items-center px-4 py-3 border-0" 
+               style="border-radius: 50px; background: #212529; transition: 0.3s; color: white; text-decoration: none;">
+                <i class="bi bi-speedometer2 fs-4 me-2"></i> 
+                <div class="text-start">
+                    <small class="d-block text-uppercase" style="font-size: 10px; opacity: 0.7;">Kembali Ke</small>
+                    <span class="fw-bold">PANEL STAFF</span>
+                </div>
+            </a>
+        @endif
+    @endauth
+</div>
         <style>
             .btn-dark:hover { background: #0056b3 !important; transform: translateY(-5px); color: white; }
         </style>

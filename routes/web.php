@@ -2,7 +2,9 @@
 
 use App\Models\Agenda;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\DB;
@@ -135,15 +137,17 @@ Route::get('/pelayanan/bantuan-hukum', function () {
     return view('pages.bantuanhukum');
 })->name('bantuanhukum');
 
-// 8. Galeri
+// 8. Galeri (Sisi User)
 Route::get('/galeri/photos', function () {
     return view('pages.photos');
 })->name('photos');
 
-// TAMBAHKAN BARIS INI (Membalikkan rute video yang terhapus):
 Route::get('/galeri/video', function () {
     return view('pages.video');
 })->name('video');
+
+Route::get('/galeri-foto', [BeritaController::class, 'galeriFoto'])->name('galeri.foto');
+Route::get('/galeri-video', [BeritaController::class, 'galeriVideo'])->name('galeri.video');
 
 // 9. Informasi
 Route::get('/informasi/penghargaan', function () {
@@ -178,24 +182,38 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // AREA AMAN: Harus Login Baru Bisa Akses Rute di Bawah Ini
 Route::middleware(['auth'])->group(function () {
 
-    // PERBAIKAN: Memindahkan rute store ke dalam jaminan Auth agar session terbaca aman
     Route::post('/upload-berita-sekarang', [BeritaController::class, 'store'])->name('admin.berita.store');
 
-    // Akses Admin
+    // === Akses Admin ===
     Route::prefix('admin')->group(function () {
+        
+        // Halaman Utama Panel Kendali Admin
         Route::get('/dashboard', function () {
-            if (auth()->user()->role !== 'Admin') {
+            if (strtolower(auth()->user()->role) !== 'admin') {
                 return redirect('/pintu-setda')->withErrors('Akses Ditolak: Khusus Admin');
             }
-            return view('auth.admin');
+            $beritas = DB::table('beritas')->orderBy('id', 'desc')->get(); 
+            return view('auth.admin', compact('beritas'));
         })->name('auth.admin');
+
+        // BARIS BARU: Route untuk membuka halaman khusus kelola berita mandiri
+        Route::get('/kelola-berita', [BeritaController::class, 'adminBerita'])->name('admin.berita.index');
+
+        // Proses Pembaruan & Hapus Berita Kota (Tetap Utuh)
+        Route::post('/berita/update/{id}', [BeritaController::class, 'update'])->name('admin.berita.update');
+        Route::get('/berita/delete/{id}', [BeritaController::class, 'delete'])->name('admin.berita.delete');
+        // Jalur Baru Form Kelola Galeri Mandiri (Biar tidak 404 saat diklik)
+        Route::prefix('kelola-galeri')->group(function () {
+            Route::get('/', [GaleriController::class, 'adminGaleri'])->name('admin.galeri.index');
+            Route::post('/store', [GaleriController::class, 'store'])->name('admin.galeri.store');
+            Route::get('/delete/{id}', [GaleriController::class, 'delete'])->name('admin.galeri.delete');
+        });
     });
 
-    // Akses Staff
+    // === Akses Staff ===
     Route::prefix('staff')->group(function () {
-        
         Route::get('/agenda', function () {
-            if (auth()->user()->role !== 'Staff') {
+            if (strtolower(auth()->user()->role) !== 'staff') {
                 return redirect('/pintu-setda')->withErrors('Akses Ditolak: Khusus Staff');
             }
             $agendas = DB::table('agendas')->orderBy('tanggal', 'desc')->get();
@@ -210,4 +228,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/agenda/update/{id}', [LoginController::class, 'updateAgenda'])->name('staff.agenda.update');
         Route::get('/agenda/delete/{id}', [LoginController::class, 'deleteAgenda'])->name('staff.agenda.delete');
     });
+
+    // Fitur CRUD Galeri Foto & Video mandiri
+        Route::prefix('kelola-galeri')->group(function () {
+            Route::get('/', [GaleriController::class, 'adminGaleri'])->name('admin.galeri.index');
+            Route::post('/store', [GaleriController::class, 'store'])->name('admin.galeri.store');
+            Route::post('/update/{id}', [GaleriController::class, 'update'])->name('admin.galeri.update'); // <-- TAMBAHKAN BARIS INI
+            Route::get('/delete/{id}', [GaleriController::class, 'delete'])->name('admin.galeri.delete');
+        });
 });

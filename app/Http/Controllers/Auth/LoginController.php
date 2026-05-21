@@ -29,11 +29,11 @@ class LoginController extends Controller
             $user = Auth::user();
 
             // 3. Pengalihan Berdasarkan Role (SUDAH DISAMAKAN HURUF KAPITALNYA SAMA DATABASE)
-            if ($user->role === 'Admin') { // <--- PAKAI A BESAR
+            if ($user->role === 'admin') { 
                 return redirect()->intended('/admin/dashboard');
             } 
             
-            if ($user->role === 'Staff') { // <--- PAKAI S BESAR
+            if ($user->role === 'staff') { // <--- PAKAI S BESAR
                 return redirect()->intended('/staff/agenda');
             }
 

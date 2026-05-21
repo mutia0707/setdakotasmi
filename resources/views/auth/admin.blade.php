@@ -20,11 +20,10 @@
             border: none;
             border-radius: 12px;
             transition: 0.3s;
-            cursor: pointer;
         }
         .card-menu:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
         }
         .icon-box {
             width: 60px;
@@ -78,7 +77,7 @@
                     </div>
                     <h5 class="fw-bold">Kelola Berita</h5>
                     <p class="text-muted small">Tambah, edit, atau hapus berita seputar Kota Sukabumi.</p>
-                   <a href="{{ url('/berita-kota') }}" class="btn btn-primary">Buka Menu</a>
+                    <a href="{{ route('admin.berita.index') }}" class="btn btn-primary mt-auto">Buka Form Input</a>
                 </div>
             </div>
 
@@ -89,7 +88,7 @@
                     </div>
                     <h5 class="fw-bold">Galeri Foto & Video</h5>
                     <p class="text-muted small">Update dokumentasi kegiatan dalam bentuk foto dan video.</p>
-                    <a href="#" class="btn btn-outline-success btn-sm mt-auto stretched-link">Buka Menu</a>
+                    <a href="{{ route('admin.galeri.index') }}" class="btn btn-success mt-auto">Buka Form Galeri</a>
                 </div>
             </div>
 
@@ -100,7 +99,7 @@
                     </div>
                     <h5 class="fw-bold">Dokumen Unduhan</h5>
                     <p class="text-muted small">Upload file pengumuman, regulasi, atau dokumen publik.</p>
-                    <a href="#" class="btn btn-outline-warning btn-sm mt-auto stretched-link text-dark">Buka Menu</a>
+                    <a href="#" class="btn btn-outline-warning btn-sm mt-auto text-dark">Buka Menu</a>
                 </div>
             </div>
         </div>
