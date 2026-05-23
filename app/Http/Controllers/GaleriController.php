@@ -12,25 +12,25 @@ class GaleriController extends Controller
     public function indexFoto()
     {
         $fotos = Galeri::where('tipe', 'foto')->orderBy('id', 'desc')->get();
-        return view('pages.galeri_foto', compact('fotos')); // Sesuaikan jika nama filemu berbeda
+        return view('pages.photos', compact('fotos')); 
     }
 
     // Tampilan Halaman Video Publik
     public function indexVideo()
     {
         $videos = Galeri::where('tipe', 'video')->orderBy('id', 'desc')->get();
-        return view('pages.galeri_video', compact('videos')); // Sesuaikan jika nama filemu berbeda
+        return view('pages.video', compact('videos')); 
     }
 
-    // Proses Simpan Data dari Dashboard Admin
+    // Proses Simpan Data dari Dashboard Admin (UBAH KE FILE VIDEO)
     public function store(Request $request)
     {
         $request->validate([
-            'judul'    => 'required|string|max:255',
-            'tipe'     => 'required|in:foto,video',
-            'kategori' => 'required|in:pelayanan,sosialisasi,agenda',
-            'foto_file'=> 'required_if:tipe,foto|image|mimes:jpeg,png,jpg|max:3072',
-            'video_url'=> 'required_if:tipe,video|nullable|string',
+            'judul'      => 'required|string|max:255',
+            'tipe'       => 'required|in:foto,video',
+            'kategori'   => 'required|in:pelayanan,sosialisasi,agenda',
+            'foto_file'  => 'required_if:tipe,foto|nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'video_file' => 'required_if:tipe,video|nullable|mimes:mp4,mov,avi,webm|max:51200', // Maksimal 50MB
         ]);
 
         if ($request->tipe === 'foto') {
@@ -39,9 +39,11 @@ class GaleriController extends Controller
             $file->move(public_path('img_galeri'), $namaFile);
             $sumberData = $namaFile;
         } else {
-            // Otomatis membedah link YouTube panjang/pendek untuk mendapatkan Video ID uniknya saja
-            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $request->video_url, $match);
-            $sumberData = !empty($match[1]) ? $match[1] : 'dQw4w9WgXcQ'; // default jika link tidak valid
+            // Proses simpan file video mentah asli (.mp4)
+            $file = $request->file('video_file');
+            $namaFile = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('video_galeri'), $namaFile);
+            $sumberData = $namaFile;
         }
 
         Galeri::create([
@@ -51,15 +53,18 @@ class GaleriController extends Controller
             'sumber'   => $sumberData
         ]);
 
-        return redirect()->back()->with('success_galeri', 'Media baru berhasil ditambahkan ke halaman galeri publik!');
+        return redirect()->back()->with('success_galeri', 'Media baru berhasil di-upload ke halaman galeri publik!');
     }
 
-    // Proses Hapus Data Galeri
+    // Proses Hapus Data Galeri (Hapus File Fisik Video & Foto)
     public function delete($id)
     {
         $media = Galeri::findOrFail($id);
         if ($media->tipe === 'foto') {
             $path = public_path('img_galeri/' . $media->sumber);
+            if (File::exists($path)) { File::delete($path); }
+        } else {
+            $path = public_path('video_galeri/' . $media->sumber);
             if (File::exists($path)) { File::delete($path); }
         }
         $media->delete();
@@ -73,46 +78,48 @@ class GaleriController extends Controller
         return view('auth.admin_galeri', compact('galeris'));
     }
 
+    // Proses Update Data Media
     public function update(Request $request, $id)
-{
-    // Validasi input data sederhana
-    $request->validate([
-        'judul' => 'required',
-        'tipe' => 'required',
-        'kategori' => 'required',
-    ]);
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'tipe' => 'required',
+            'kategori' => 'required',
+        ]);
 
-    // Cari data galeri berdasarkan ID yang mau di-edit
-    $galeri = \App\Models\Galeri::findOrFail($id);
+        $galeri = Galeri::findOrFail($id);
+        $sumberMedia = $galeri->sumber; 
 
-    $sumberMedia = $galeri->sumber; // Ambil nilai file/link bawaan lama terlebih dahulu
-
-    if ($request->tipe === 'foto') {
-        // Jika admin mengunggah berkas foto baru
-        if ($request->hasFile('foto_file')) {
-            // Hapus foto lama di direktori lokal jika ada berkasnya
-            if ($galeri->tipe === 'foto' && file_exists(public_path('img_galeri/' . $galeri->sumber))) {
-                @unlink(public_path('img_galeri/' . $galeri->sumber));
+        if ($request->tipe === 'foto') {
+            if ($request->hasFile('foto_file')) {
+                // Hapus berkas foto lama
+                if ($galeri->tipe === 'foto' && file_exists(public_path('img_galeri/' . $galeri->sumber))) {
+                    @unlink(public_path('img_galeri/' . $galeri->sumber));
+                }
+                $file = $request->file('foto_file');
+                $sumberMedia = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('img_galeri'), $sumberMedia);
             }
-            
-            // Proses simpan berkas foto baru
-            $file = $request->file('foto_file');
-            $sumberMedia = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('img_galeri'), $sumberMedia);
+        } else {
+            // Jika admin mengganti atau mengunggah file video baru
+            if ($request->hasFile('video_file')) {
+                // Hapus berkas video lama jika sebelumnya tipe datanya memang video
+                if ($galeri->tipe === 'video' && file_exists(public_path('video_galeri/' . $galeri->sumber))) {
+                    @unlink(public_path('video_galeri/' . $galeri->sumber));
+                }
+                $file = $request->file('video_file');
+                $sumberMedia = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('video_galeri'), $sumberMedia);
+            }
         }
-    } else {
-        // Jika tipe beralih ke video, simpan link inputan URL YouTube-nya
-        $sumberMedia = $request->video_url;
+
+        $galeri->update([
+            'judul' => $request->judul,
+            'tipe' => $request->tipe,
+            'kategori' => $request->kategori,
+            'sumber' => $sumberMedia,
+        ]);
+
+        return redirect()->back()->with('success_galeri', 'Data media galeri berhasil diperbarui!');
     }
-
-    // Update baris kolom data di database
-    $galeri->update([
-        'judul' => $request->judul,
-        'tipe' => $request->tipe,
-        'kategori' => $request->kategori,
-        'sumber' => $sumberMedia,
-    ]);
-
-    return redirect()->back()->with('success_galeri', 'Data media galeri berhasil diperbarui!');
-}
 }

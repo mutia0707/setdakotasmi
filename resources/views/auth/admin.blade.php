@@ -77,7 +77,7 @@
                     </div>
                     <h5 class="fw-bold">Kelola Berita</h5>
                     <p class="text-muted small">Tambah, edit, atau hapus berita seputar Kota Sukabumi.</p>
-                    <a href="{{ route('admin.berita.index') }}" class="btn btn-primary mt-auto">Buka Form Input</a>
+                    <a href="{{ route('admin.berita.index') }}" class="btn btn-primary mt-auto fw-bold">Buka Form Input</a>
                 </div>
             </div>
 
@@ -88,7 +88,7 @@
                     </div>
                     <h5 class="fw-bold">Galeri Foto & Video</h5>
                     <p class="text-muted small">Update dokumentasi kegiatan dalam bentuk foto dan video.</p>
-                    <a href="{{ route('admin.galeri.index') }}" class="btn btn-success mt-auto">Buka Form Galeri</a>
+                    <a href="{{ route('admin.galeri.index') }}" class="btn btn-success mt-auto fw-bold">Buka Form Galeri</a>
                 </div>
             </div>
 
@@ -99,7 +99,7 @@
                     </div>
                     <h5 class="fw-bold">Dokumen Unduhan</h5>
                     <p class="text-muted small">Upload file pengumuman, regulasi, atau dokumen publik.</p>
-                    <a href="#" class="btn btn-outline-warning btn-sm mt-auto text-dark">Buka Menu</a>
+                    <a href="{{ route('admin.dokumen.index') }}" class="btn btn-warning text-dark fw-bold mt-auto">Buka Menu Dokumen</a>
                 </div>
             </div>
         </div>

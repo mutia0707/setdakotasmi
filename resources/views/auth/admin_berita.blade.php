@@ -95,13 +95,17 @@
                                     {{ $berita->isi_berita }}
                                 </p>
                             </td>
-                            <td class="text-center">
-                                <button class="btn btn-warning btn-sm fw-bold px-3 text-white rounded-2 me-1" data-bs-toggle="modal" data-bs-target="#editModal{{ $berita->id }}">
+                           <td class="text-center">
+                                <button type="button" class="btn btn-edit btn-sm w-100 mb-1" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
                                     <i class="bi bi-pencil-square"></i> EDIT
                                 </button>
-                                <a href="{{ route('admin.berita.delete', $berita->id) }}" class="btn btn-danger btn-sm fw-bold px-3 rounded-2" onclick="return confirm('Apakah Anda yakin ingin menghapus berita ini secara permanen?')">
-                                    <i class="bi bi-trash"></i> HAPUS
-                                </a>
+                                
+                                <form action="{{ route('admin.berita.delete', $item->id) }}" method="POST">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="btn btn-delete btn-sm w-100" onclick="return confirm('Yakin hapus?')">
+                                        <i class="bi bi-trash"></i> HAPUS
+                                    </button>
+                                </form>
                             </td>
                         </tr>
 

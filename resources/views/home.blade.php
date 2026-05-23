@@ -458,20 +458,21 @@
                                 </li>
                                 </ul>
                             </li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item" href="#">Bagian Humas<i class="fa-solid fa-chevron-right"></i></a>
-                                <ul class="dropdown-menu">
-                                    <!-- <li><a class="dropdown-item" href="#">Pelayanan Kerjasama Daerah</a></li> -->
-                                    <!-- <li><a class="dropdown-item" href="#">Pelayanan Bantuan Hukum</a></li> -->
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item" href="#">Bagian Kesejahteraan Rakyat<i class="fa-solid fa-chevron-right"></i></a>
-                                <ul class="dropdown-menu">
-                                    <!-- <li><a class="dropdown-item" href="#">Pelayanan Kerjasama Daerah</a></li> -->
-                                    <!-- <li><a class="dropdown-item" href="#">Pelayanan Bantuan Hukum</a></li> -->
-                                </ul>
-                            </li>
+                            <li>
+    <a class="dropdown-item d-flex justify-content-between align-items-center py-2 px-3 fw-normal text-dark" href="{{ route('admin.dokumen.index') }}?bagian=humas">
+        <span>Bagian Humas</span>
+        <i class="bi bi-chevron-right text-info small"></i>
+    </a>
+</li>
+<li>
+    <hr class="dropdown-divider my-1 opacity-25">
+</li>
+<li>
+    <a class="dropdown-item d-flex justify-content-between align-items-center py-2 px-3 fw-normal text-dark" href="{{ route('admin.dokumen.index') }}?bagian=kesra">
+        <span>Bagian Kesejahteraan Rakyat</span>
+        <i class="bi bi-chevron-right text-info small"></i>
+    </a>
+</li>
                         </ul>
                     </li>
 
@@ -639,10 +640,8 @@
     </script>
 </body>
 @auth
-       <div style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
-    @auth
-        @if(strtolower(auth()->user()->role) == 'admin')
-            <a href="{{ url('/admin/dashboard') }}" 
+        <div style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
+            <a href="{{ auth()->user()->role == 'admin' ? route('auth.admin') : route('auth.staffagenda') }}" 
                class="btn btn-dark shadow-lg d-flex align-items-center px-4 py-3 border-0" 
                style="border-radius: 50px; background: #212529; transition: 0.3s; color: white; text-decoration: none;">
                 <i class="bi bi-speedometer2 fs-4 me-2"></i> 
@@ -651,19 +650,7 @@
                     <span class="fw-bold">PANEL KENDALI</span>
                 </div>
             </a>
-        @else
-            <a href="{{ url('/staff/agenda') }}" 
-               class="btn btn-dark shadow-lg d-flex align-items-center px-4 py-3 border-0" 
-               style="border-radius: 50px; background: #212529; transition: 0.3s; color: white; text-decoration: none;">
-                <i class="bi bi-speedometer2 fs-4 me-2"></i> 
-                <div class="text-start">
-                    <small class="d-block text-uppercase" style="font-size: 10px; opacity: 0.7;">Kembali Ke</small>
-                    <span class="fw-bold">PANEL STAFF</span>
-                </div>
-            </a>
-        @endif
-    @endauth
-</div>
+        </div>
         <style>
             .btn-dark:hover { background: #0056b3 !important; transform: translateY(-5px); color: white; }
         </style>

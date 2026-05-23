@@ -1,98 +1,49 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeri Video - SETDA Kota Sukabumi</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <style>
-        body { background-color: #ffffff; font-family: 'Segoe UI', sans-serif; }
-        .page-header { background: #f8f9fa; padding: 40px 0 30px 0; border-bottom: 1px solid #eee; margin-bottom: 40px; }
-        .header-top { display: flex; justify-content: flex-end; margin-bottom: 10px; }
-        .btn-back { display: inline-flex; align-items: center; gap: 8px; color: #666; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; padding: 5px 15px; }
-        .btn-back:hover { color: #222; transform: translateX(5px); }
-        .header-title { font-weight: 800; color: #222; text-transform: uppercase; letter-spacing: 1px; }
-        .filter-btn { border: none; background: none; padding: 8px 25px; font-weight: 600; color: #666; border-radius: 20px; transition: all 0.3s; cursor: pointer; }
-        .filter-btn.active, .filter-btn:hover { background: #222; color: #fff; }
-        .video-item { position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 20px; background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .video-info { padding: 12px; background: #fff; border-top: 1px solid #eee; }
-        .video-title { font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 5px; }
-        .video-tag { font-size: 0.75rem; color: #007bff; font-weight: bold; text-transform: uppercase; }
-    </style>
-</head>
-<body>
+@extends('layouts.app')
 
-<header class="page-header">
+@section('content')
+<div class="bg-light py-5">
     <div class="container">
-        <div class="header-top">
-            <a href="{{ url('/') }}" class="btn-back">
-                Kembali ke Beranda <i class="bi bi-arrow-right"></i>
-            </a>
+        
+        <div class="text-center mb-5">
+            <h1 class="fw-bold text-dark text-uppercase tracking-wide display-5 mb-2">
+                🎥 Galeri Video Kegiatan
+            </h1>
+            <p class="text-muted fs-6 shadow-sm d-inline-block px-4 py-2 bg-white rounded-pill border border-light">
+                Dokumentasi Video Resmi Sekretariat Daerah Kota Sukabumi
+            </p>
         </div>
-        <div class="text-center">
-            <h1 class="header-title">Galeri Video Kegiatan</h1>
-            <p class="text-muted">Dokumentasi Video Dokumenter Pemerintah Kota Sukabumi</p>
-        </div>
-    </div>
-</header>
 
-<div class="container">
-    <div class="text-center mb-5">
-        <button class="filter-btn active" data-filter="semua">Semua</button>
-        <button class="filter-btn" data-filter="pelayanan">Pelayanan</button>
-        <button class="filter-btn" data-filter="sosialisasi">Sosialisasi</button>
-        <button class="filter-btn" data-filter="agenda">Agenda Pimpinan</button>
-    </div>
+        <div class="row g-4">
+            @forelse($videos as $video)
+                <div class="col-12 col-md-6">
+                    <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-4 bg-white">
+                        
+                        <div class="ratio ratio-16x9 bg-dark">
+                            <video controls preload="metadata" class="w-100 h-100">
+                                <source src="{{ asset('video_galeri/' . $video->sumber) }}" type="video/mp4">
+                                Browser kamu tidak mendukung pemutar video HTML5.
+                            </video>
+                        </div>
 
-    <div class="row g-4" id="gallery-wrapper">
-        @forelse($videos as $video)
-        <div class="col-12 col-md-6 col-lg-4 gallery-item" data-category="{{ $video->kategori }}">
-            <div class="video-item">
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/{{ $video->sumber }}" allowfullscreen></iframe>
+                        <div class="card-body p-4">
+                            <span class="badge bg-danger rounded-pill px-3 py-2 text-uppercase mb-2 fw-bold" style="font-size: 0.75rem;">
+                                {{ $video->kategori }}
+                            </span>
+                            <h5 class="card-title text-dark fw-bold mb-0 mt-1" style="font-size: 1.1rem; line-height: 1.4;">
+                                {{ $video->judul }}
+                            </h5>
+                        </div>
+
+                    </div>
                 </div>
-                <div class="video-info">
-                    <span class="video-tag text-primary">{{ $video->kategori }}</span>
-                    <div class="video-title">{{ $video->judul }}</div>
+            @empty
+                <div class="col-12 text-center py-5">
+                    <div class="text-muted mb-3"><i class="bi bi-film display-1 opacity-50"></i></div>
+                    <h4 class="fw-bold text-secondary">Belum Ada Dokumentasi Video</h4>
                 </div>
-            </div>
+            @endforelse
         </div>
-        @empty
-        <div class="col-12 text-center text-muted py-5 fw-bold">
-            <i class="bi bi-play-circle display-4 d-block mb-2"></i> Belum ada data link video dokumentasi yang diunggah.
-        </div>
-        @endforelse
+
     </div>
 </div>
-
-<footer class="text-center mt-5 mb-4 text-muted">
-    <p>Sistem Informasi Eksekutif &copy; 2026 Pemerintah Kota Sukabumi</p>
-</footer>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const galleryItems = document.querySelectorAll('.gallery-item');
-
-        filterButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-
-                const selectedFilter = this.getAttribute('data-filter');
-                galleryItems.forEach(item => {
-                    if (selectedFilter === 'semua' || item.getAttribute('data-category') === selectedFilter) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
-        });
-    });
-</script>
-</body>
-</html>
+@endsection
