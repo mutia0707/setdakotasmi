@@ -13,7 +13,7 @@
             color: #333;
         }
 
-        /* Navbar Style (Sama dengan halaman lain agar konsisten) */
+        /* Navbar Style */
         .navbar-custom {
             background-color: #ffffff !important;
             border-bottom: 3px solid #0056b3;
@@ -118,12 +118,13 @@
 
 <main class="main-content">
     <div class="container">
+        
         <div class="header-title d-flex justify-content-between align-items-end">
             <div>
                 <h1 class="fw-bold m-0 text-uppercase">Berita Kota</h1>
                 <p class="text-muted m-0">Informasi terbaru seputar Kota Sukabumi</p>
             </div>
-            <span class="badge bg-primary px-3 py-2" style="border-radius:0;">{{ count($beritas) }} BERITA</span>
+            
         </div>
 
         <div class="row g-4">
@@ -131,7 +132,7 @@
                 <div class="col-md-4">
                     <div class="card card-berita h-100">
                         @if($item->gambar)
-                            <img src="{{ asset('storage/'.$item->gambar) }}" class="card-img-top" alt="{{ $item->judul }}">
+                            <img src="{{ asset('img_berita/'.$item->gambar) }}" class="card-img-top" alt="{{ $item->judul }}">
                         @else
                             <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
                                 <i class="bi bi-image" style="font-size: 2rem;"></i>
@@ -139,11 +140,11 @@
                         @endif
                         <div class="card-body d-flex flex-column">
                             <small class="text-primary fw-bold mb-2">
-                                <i class="bi bi-calendar3 me-1"></i> {{ $item->created_at ? $item->created_at->format('d M Y') : '-' }}
+                                <i class="bi bi-calendar3 me-1"></i> {{ $item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d M Y') : '-' }}
                             </small>
-                            <h5 class="card-title fw-bold">{{ $item->judul }}</h5>
-                            <p class="card-text text-muted small">
-                                {{ Str::limit($item->isi, 100) }}
+                            <h5 class="card-title fw-bold text-dark">{{ $item->judul }}</h5>
+                            <p class="text-muted small">
+                                {{ Str::limit($item->isi_berita, 100) }}
                             </p>
                             <div class="mt-auto">
                                 <a href="{{ route('berita.show', $item->id) }}" class="btn btn-baca w-100">BACA SELENGKAPNYA</a>

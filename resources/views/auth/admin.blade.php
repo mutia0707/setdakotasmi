@@ -45,7 +45,7 @@
             </span>
             
             <div class="d-flex align-items-center">
-                <a href="{{ url('/') }}" class="btn btn-sm btn-light me-3 fw-bold text-primary">
+                <a href="{{ url('/') }}" class="btn btn-sm btn-light me-3 fw-bold text-primary" rel="noopener noreferrer">
                     <i class="bi bi-globe me-1"></i> LIHAT WEB
                 </a>
                 
@@ -69,6 +69,105 @@
             </div>
         </div>
 
+        <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 12px; background: #fff;">
+            <h5 class="fw-bold text-dark text-uppercase mb-3">
+                <i class="bi bi-person-bounding-box me-2 text-primary"></i> Pengaturan Foto Sambutan Beranda
+            </h5>
+            
+            @if(session('success') && !session('success_berita_utama'))
+                <div class="alert alert-success border-0 py-2 mb-3 shadow-sm rounded-3">
+                    <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
+                </div>
+            @endif
+
+            <form action="{{ route('admin.sambutan.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="row align-items-end g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold text-secondary small">FOTO SEKARANG</label>
+                        <div class="mb-2">
+                            <img src="{{ asset('img/sambutan.jpg?v='.time()) }}" class="img-thumbnail" style="max-height: 80px; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-secondary small">PILIH FOTO PEJABAT BARU (Format: JPG/PNG, Maks 2MB)</label>
+                        <input type="file" name="gambar_sambutan" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-success fw-bold w-100">PERBARUI FOTO</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card border-0 shadow-sm p-4 mb-4" style="border-radius: 12px; background: #fff;">
+            <h5 class="fw-bold text-dark text-uppercase mb-3">
+                <i class="bi bi-image me-2 text-success"></i> Pengaturan Foto Berita Utama Beranda
+            </h5>
+            
+            @if(session('success_berita_utama'))
+                <div class="alert alert-success border-0 py-2 mb-3 shadow-sm rounded-3">
+                    <i class="bi bi-check-circle-fill me-2"></i>{{ session('success_berita_utama') }}
+                </div>
+            @endif
+
+            <form action="{{ route('admin.beritautama.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="row align-items-end g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold text-secondary small">FOTO SEKARANG</label>
+                        <div class="mb-2">
+                            <img src="{{ asset('img/berita_utama.jpg?v='.time()) }}" class="img-thumbnail" style="max-height: 80px; object-fit: cover;" onerror="this.src='https://placehold.co/150x100?text=No+Image'">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-secondary small">PILIH FOTO BERITA BARU (Format: JPG/PNG, Maks 2MB)</label>
+                        <input type="file" name="foto_berita_utama" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-success fw-bold w-100" style="background-color: #198754; border-color: #198754;">PERBARUI FOTO</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card border-0 shadow-sm p-4 mb-5" style="border-radius: 12px; background: #fff;">
+            <h5 class="fw-bold text-dark text-uppercase mb-3">
+                <i class="bi bi-people-fill me-2 text-success"></i> Pengaturan Foto Pejabat Daerah
+            </h5>
+            
+            @if(session('success_pejabat'))
+                <div class="alert alert-success border-0 py-2 mb-3 shadow-sm rounded-3">
+                    <i class="bi bi-check-circle-fill me-2"></i>{{ session('success_pejabat') }}
+                </div>
+            @endif
+
+            <form action="{{ route('admin.pejabat.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="row align-items-end g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold text-secondary small">PILIH JABATAN PEJABAT</label>
+                        <select name="kode_pejabat" class="form-select" required>
+                            <option value="" selected disabled>-- Pilih Pejabat --</option>
+                            <option value="asisten1">Asisten Pemerintahan dan Kesejahteraan Rakyat (Asisten I)</option>
+                            <option value="staf_ahli">Staf Ahli Bidang Administrasi Umum</option>
+                            <option value="asisten3">Asisten Daerah III</option>
+                            <option value="kabag_tata_pemerintahan">Bagian Tata Pemerintahan</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label fw-bold text-secondary small">PILIH FOTO BARU (Format: JPG/PNG, Maks 2MB)</label>
+                        <input type="file" name="foto_pejabat" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-success fw-bold w-100">
+                            PERBARUI FOTO 
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card card-menu shadow-sm p-4 h-100">
@@ -77,7 +176,7 @@
                     </div>
                     <h5 class="fw-bold">Kelola Berita</h5>
                     <p class="text-muted small">Tambah, edit, atau hapus berita seputar Kota Sukabumi.</p>
-                    <a href="{{ route('admin.berita.index') }}" class="btn btn-primary mt-auto fw-bold">Buka Form Input</a>
+                    <a href="{{ route('admin.berita.form') }}" class="btn btn-primary mt-auto fw-bold">Buka Form Input</a>
                 </div>
             </div>
 

@@ -31,7 +31,7 @@
     </nav>
 
     <div class="container mt-5">
-        
+
         <div class="card border-0 shadow-sm p-4 mb-5" style="border-radius: 12px; background: #fff;">
             <h5 class="fw-bold text-dark text-uppercase mb-4">
                 <i class="bi bi-cloud-arrow-up-fill me-2 text-primary"></i>Upload Berita Hari Ini
@@ -72,7 +72,7 @@
                 <h5 class="fw-bold text-dark text-uppercase m-0">
                     <i class="bi bi-folder-fill me-2 text-primary"></i>Daftar Riwayat Berita Kota
                 </h5>
-                <span class="badge bg-primary px-3 py-2 rounded-pill">Total: {{ count($beritas) }} Konten</span>
+                
             </div>
 
             <div class="table-responsive">
@@ -91,7 +91,11 @@
                         <tr>
                             <td class="text-center fw-bold text-secondary">{{ $index + 1 }}</td>
                             <td class="text-center">
-                                <img src="{{ asset('img_berita/' . $berita->gambar) }}" alt="Foto" class="img-thumbnail" style="max-height: 60px; object-fit: cover;">
+                                @if($berita->gambar)
+                                    <img src="{{ asset('img_berita/' . $berita->gambar) }}" alt="Foto" class="img-thumbnail" style="max-height: 60px; object-fit: cover;">
+                                @else
+                                    <span class="text-muted small">Tidak ada foto</span>
+                                @endif
                             </td>
                             <td><strong class="text-dark d-block" style="font-size: 0.95rem;">{{ $berita->judul }}</strong></td>
                             <td>
@@ -104,9 +108,10 @@
                                     <i class="bi bi-pencil-square"></i> EDIT
                                 </button>
                                 
-                                <form action="{{ route('admin.berita.delete', $berita->id) }}" method="POST">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="btn btn-delete btn-sm w-100" onclick="return confirm('Yakin hapus?')">
+                                <form action="{{ route('admin.berita.delete', $berita->id) }}" method="POST" class="d-inline">
+                                    @csrf 
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-delete btn-sm w-100" onclick="return confirm('Yakin ingin menghapus berita?')">
                                         <i class="bi bi-trash"></i> HAPUS
                                     </button>
                                 </form>

@@ -338,33 +338,7 @@
                                 <ul class="dropdown-menu">
                                     <li>
     <a class="dropdown-item" href="{{ route('renstra') }}">Rencana Strategis (Renstra) 2024-2026</a>
-</li>
-                         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</li>                        
 <li>
     <a class="dropdown-item" href="{{ route('rpd') }}">Rencana Pembangunan Daerah (RPD) 2024-2026</a>
 </li>
@@ -458,12 +432,16 @@
                                 </li>
                                 </ul>
                             </li>
-                            <li>
-    <a class="dropdown-item d-flex justify-content-between align-items-center py-2 px-3 fw-normal text-dark" href="{{ route('admin.dokumen.index') }}?bagian=humas">
-        <span>Bagian Humas</span>
-        <i class="bi bi-chevron-right text-info small"></i>
-    </a>
-</li>
+                            <li class="dropdown-submenu">
+                                <li>
+                                <a class="dropdown-item" href="{{ route('publik.humas.index') }}">Bagian Humas</a>
+                            </li>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('publik.humas.index') }}">Dokumen & Dokumentasi</a>
+                                    </li>
+                                </ul>
+                            </li>
 <li>
     <hr class="dropdown-divider my-1 opacity-25">
 </li>
@@ -482,12 +460,8 @@
                             <li class="dropdown-submenu">
                                 <a class="dropdown-item" href="#">Galeri <i class="fa-solid fa-chevron-right"></i></a>
                                 <ul class="dropdown-menu">
-                                   <li>
-                                    <a class="dropdown-item" href="{{ route('photos') }}">Photos</a>
-                                </li>
-                                     <li>
-                                    <a class="dropdown-item" href="{{ route('video') }}">Video</a>
-                                </li>
+                                    <li><a class="dropdown-item" href="{{ route('publik.photos') }}">Photos</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('publik.video') }}">Video</a></li>
                                 </ul>
                             </li>
                             <li><a class="dropdown-item" href="{{ route('agenda.pimpinan') }}">Agenda Pimpinan</a></li>
@@ -516,7 +490,8 @@
         <div class="container mt-5 mb-5">
             <div class="row align-items-center shadow-sm p-4 rounded bg-white">
                 <div class="col-md-4 text-center mb-4 mb-md-0">
-                    <img src="{{ asset('img/ketuasetda.webp') }}" class="pimpinan-img rounded img-fluid" alt="Sekretaris Daerah">
+                    <!-- Di file home.blade.php halaman Beranda -->
+<img src="{{ asset('img/sambutan.jpg?v=' . time()) }}" alt="Foto Sambutan" class="img-fluid rounded shadow-sm">
                 </div>
                 <div class="col-md-8 px-md-5">
                     <h2 class="section-title">Sambutan</h2>
@@ -542,7 +517,8 @@
                     <div class="news-card-single shadow-sm card border-0">
                         <div class="row g-0">
                             <div class="col-md-5 news-img-wrap">
-                                <img src="{{ asset('img/berita.jpg') }}" class="img-fluid w-100" alt="Gambar Berita Utama">
+                                <!-- Cari bagian gambar berita terbaru kamu, ganti src-nya menjadi seperti ini -->
+<img src="{{ asset('img/berita_utama.jpg?v='.time()) }}" class="img-fluid rounded" alt="Berita Terbaru" onerror="this.src='https://placehold.co/600x400?text=Berita+Setda'">
                             </div>
                             <div class="col-md-7">
                                 <div class="card-body p-4 d-flex flex-column h-100">
@@ -570,60 +546,63 @@
                 <p class="text-muted">Pejabat lingkup Perangkat Daerah</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="pejabat-card">
-                        <img src="{{ asset('img/pejabat1.jpg') }}" class="pejabat-img-circle" alt="Pejabat">
-                        <div class="pejabat-info">
-                            <h5>Asisten Pemerintahan dan Kesejahteraan Rakyat</h5>
-                            <p><strong>Fajar Rajasa, S.STP., M.Si.</strong></p>
-                            <p>Tugas : membantu Sekretaris Daerah... <a href="#">Lihat Detail</a></p>
-                        </div>
+            <div class="col-md-6">
+                <div class="pejabat-card">
+                    <img src="{{ asset('img/pejabat/asisten1.jpg?v='.time()) }}" class="pejabat-img-circle" alt="Pejabat" onerror="this.src='https://placehold.co/100x100?text=Pejabat'">
+                    <div class="pejabat-info">
+                        <h5>Asisten Pemerintahan dan Kesejahteraan Rakyat</h5>
+                        <p><strong>Fajar Rajasa, S.STP., M.Si.</strong></p>
+                        <p>Tugas : membantu Sekretaris Daerah... <a href="#">Lihat Detail</a></p>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="pejabat-card">
-                        <img src="{{ asset('img/pejabat2.jpg') }}" class="pejabat-img-circle" alt="Pejabat">
-                        <div class="pejabat-info">
-                            <h5>Staf Ahli Bidang Administrasi Umum</h5>
-                            <p><strong>Mohammad Hasan Asari</strong></p>
-                            <p>Tugas Pokok: Membantu Wali Kota... <a href="#">Lihat Detail</a></p>
-                        </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="pejabat-card">
+                    <img src="{{ asset('img/pejabat/staf_ahli.jpg?v='.time()) }}" class="pejabat-img-circle" alt="Pejabat" onerror="this.src='https://placehold.co/100x100?text=Pejabat'">
+                    <div class="pejabat-info">
+                        <h5>Staf Ahli Bidang Administrasi Umum</h5>
+                        <p><strong>Mohammad Hasan Asari</strong></p>
+                        <p>Tugas Pokok: Membantu Wali Kota... <a href="#">Lihat Detail</a></p>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="pejabat-card">
-                        <div class="pejabat-img-circle d-flex align-items-center justify-content-center text-white">No Img</div>
-                        <div class="pejabat-info">
-                            <h5>Asisten Daerah III</h5>
-                            <p><strong>H.R. Imran Wardhani, A.Md.LLAJ., S.IP., M.Si.</strong></p>
-                            <p>Tugas pokok: Membantu Wali Kota... <a href="#">Lihat Detail</a></p>
-                        </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="pejabat-card">
+                    <img src="{{ asset('img/pejabat/asisten3.jpg?v='.time()) }}" class="pejabat-img-circle" alt="Pejabat" onerror="this.src='https://placehold.co/100x100?text=No+Img'">
+                    <div class="pejabat-info">
+                        <h5>Asisten Daerah III</h5>
+                        <p><strong>H.R. Imran Wardhani, A.Md.LLAJ., S.IP., M.Si.</strong></p>
+                        <p>Tugas pokok: Membantu Wali Kota... <a href="#">Lihat Detail</a></p>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="pejabat-card">
-                        <img src="{{ asset('img/pejabat3.jpg') }}" class="pejabat-img-circle" alt="Pejabat">
-                        <div class="pejabat-info">
-                            <h5>Bagian Tata Pemerintahan</h5>
-                            <p><strong> Adrian Hariadi, S.STP. </strong></p>
-                            <p>Tugas : Membantu Sekretaris Daerah... <a href="#">Lihat Detail</a></p>
-                        </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="pejabat-card">
+                    <img src="{{ asset('img/pejabat/kabag_tata_pemerintahan.jpg?v='.time()) }}" class="pejabat-img-circle" alt="Pejabat" onerror="this.src='https://placehold.co/100x100?text=Pejabat'">
+                    <div class="pejabat-info">
+                        <h5>Bagian Tata Pemerintahan</h5>
+                        <p><strong>Adrian Hariadi, S.STP.</strong></p>
+                        <p>Tugas : Membantu Sekretaris Daerah... <a href="#">Lihat Detail</a></p>
                     </div>
                 </div>
             </div>
         </div>
-    @else
-        <div style="height: 150px; background: #004a99;"></div> 
-        <div class="container py-5">
-            @yield('content')
-        </div>
-    @endif
+    </div>
+@else
+    <div style="height: 150px; background: #004a99;"></div> 
+    <div class="container py-5">
+        @yield('content')
+    </div>
+@endif
 
-    <footer class="bg-dark text-white py-4 text-center">
-        <div class="container">
-            <p class="mb-0">&copy; 2026 Sekretariat Daerah Kota Sukabumi. All Rights Reserved.</p>
-        </div>
-    </footer>
+<footer class="bg-dark text-white py-4 text-center">
+    <div class="container">
+        <p class="mb-0">&copy; 2026 Sekretariat Daerah Kota Sukabumi. All Rights Reserved.</p>
+    </div>
+</footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
