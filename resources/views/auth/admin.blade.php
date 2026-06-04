@@ -167,6 +167,19 @@
                 </div>
             </form>
         </div>
+       <div class="row g-4 mt-3">
+    <div class="col-md-4">
+        <div class="card card-menu shadow-sm p-4 h-100">
+            <div class="icon-box" style="background-color: #10b981; color: white;">
+                <i class="bi bi-list-check fs-3"></i>
+            </div>
+            <h5 class="fw-bold">Visi dan Misi</h5>
+            <p class="text-muted small">Update visi dan misi organisasi.</p>
+            <a href="{{ route('admin.visi-misi.edit') }}" class="btn btn-success fw-bold mt-auto">Edit Visi Misi</a>
+        </div>
+    </div>
+    
+    </div>
 
         <div class="row g-4">
             <div class="col-md-4">
