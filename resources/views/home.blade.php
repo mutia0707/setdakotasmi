@@ -294,9 +294,9 @@
     <!-- Isi Sub-Menu Profil -->
     <ul class="dropdown-menu">
         <li>
-            <a class="dropdown-item" href="https://portal.sukabumikota.go.id/profils/" target="_blank">
-                Profil Setda
-            </a>
+            <a class="dropdown-item" href="{{ route('profil-setda') }}">
+    Profil Setda
+</a>
         </li>
         <li>
             <a class="dropdown-item" href="{{ route('visi-misi') }}">Visi dan Misi</a>

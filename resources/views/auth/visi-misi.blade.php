@@ -2,47 +2,27 @@
 
 @section('content')
 <div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm p-5" style="border-radius: 15px;">
+                <h2 class="fw-bold mb-4">Visi & Misi</h2>
+                <hr class="mb-4">
+                
+                <div class="mb-4">
+                    <h4 class="fw-bold text-primary">Visi</h4>
+                    <p style="line-height: 1.8; font-size: 1.1rem; color: #555;">
+                        {{ $data->visi ?? 'Visi belum diatur.' }}
+                    </p>
+                </div>
 
-    <div class="mb-4">
-        <a href="{{ url()->previous() }}" class="btn btn-primary">← KEMBALI</a>
-    </div>
-
-    <div class="mb-4">
-        <h2>VISI & MISI</h2>
-        <hr>
-    </div>
-
-    {{-- ✅ HANYA ADMIN YANG BISA LIHAT FORM --}}
-    @auth
-        @if(auth()->user()->role == 'admin')
-        <div class="card mb-4 border-warning">
-            <div class="card-body bg-light">
-                <h5 class="text-warning">Edit Visi & Misi</h5>
-                <form action="{{ route('admin.visi-misi.update') }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <label>Visi</label>
-                        <textarea name="visi" class="form-control">{{ $data->visi ?? '' }}</textarea>
+                <div>
+                    <h4 class="fw-bold text-primary">Misi</h4>
+                    <div style="line-height: 1.8; font-size: 1.1rem; color: #555; white-space: pre-line;">
+                        {!! preg_replace('/(\d+\.\s)/', '<br><strong>$1</strong>', e($data->misi ?? 'Misi belum diatur.')) !!}
                     </div>
-                    <div class="mb-3">
-                        <label>Misi</label>
-                        <textarea name="misi" class="form-control">{{ $data->misi ?? '' }}</textarea>
-                    </div>
-                    <button type="submit" class="btn btn-success">Simpan Perubahan</button>
-                </form>
+                </div>
             </div>
         </div>
-        @endif
-    @endauth
-
-    {{-- ✅ PUBLIK & ADMIN BISA LIHAT --}}
-    <div class="content">
-        <h4>Visi:</h4>
-        <p>{{ $data->visi ?? 'Data belum diisi' }}</p>
-        
-        <h4>Misi:</h4>
-        <p>{!! nl2br(e($data->misi ?? 'Data belum diisi')) !!}</p>
     </div>
-
 </div>
 @endsection

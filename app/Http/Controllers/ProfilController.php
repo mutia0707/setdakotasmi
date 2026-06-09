@@ -3,18 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Models\VisiMisi;
+use App\Models\ProfilSetda; // Tambahkan ini agar lebih bersih
 use Illuminate\Http\Request;
 
 class ProfilController extends Controller
 {
-    // 1. Fungsi untuk menampilkan halaman (untuk admin dan publik)
-    public function showVisiMisi()
+    /*
+    |--------------------------------------------------------------------------
+    | PROFIL SETDA
+    |--------------------------------------------------------------------------
+    */
+    
+    // Untuk Pengunjung Publik
+    public function showProfilSetda()
     {
-        $data = VisiMisi::first();
-        return view('auth.visi-misi', compact('data'));
+        $data = ProfilSetda::first() ?? new ProfilSetda();
+        return view('auth.profil-setda', compact('data'));
     }
 
-    // 2. Fungsi untuk proses simpan (Ini yang sering salah tulis)
+    // Untuk Admin (Halaman Edit)
+    public function editSetda()
+    {
+        $data = ProfilSetda::first() ?? new ProfilSetda();
+        return view('auth.edit-profil-setda', compact('data'));
+    }
+
+    public function updateSetda(Request $request)
+    {
+        ProfilSetda::updateOrCreate(
+            ['id' => 1],
+            ['isi_profil' => $request->isi_profil]
+        );
+
+        return back()->with('success', 'Profil Setda berhasil diperbarui!');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | VISI MISI
+    |--------------------------------------------------------------------------
+    */
+
+    // Untuk Pengunjung Publik
+    public function showVisiMisi()
+    {
+        $data = VisiMisi::first() ?? new VisiMisi();
+        return view('auth.visi-misi', compact('data')); 
+    }
+
+    // Untuk Admin (Halaman Edit)
+    public function editVisiMisi()
+    {
+        $data = VisiMisi::first() ?? new VisiMisi();
+        return view('auth.edit-visi-misi', compact('data')); 
+    }
+
     public function updateVisiMisi(Request $request)
     {
         VisiMisi::updateOrCreate(
@@ -22,13 +65,6 @@ class ProfilController extends Controller
             ['visi' => $request->visi, 'misi' => $request->misi]
         );
 
-        return back()->with('success', 'Data berhasil disimpan!');
-    }
-
-    // 3. Tambahkan fungsi ini jika rute Anda memang memanggil editVisiMisi
-    public function editVisiMisi()
-    {
-        $data = VisiMisi::first();
-        return view('auth.visi-misi', compact('data'));
+        return back()->with('success', 'Data Visi dan Misi berhasil diperbarui!');
     }
 }

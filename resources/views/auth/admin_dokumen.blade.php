@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
         body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
-        .header-bg { background-color: #ffc107; }
-        .btn-warning { background-color: #ffc107; border: none; color: #000; font-weight: bold; }
-        .btn-warning:hover { background-color: #e0a800; color: #000; }
-        .btn-edit { background-color: #ffc107; border: none; color: #000; font-weight: bold; }
-        .btn-edit:hover { background-color: #e0a800; color: #000; }
+        .header-bg { background-color: #8f8c84; }
+        .btn-warning { background-color: #8f8c84; border: none; color: #000; font-weight: bold; }
+        .btn-warning:hover { background-color: #8f8c84; color: #000; }
+        .btn-edit { background-color: #8f8c84; border: none; color: #000; font-weight: bold; }
+        .btn-edit:hover { background-color: #8f8c84; color: #000; }
         .btn-danger { background-color: #dc3545; border: none; font-weight: bold; color: white; }
     </style>
 </head>
