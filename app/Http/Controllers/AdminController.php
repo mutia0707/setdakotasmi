@@ -12,21 +12,20 @@ class AdminController extends Controller
     /**
      * Tampilkan Halaman Utama Dashboard Admin
      */
-    public function index()
+    public function dashboardView()
     {
-        // Ambil data berita untuk ditampilkan di form kelola berita admin
         $beritas = DB::table('beritas')->orderBy('id', 'desc')->get();
         return view('auth.admin', compact('beritas'));
     }
 
-    public function form()
+    // Alias untuk dashboard agar konsisten
+    public function index()
     {
-        $beritas = DB::table('beritas')->orderBy('id', 'desc')->get();
-        return view('auth.kelola_berita', compact('beritas'));
+        return $this->dashboardView();
     }
 
     /**
-     * Menyimpan Berita Baru dari Admin (STORE)
+     * Kelola Berita
      */
     public function store(Request $request)
     {
@@ -37,7 +36,6 @@ class AdminController extends Controller
         ]);
 
         $namaGambar = null;
-
         if ($request->hasFile('gambar')) {
             $file = $request->file('gambar');
             $namaGambar = time() . '_' . $file->getClientOriginalName();
@@ -45,21 +43,18 @@ class AdminController extends Controller
         }
 
         DB::table('beritas')->insert([
-            'judul'      => $request->judul,
-            'slug'       => Str::slug($request->judul) . '-' . time(),
-            'isi_berita' => $request->isi, // Sesuaikan field database kamu (isi atau isi_berita)
-            'gambar'     => $namaGambar,
+            'judul'           => $request->judul,
+            'slug'            => Str::slug($request->judul) . '-' . time(),
+            'isi_berita'      => $request->isi,
+            'gambar'          => $namaGambar,
             'tanggal_publish' => now(),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at'      => now(),
+            'updated_at'      => now(),
         ]);
 
         return redirect()->back()->with('success', 'Berita Baru Berhasil Ditambahkan!');
     }
 
-    /**
-     * Memperbarui Data Berita Termasuk Mengganti Gambar (UPDATE)
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -69,21 +64,14 @@ class AdminController extends Controller
         ]);
 
         $berita = DB::table('beritas')->where('id', $id)->first();
-        if (!$berita) {
-            return redirect()->back()->with('error', 'Data berita tidak ditemukan.');
-        }
+        if (!$berita) return redirect()->back()->with('error', 'Data berita tidak ditemukan.');
 
         $namaGambarBaru = $berita->gambar;
 
         if ($request->hasFile('gambar')) {
-            // Hapus foto lama jika ada
-            if ($berita->gambar) {
-                $fotoLama = public_path('img_berita/' . $berita->gambar);
-                if (File::exists($fotoLama)) {
-                    File::delete($fotoLama);
-                }
+            if ($berita->gambar && File::exists(public_path('img_berita/' . $berita->gambar))) {
+                File::delete(public_path('img_berita/' . $berita->gambar));
             }
-
             $file = $request->file('gambar');
             $namaGambarBaru = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('img_berita'), $namaGambarBaru);
@@ -97,105 +85,46 @@ class AdminController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->back()->with('success', 'Konten Berita dan Foto Berhasil Diperbarui!');
+        return redirect()->back()->with('success', 'Berita Berhasil Diperbarui!');
     }
 
-    /**
-     * Menghapus Berita (DESTROY)
-     */
     public function destroy($id)
     {
         $berita = DB::table('beritas')->where('id', $id)->first();
-        
         if ($berita) {
-            if ($berita->gambar) {
-                $foto = public_path('img_berita/' . $berita->gambar);
-                if (File::exists($foto)) {
-                    File::delete($foto);
-                }
+            if ($berita->gambar && File::exists(public_path('img_berita/' . $berita->gambar))) {
+                File::delete(public_path('img_berita/' . $berita->gambar));
             }
             DB::table('beritas')->where('id', $id)->delete();
             return redirect()->back()->with('success', 'Berita Berhasil Dihapus!');
         }
-
         return redirect()->back()->with('error', 'Gagal menghapus berita.');
     }
 
     /**
-     * Proses Ganti Foto Sambutan Beranda
+     * Update Foto Statis (Sambutan, Berita Utama, Pejabat)
      */
     public function updateSambutan(Request $request)
     {
-        $request->validate([
-            'gambar_sambutan' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
-
-        if ($request->hasFile('gambar_sambutan')) {
-            $image = $request->file('gambar_sambutan');
-            $destinationPath = public_path('img');
-            $fileName = 'sambutan.jpg';
-
-            if (File::exists($destinationPath . '/' . $fileName)) {
-                File::delete($destinationPath . '/' . $fileName);
-            }
-
-            $image->move($destinationPath, $fileName);
-            return redirect()->back()->with('success', 'Foto Sambutan Berhasil Diperbarui!');
-        }
-        return redirect()->back()->with('error', 'Gagal memproses gambar sambutan.');
+        $request->validate(['gambar_sambutan' => 'required|image|mimes:jpeg,png,jpg|max:2048']);
+        $request->file('gambar_sambutan')->move(public_path('img'), 'sambutan.jpg');
+        return redirect()->back()->with('success', 'Foto Sambutan Berhasil Diperbarui!');
     }
 
-    /**
-     * Proses Ganti Foto Berita Utama Beranda
-     */
     public function updateFotoBeritaUtama(Request $request)
     {
-        $request->validate([
-            'foto_berita_utama' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
-
-        if ($request->hasFile('foto_berita_utama')) {
-            $image = $request->file('foto_berita_utama');
-            $destinationPath = public_path('img');
-            $fileName = 'berita_utama.jpg';
-
-            if (File::exists($destinationPath . '/' . $fileName)) {
-                File::delete($destinationPath . '/' . $fileName);
-            }
-
-            $image->move($destinationPath, $fileName);
-            return redirect()->back()->with('success_berita_utama', 'Foto Berita Utama Berhasil Diperbarui!');
-        }
-        return redirect()->back()->with('error', 'Gagal memproses gambar berita utama.');
+        $request->validate(['foto_berita_utama' => 'required|image|mimes:jpeg,png,jpg|max:2048']);
+        $request->file('foto_berita_utama')->move(public_path('img'), 'berita_utama.jpg');
+        return redirect()->back()->with('success', 'Foto Berita Utama Berhasil Diperbarui!');
     }
 
-    /**
-     * Proses Ganti Foto Pejabat Daerah secara Dinamis
-     */
     public function updateFotoPejabat(Request $request)
     {
         $request->validate([
             'kode_pejabat' => 'required|string',
-            'foto_pejabat' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'foto_pejabat' => 're/quired|image|mimes:jpeg,png,jpg|max:2048'
         ]);
-
-        if ($request->hasFile('foto_pejabat')) {
-            $image = $request->file('foto_pejabat');
-            $destinationPath = public_path('img/pejabat');
-
-            if (!File::isDirectory($destinationPath)) {
-                File::makeDirectory($destinationPath, 0755, true, true);
-            }
-            
-            $fileName = $request->kode_pejabat . '.jpg';
-            
-            if (File::exists($destinationPath . '/' . $fileName)) {
-                File::delete($destinationPath . '/' . $fileName);
-            }
-
-            $image->move($destinationPath, $fileName);
-            return redirect()->back()->with('success_pejabat', 'Foto Pejabat Berhasil Diperbarui!');
-        }
-        return redirect()->back()->with('error', 'Gagal memperbarui foto pejabat.');
+        $request->file('foto_pejabat')->move(public_path('img/pejabat'), $request->kode_pejabat . '.jpg');
+        return redirect()->back()->with('success', 'Foto Pejabat Berhasil Diperbarui!');
     }
 }

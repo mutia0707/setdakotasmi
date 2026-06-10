@@ -20,7 +20,7 @@ Route::get('/', function () { return view('home'); })->name('home');
 // Profil
 Route::get('/profil-setda', [ProfilController::class, 'showProfilSetda'])->name('profil-setda');
 Route::get('/tentang/visi-misi', [ProfilController::class, 'showVisiMisi'])->name('visi-misi');
-Route::get('/tupoksi', function () { return view('pages.tupoksi'); })->name('tupoksi');
+Route::get('/tupoksi', function () { return view('auth.tupoksi'); })->name('tupoksi');
 Route::get('/analis-kebijakan', function () { return view('pages.analis-kebijakan'); })->name('analis-kebijakan');
 Route::get('/struktur-organisasi', function () { return view('pages.struktur'); })->name('struktur');
 
@@ -29,7 +29,7 @@ Route::get('/berita-kota', [BeritaController::class, 'index'])->name('berita.ind
 Route::get('/berita-kota/{slug}', [BeritaController::class, 'show'])->name('berita.show');
 Route::get('/agenda-pimpinan', [AgendaController::class, 'index'])->name('agenda.pimpinan');
 
-// Bidang ASDA & Program Lainnya
+// Bidang ASDA & Program (Statik)
 Route::view('/asda-1', 'pages.asda1')->name('asda1');
 Route::view('/asda-2', 'pages.asda2')->name('asda2');
 Route::view('/asda-3', 'pages.asda3')->name('asda3');
@@ -83,23 +83,29 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 */
 Route::middleware(['auth'])->group(function () {
     
-    // --- AREA ADMIN ---
+    // Dashboard Admin
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboardView'])->name('auth.admin');
+
+    // Admin Group
     Route::prefix('admin')->group(function () {
         
-        // Dashboard
-        Route::get('/dashboard', function () {
-            if (strtolower(auth()->user()->role) !== 'admin') {
-                return redirect('/pintu-setda')->withErrors('Akses Ditolak');
-            }
-            $beritas = DB::table('beritas')->orderBy('id', 'desc')->get(); 
-            return view('auth.admin', compact('beritas'));
-        })->name('auth.admin');
-
         // Kelola Visi Misi & Profil Setda
         Route::get('/visi-misi-edit', [ProfilController::class, 'editVisiMisi'])->name('admin.visi-misi.edit');
         Route::post('/visi-misi-update', [ProfilController::class, 'updateVisiMisi'])->name('admin.visi-misi.update');
         Route::get('/profil-setda-edit', [ProfilController::class, 'editSetda'])->name('admin.profil-setda.edit');
         Route::post('/profil-setda-update', [ProfilController::class, 'updateSetda'])->name('admin.profil-setda.update');
+
+     // 1. RUTE PUBLIK (Bisa diakses tanpa prefix /admin)
+Route::get('/tupoksi', [ProfilController::class, 'showTupoksiPublik'])->name('tupoksi');
+
+// 2. RUTE ADMIN (Diberi prefix /admin)
+Route::prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboardView'])->name('admin.dashboard');
+    
+    // Rute Edit dan Update diletakkan di sini agar tetap aman di dalam prefix admin
+    Route::get('/tupoksi-edit', [ProfilController::class, 'editTupoksi'])->name('admin.tupoksi.edit');
+    Route::post('/tupoksi-update', [ProfilController::class, 'updateTupoksi'])->name('admin.tupoksi.update');
+});
 
         // Fitur Ganti Foto
         Route::post('/ganti-foto-sambutan', [AdminController::class, 'updateSambutan'])->name('admin.sambutan.update');
@@ -129,7 +135,7 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
-    // --- AREA STAFF ---
+    // Area Staff
     Route::prefix('staff')->group(function () {
         Route::get('/agenda', function () {
             if (strtolower(auth()->user()->role) !== 'staff') {
@@ -143,5 +149,4 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/agenda/update/{id}', [LoginController::class, 'updateAgenda'])->name('staff.agenda.update');
         Route::get('/agenda/delete/{id}', [LoginController::class, 'deleteAgenda'])->name('staff.agenda.delete');
     });
-
 });

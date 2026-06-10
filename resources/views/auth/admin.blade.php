@@ -9,7 +9,7 @@
     <style>
         body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
         .navbar-admin { background-color: #0056b3; border-bottom: 4px solid #003d80; }
-        .card-menu { border: none; border-radius: 12px; transition: 0.3s; }
+        .card-menu { border: none; border-radius: 12px; transition: 0.3s; height: 100%; }
         .card-menu:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important; }
         .icon-box { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 15px; margin-bottom: 20px; }
     </style>
@@ -67,43 +67,48 @@
             </div>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4 mb-5">
             <div class="col-md-3">
-                <div class="card card-menu p-4 h-100 shadow-sm text-center">
+                <div class="card card-menu p-4 shadow-sm text-center">
                     <div class="icon-box bg-warning text-dark mx-auto"><i class="bi bi-info-circle fs-3"></i></div>
                     <h5 class="fw-bold">Profil Setda</h5>
                     <a href="{{ route('admin.profil-setda.edit') }}" class="btn btn-warning w-100 mt-auto text-dark">Kelola</a>
                 </div>
             </div>
-            
             <div class="col-md-3">
-                <div class="card card-menu p-4 h-100 shadow-sm text-center">
+                <div class="card card-menu p-4 shadow-sm text-center">
                     <div class="icon-box bg-success text-white mx-auto"><i class="bi bi-list-check fs-3"></i></div>
                     <h5 class="fw-bold">Visi Misi</h5>
                     <a href="{{ route('admin.visi-misi.edit') }}" class="btn btn-success w-100 mt-auto text-white">Kelola</a>
                 </div>
             </div>
-
             <div class="col-md-3">
-                <div class="card card-menu p-4 h-100 shadow-sm text-center">
-                    <div class="icon-box bg-primary text-white mx-auto"><i class="bi bi-newspaper fs-3"></i></div>
-                    <h5 class="fw-bold">Berita</h5>
-                    <a href="{{ route('admin.berita.index') }}" class="btn btn-primary w-100 mt-auto">Kelola</a>
+                <div class="card card-menu p-4 shadow-sm text-center">
+                    <div class="icon-box bg-info text-white mx-auto"><i class="bi bi-file-earmark-text fs-3"></i></div>
+                    <h5 class="fw-bold">Tupoksi</h5>
+                    <a href="{{ route('admin.tupoksi.edit') }}" class="btn btn-info w-100 mt-auto text-white">Kelola</a>
                 </div>
             </div>
-
+           <div class="col-md-3">
+    <div class="card card-menu p-4 shadow-sm text-center">
+        <div class="icon-box bg-primary text-white mx-auto">
+            <i class="bi bi-newspaper fs-3"></i>
+        </div>
+        <h5 class="fw-bold">Berita</h5>
+        <a href="{{ route('admin.berita.index') }}" class="btn btn-primary w-100 mt-auto text-white">
+            Kelola
+        </a>
+    </div>
+</div>
             <div class="col-md-3">
-                <div class="card card-menu p-4 h-100 shadow-sm text-center">
+                <div class="card card-menu p-4 shadow-sm text-center">
                     <div class="icon-box bg-info text-white mx-auto"><i class="bi bi-images fs-3"></i></div>
                     <h5 class="fw-bold">Galeri</h5>
                     <a href="{{ route('admin.galeri.index') }}" class="btn btn-info w-100 mt-auto text-white">Kelola</a>
                 </div>
             </div>
-        </div>
-
-        <div class="row g-4 mt-2">
             <div class="col-md-3">
-                <div class="card card-menu p-4 h-100 shadow-sm text-center">
+                <div class="card card-menu p-4 shadow-sm text-center">
                     <div class="icon-box bg-secondary text-white mx-auto"><i class="bi bi-file-earmark-arrow-down fs-3"></i></div>
                     <h5 class="fw-bold">Dokumen</h5>
                     <a href="{{ route('admin.dokumen.index') }}" class="btn btn-secondary w-100 mt-auto text-white">Kelola</a>

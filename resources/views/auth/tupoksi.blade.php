@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Sekretariat Daerah - SETDA Kota Sukabumi</title>
+    <title>Tugas Pokok & Fungsi - SETDA Kota Sukabumi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
         body { background-color: #f4f7f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; }
         
-        /* Header Formal yang Konsisten */
+        /* Header Formal */
         .page-header { 
             background: linear-gradient(135deg, #004a99 0%, #0066cc 100%); 
             padding: 60px 0 110px 0; 
@@ -25,9 +25,10 @@
             margin-top: -70px; 
             margin-bottom: 60px; 
             box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-            border-top: 4px solid #0056b3;
+            border-top: 4px solid #0056b3; /* Aksen resmi */
         }
         
+        /* Typography */
         .content-body { line-height: 2; font-size: 1.1rem; color: #444; }
         .section-title { color: #0056b3; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 25px; }
     </style>
@@ -41,7 +42,7 @@
                  onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Coat_of_arms_of_Sukabumi.svg/1200px-Coat_of_arms_of_Sukabumi.svg.png';" 
                  alt="Logo" class="logo-img me-4">
             <div>
-                <h2 class="fw-bold m-0 text-white">PROFIL SETDA</h2>
+                <h2 class="fw-bold m-0 text-white">TUGAS POKOK & FUNGSI</h2>
                 <small class="text-white-50 text-uppercase">Sekretariat Daerah Kota Sukabumi</small>
             </div>
         </div>
@@ -51,19 +52,11 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="main-content">
-        <h4 class="section-title"><i class="bi bi-info-circle me-2"></i> Informasi Profil</h4>
+<div class="content-body">
+    {{ $data->tupoksi ?? 'Data Masih Kosong' }}
+</div>
         
-        <div class="content-body" style="white-space: pre-wrap; text-align: justify;">
-            @if(isset($data) && $data->isi_profil)
-                {!! e($data->isi_profil) !!}
-            @else
-                <p class="text-center text-muted py-5">Konten profil belum tersedia.</p>
-            @endif
-        </div>
-        
-        <!-- Footer Dokumen -->
+        <!-- Tambahan Footer Dokumen -->
         <div class="mt-5 pt-4 border-top text-center text-muted">
             <small>© 2026 Sekretariat Daerah Kota Sukabumi. Dokumen Resmi Instansi.</small>
         </div>

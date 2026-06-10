@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\VisiMisi;
-use App\Models\ProfilSetda; // Tambahkan ini agar lebih bersih
+use App\Models\ProfilSetda;
+use App\Models\Tupoksi; // Tambahkan ini di atas
 use Illuminate\Http\Request;
 
 class ProfilController extends Controller
@@ -13,15 +14,12 @@ class ProfilController extends Controller
     | PROFIL SETDA
     |--------------------------------------------------------------------------
     */
-    
-    // Untuk Pengunjung Publik
     public function showProfilSetda()
     {
         $data = ProfilSetda::first() ?? new ProfilSetda();
         return view('auth.profil-setda', compact('data'));
     }
 
-    // Untuk Admin (Halaman Edit)
     public function editSetda()
     {
         $data = ProfilSetda::first() ?? new ProfilSetda();
@@ -30,11 +28,8 @@ class ProfilController extends Controller
 
     public function updateSetda(Request $request)
     {
-        ProfilSetda::updateOrCreate(
-            ['id' => 1],
-            ['isi_profil' => $request->isi_profil]
-        );
-
+        $request->validate(['isi_profil' => 'required|string']);
+        ProfilSetda::updateOrCreate(['id' => 1], ['isi_profil' => $request->isi_profil]);
         return back()->with('success', 'Profil Setda berhasil diperbarui!');
     }
 
@@ -43,15 +38,12 @@ class ProfilController extends Controller
     | VISI MISI
     |--------------------------------------------------------------------------
     */
-
-    // Untuk Pengunjung Publik
     public function showVisiMisi()
     {
         $data = VisiMisi::first() ?? new VisiMisi();
         return view('auth.visi-misi', compact('data')); 
     }
 
-    // Untuk Admin (Halaman Edit)
     public function editVisiMisi()
     {
         $data = VisiMisi::first() ?? new VisiMisi();
@@ -60,11 +52,40 @@ class ProfilController extends Controller
 
     public function updateVisiMisi(Request $request)
     {
-        VisiMisi::updateOrCreate(
-            ['id' => 1],
-            ['visi' => $request->visi, 'misi' => $request->misi]
-        );
-
+        $request->validate(['visi' => 'required|string', 'misi' => 'required|string']);
+        VisiMisi::updateOrCreate(['id' => 1], ['visi' => $request->visi, 'misi' => $request->misi]);
         return back()->with('success', 'Data Visi dan Misi berhasil diperbarui!');
     }
+
+   /*
+    |--------------------------------------------------------------------------
+    | TUPOKSI
+    |--------------------------------------------------------------------------
+    */
+ public function showTupoksiPublik() 
+{
+    // Kita buat objek data palsu secara manual
+    $data = new \stdClass();
+    $data->tupoksi = "TES BERHASIL: Data ini muncul dari Controller secara manual.";
+    
+    // Kirim ke view
+    return view('tupoksi', compact('data'));
+}
+   public function editTupoksi() {
+    // Sesuaikan pemanggilan ke 'auth.tupoksi-edit' karena file ada di folder auth
+    $data = \App\Models\Tupoksi::first() ?? new \App\Models\Tupoksi();
+    return view('auth.tupoksi-edit', compact('data')); 
+}
+
+   public function updateTupoksi(Request $request) 
+{
+    $request->validate(['tupoksi' => 'required|string']);
+    
+    \App\Models\Tupoksi::updateOrCreate(
+        ['id' => 1], 
+        ['tupoksi' => $request->tupoksi] // Pastikan key 'tupoksi' sama dengan di Model
+    );
+
+    return redirect()->back()->with('success', 'Tupoksi berhasil diperbarui!');
+}
 }
