@@ -34,18 +34,11 @@
                     </div>
                 @endif
 
-               <form action="{{ route('admin.tupoksi.update') }}" method="POST">
+<form action="{{ route('admin.tupoksi.update') }}" method="POST">
     @csrf
-    <div class="mb-4">
-        <label class="form-label fw-bold text-secondary">Konten Tupoksi</label>
-        <textarea name="tupoksi" rows="12" class="form-control shadow-sm" required>{{ $data->tupoksi ?? '' }}</textarea>
-    </div>
-    
-    <div class="d-flex justify-content-end border-top pt-3">
-        <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow-sm rounded-3">
-            <i class="bi bi-save me-2"></i> SIMPAN PERUBAHAN
-        </button>
-    </div>
+    <label>Konten Tupoksi</label>
+<textarea name="tupoksi" class="form-control" rows="10">{{ $data ? $data->tupoksi : '' }}</textarea>
+    <button type="submit" class="btn btn-success mt-3">Simpan Perubahan</button>
 </form>
             </div>
         </div>

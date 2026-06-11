@@ -9,6 +9,8 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\DokumenController; 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\TupoksiController;
+use App\Http\Controllers\AnalisisKebijakanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +22,8 @@ Route::get('/', function () { return view('home'); })->name('home');
 // Profil
 Route::get('/profil-setda', [ProfilController::class, 'showProfilSetda'])->name('profil-setda');
 Route::get('/tentang/visi-misi', [ProfilController::class, 'showVisiMisi'])->name('visi-misi');
-Route::get('/tupoksi', function () { return view('auth.tupoksi'); })->name('tupoksi');
-Route::get('/analis-kebijakan', function () { return view('pages.analis-kebijakan'); })->name('analis-kebijakan');
+Route::get('/tupoksi', [TupoksiController::class, 'showTupoksiPublik'])->name('tupoksi');
+Route::get('/analisis-kebijakan', [AnalisisKebijakanController::class, 'showAnalisKebijakan'])->name('analis-kebijakan');
 Route::get('/struktur-organisasi', function () { return view('pages.struktur'); })->name('struktur');
 
 // Berita & Agenda
@@ -77,35 +79,33 @@ Route::post('/pintu-setda', [LoginController::class, 'login'])->name('login.post
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 /*
+/*
 |--------------------------------------------------------------------------
 | 3. AREA AMAN (ADMIN & STAFF)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->group(function () {
-    
-    // Dashboard Admin
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboardView'])->name('auth.admin');
 
-    // Admin Group
+    // ADMIN GROUP
     Route::prefix('admin')->group(function () {
         
+        // Dashboard (Diberi dua nama agar aman)
+        Route::get('/dashboard', [AdminController::class, 'dashboardView'])->name('admin.dashboard');
+        Route::get('/admin/dashboard', [AdminController::class, 'dashboardView'])->name('auth.admin');
+
         // Kelola Visi Misi & Profil Setda
         Route::get('/visi-misi-edit', [ProfilController::class, 'editVisiMisi'])->name('admin.visi-misi.edit');
         Route::post('/visi-misi-update', [ProfilController::class, 'updateVisiMisi'])->name('admin.visi-misi.update');
         Route::get('/profil-setda-edit', [ProfilController::class, 'editSetda'])->name('admin.profil-setda.edit');
         Route::post('/profil-setda-update', [ProfilController::class, 'updateSetda'])->name('admin.profil-setda.update');
 
-     // 1. RUTE PUBLIK (Bisa diakses tanpa prefix /admin)
-Route::get('/tupoksi', [ProfilController::class, 'showTupoksiPublik'])->name('tupoksi');
+        // Kelola Tupoksi
+        Route::get('/tupoksi-edit', [TupoksiController::class, 'editTupoksi'])->name('admin.tupoksi.edit');
+        Route::post('/tupoksi-update', [TupoksiController::class, 'updateTupoksi'])->name('admin.tupoksi.update');
 
-// 2. RUTE ADMIN (Diberi prefix /admin)
-Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboardView'])->name('admin.dashboard');
-    
-    // Rute Edit dan Update diletakkan di sini agar tetap aman di dalam prefix admin
-    Route::get('/tupoksi-edit', [ProfilController::class, 'editTupoksi'])->name('admin.tupoksi.edit');
-    Route::post('/tupoksi-update', [ProfilController::class, 'updateTupoksi'])->name('admin.tupoksi.update');
-});
+        // Kelola Analisis Kebijakan
+        Route::get('/analisis-kebijakan-edit', [AnalisisKebijakanController::class, 'edit'])->name('admin.analisis-kebijakan.edit');
+        Route::post('/analisis-kebijakan-update', [AnalisisKebijakanController::class, 'update'])->name('auth.analisis-kebijakan.update');
 
         // Fitur Ganti Foto
         Route::post('/ganti-foto-sambutan', [AdminController::class, 'updateSambutan'])->name('admin.sambutan.update');

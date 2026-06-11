@@ -52,8 +52,14 @@
     </div>
 </div>
 
-<div class="content-body">
-    {{ $data->tupoksi ?? 'Data Masih Kosong' }}
+<div class="container">
+    @if(isset($data) && $data)
+        {{-- Jika data ada, tampilkan --}}
+        <div>{!! $data->tupoksi !!}</div>
+    @else
+        {{-- Jika data kosong di database --}}
+        <p>Data masih kosong.</p>
+    @endif
 </div>
         
         <!-- Tambahan Footer Dokumen -->
