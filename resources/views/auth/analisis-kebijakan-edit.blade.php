@@ -3,7 +3,7 @@
 <div class="container mt-4">
     <div class="card p-4 shadow-sm">
         <h4 class="mb-4">Edit Analisis Kebijakan</h4>
-        <form action="{{ route('auth.analisis-kebijakan.update') }}" method="POST">
+        <form action="{{ route('admin.analisis-kebijakan.update') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label class="fw-bold">Tupoksi Utama</label>

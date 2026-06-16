@@ -79,7 +79,6 @@ Route::post('/pintu-setda', [LoginController::class, 'login'])->name('login.post
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 /*
-/*
 |--------------------------------------------------------------------------
 | 3. AREA AMAN (ADMIN & STAFF)
 |--------------------------------------------------------------------------
@@ -89,11 +88,11 @@ Route::middleware(['auth'])->group(function () {
     // ADMIN GROUP
     Route::prefix('admin')->group(function () {
         
-        // Dashboard (Diberi dua nama agar aman)
+        // Dashboard
         Route::get('/dashboard', [AdminController::class, 'dashboardView'])->name('admin.dashboard');
         Route::get('/admin/dashboard', [AdminController::class, 'dashboardView'])->name('auth.admin');
 
-        // Kelola Visi Misi & Profil Setda
+        // Kelola Visi Misi & Profil
         Route::get('/visi-misi-edit', [ProfilController::class, 'editVisiMisi'])->name('admin.visi-misi.edit');
         Route::post('/visi-misi-update', [ProfilController::class, 'updateVisiMisi'])->name('admin.visi-misi.update');
         Route::get('/profil-setda-edit', [ProfilController::class, 'editSetda'])->name('admin.profil-setda.edit');
@@ -104,8 +103,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/tupoksi-update', [TupoksiController::class, 'updateTupoksi'])->name('admin.tupoksi.update');
 
         // Kelola Analisis Kebijakan
-        Route::get('/analisis-kebijakan-edit', [AnalisisKebijakanController::class, 'edit'])->name('admin.analisis-kebijakan.edit');
-        Route::post('/analisis-kebijakan-update', [AnalisisKebijakanController::class, 'update'])->name('auth.analisis-kebijakan.update');
+        Route::get('/analisis-kebijakan/edit', [AnalisisKebijakanController::class, 'edit'])->name('admin.analisis-kebijakan.edit');
+        Route::post('/analisis-kebijakan/update', [AnalisisKebijakanController::class, 'update'])->name('admin.analisis-kebijakan.update');
 
         // Fitur Ganti Foto
         Route::post('/ganti-foto-sambutan', [AdminController::class, 'updateSambutan'])->name('admin.sambutan.update');

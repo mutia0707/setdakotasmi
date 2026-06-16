@@ -9,27 +9,10 @@
     <style>
         body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
         .navbar-admin { background-color: #0056b3; border-bottom: 4px solid #003d80; }
-        
-        /* Layout Kartu Menu */
-        .card-menu { 
-            border: none; 
-            border-radius: 12px; 
-            transition: 0.3s; 
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-            position: relative;
-        }
+        .card-menu { border: none; border-radius: 12px; transition: 0.3s; height: 100%; display: flex; flex-direction: column; position: relative; }
         .card-menu:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important; }
         .icon-box { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 15px; margin-bottom: 20px; }
-        
-        /* Memastikan tombol selalu bisa diklik */
-        .btn-kelola {
-            position: relative !important;
-            z-index: 10 !important;
-            pointer-events: auto !important;
-            cursor: pointer !important;
-        }
+        .btn-kelola { position: relative !important; z-index: 10 !important; pointer-events: auto !important; cursor: pointer !important; }
     </style>
 </head>
 <body>
@@ -49,35 +32,29 @@
         <h2 class="fw-bold mb-4">Selamat Datang, {{ auth()->user()->name }}!</h2>
 
         <div class="row g-3 mb-4">
-            <div class="col-md-4">
-                <div class="card p-3 shadow-sm border-0"><h6 class="fw-bold"><i class="bi bi-image text-primary"></i> Foto Sambutan</h6>
-                    <form action="{{ route('admin.sambutan.update') }}" method="POST" enctype="multipart/form-data">
-                        @csrf <input type="file" name="gambar_sambutan" class="form-control form-control-sm mb-2" required>
-                        <button class="btn btn-primary btn-sm w-100">Update</button>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card p-3 shadow-sm border-0"><h6 class="fw-bold"><i class="bi bi-newspaper text-success"></i> Foto Berita Utama</h6>
-                    <form action="{{ route('admin.beritautama.update') }}" method="POST" enctype="multipart/form-data">
-                        @csrf <input type="file" name="foto_berita_utama" class="form-control form-control-sm mb-2" required>
-                        <button class="btn btn-success btn-sm w-100">Update</button>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card p-3 shadow-sm border-0"><h6 class="fw-bold"><i class="bi bi-person-badge text-warning"></i> Foto Pejabat</h6>
-                    <form action="{{ route('admin.pejabat.update') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <select name="kode_pejabat" class="form-select form-select-sm mb-1" required>
-                            <option value="asisten1">Asisten I</option>
-                            <option value="staf_ahli">Staf Ahli</option>
-                        </select>
-                        <input type="file" name="foto_pejabat" class="form-control form-control-sm mb-2" required>
-                        <button class="btn btn-warning btn-sm w-100">Update</button>
-                    </form>
-                </div>
-            </div>
+            <div class="col-md-4"><div class="card p-3 shadow-sm border-0"><h6 class="fw-bold"><i class="bi bi-image text-primary"></i> Foto Sambutan</h6>
+                <form action="{{ route('admin.sambutan.update') }}" method="POST" enctype="multipart/form-data">
+                    @csrf <input type="file" name="gambar_sambutan" class="form-control form-control-sm mb-2" required>
+                    <button class="btn btn-primary btn-sm w-100">Update</button>
+                </form>
+            </div></div>
+            <div class="col-md-4"><div class="card p-3 shadow-sm border-0"><h6 class="fw-bold"><i class="bi bi-newspaper text-success"></i> Foto Berita Utama</h6>
+                <form action="{{ route('admin.beritautama.update') }}" method="POST" enctype="multipart/form-data">
+                    @csrf <input type="file" name="foto_berita_utama" class="form-control form-control-sm mb-2" required>
+                    <button class="btn btn-success btn-sm w-100">Update</button>
+                </form>
+            </div></div>
+            <div class="col-md-4"><div class="card p-3 shadow-sm border-0"><h6 class="fw-bold"><i class="bi bi-person-badge text-warning"></i> Foto Pejabat</h6>
+                <form action="{{ route('admin.pejabat.update') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <select name="kode_pejabat" class="form-select form-select-sm mb-1" required>
+                        <option value="asisten1">Asisten I</option>
+                        <option value="staf_ahli">Staf Ahli</option>
+                    </select>
+                    <input type="file" name="foto_pejabat" class="form-control form-control-sm mb-2" required>
+                    <button class="btn btn-warning btn-sm w-100">Update</button>
+                </form>
+            </div></div>
         </div>
 
         <div class="row g-4 mb-5">
@@ -103,18 +80,12 @@
                 </div>
             </div>
             <div class="col-md-3">
-    <div class="card card-menu p-4 shadow-sm text-center">
-        <div class="icon-box bg-secondary text-white mx-auto">
-            <i class="bi bi-graph-up fs-3"></i>
-        </div>
-        <h5 class="fw-bold">Analisis Kebijakan</h5>
-        
-        <a href="{{ route('admin.analisis-kebijakan.edit') }}" 
-           class="btn btn-secondary w-100 mt-auto text-white fw-bold btn-kelola">
-           Kelola
-        </a>
-    </div>
-</div>
+                <div class="card card-menu p-4 shadow-sm text-center">
+                    <div class="icon-box bg-secondary text-white mx-auto"><i class="bi bi-graph-up fs-3"></i></div>
+                    <h5 class="fw-bold">Analisis Kebijakan</h5>
+               <a href="{{ route('admin.analisis-kebijakan.edit') }}">
+                </div>
+            </div>
             <div class="col-md-3">
                 <div class="card card-menu p-4 shadow-sm text-center">
                     <div class="icon-box bg-primary text-white mx-auto"><i class="bi bi-newspaper fs-3"></i></div>
