@@ -122,7 +122,7 @@ class AdminController extends Controller
     {
         $request->validate([
             'kode_pejabat' => 'required|string',
-            'foto_pejabat' => 're/quired|image|mimes:jpeg,png,jpg|max:2048'
+            'foto_pejabat' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ]);
         $request->file('foto_pejabat')->move(public_path('img/pejabat'), $request->kode_pejabat . '.jpg');
         return redirect()->back()->with('success', 'Foto Pejabat Berhasil Diperbarui!');
