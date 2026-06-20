@@ -8,12 +8,16 @@ use Illuminate\Http\Request;
 class AnalisisKebijakanController extends Controller
 {
     // Fungsi untuk publik
-    public function showAnalisKebijakan() 
-    {
-        $data = AnalisisKebijakan::first();
-        return view('auth.analisis-kebijakan', compact('data')); 
-    }
-
+public function showAnalisKebijakan() 
+{
+    // Mengambil data pertama, jika tidak ada, gunakan object kosong
+    $data = AnalisisKebijakan::first() ?? new AnalisisKebijakan([
+        'tupoksi_utama' => 'Data belum diatur.',
+        'rincian_tugas' => 'Silakan hubungi admin untuk mengisi data.'
+    ]);
+    
+    return view('auth.analisis-kebijakan', compact('data')); 
+}
     // Fungsi untuk admin edit
     public function edit() 
     {

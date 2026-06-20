@@ -3,70 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analis Kebijakan - SETDA Kota Sukabumi</title>
+    <title>Analisis Kebijakan - SETDA Kota Sukabumi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', Roboto, sans-serif; color: #000000; line-height: 1.6; }
-        .navbar { background-color: #ffffff !important; border-bottom: 3px solid #0056b3; padding: 10px 0; }
-        .navbar-brand span { font-weight: 800; color: #0056b3; }
-        .header-section { padding: 30px 0 20px; text-align: center; }
-        .header-section h1 { font-weight: 800; color: #000000; text-transform: uppercase; margin-bottom: 5px; font-size: 1.8rem; }
-        .header-section .divider { width: 50px; height: 3px; background: #000000; margin: 15px auto; }
-        .content-card { background: #ffffff; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding: 30px 40px; margin-bottom: 20px; }
-        .section-title { font-weight: 800; color: #000000; margin-bottom: 15px; text-transform: uppercase; font-size: 1.2rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        footer { padding: 20px 0; color: #666; font-size: 0.85rem; }
+        body { background-color: #f4f7f9; font-family: 'Segoe UI', sans-serif; }
+        
+        /* Header Formal (Seragam) */
+        .page-header { 
+            background: linear-gradient(135deg, #004a99 0%, #0066cc 100%); 
+            padding: 50px 0 90px 0; 
+            color: #ffffff; 
+        }
+        .logo-img { width: 50px; height: 50px; object-fit: contain; }
+        
+        /* Main Content Card (Seragam) */
+        .main-content { 
+            background: #ffffff; 
+            border-radius: 12px; 
+            padding: 40px; 
+            margin-top: -60px; 
+            margin-bottom: 60px; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            border-top: 4px solid #0056b3; 
+        }
+        .section-title { 
+            color: #0056b3; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            border-left: 5px solid #0056b3; 
+            padding-left: 15px;
+            margin: 30px 0 15px 0;
+        }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light sticky-top shadow-sm">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="{{ asset('img/logosetda.png') }}" alt="Logo" width="35" class="me-3"> 
-            <span>SETDA KOTA SUKABUMI</span>
-        </a>
-        <a href="/" class="btn btn-outline-dark btn-sm fw-bold px-4">
-            <i class="bi bi-arrow-left me-1"></i> KEMBALI
+<div class="page-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <img src="{{ asset('img/logosetda.png') }}" 
+                 onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Coat_of_arms_of_Sukabumi.svg/1200px-Coat_of_arms_of_Sukabumi.svg.png';" 
+                 alt="Logo" class="logo-img me-3">
+            <div>
+                <h3 class="fw-bold m-0 text-white">ANALISIS KEBIJAKAN</h3>
+                <small class="text-white-50 text-uppercase">Jabatan Fungsional Sekretariat Daerah</small>
+            </div>
+        </div>
+        <a href="{{ url('/') }}" class="btn btn-outline-light px-4 rounded-pill fw-bold">
+            <i class="bi bi-house-door me-2"></i> BERANDA
         </a>
     </div>
-</nav>
+</div>
 
 <div class="container">
-    <div class="header-section">
-        <h1>Analisis Kebijakan</h1>
-        <p class="text-muted m-0">Jabatan Fungsional Sekretariat Daerah</p>
-        <div class="divider"></div>
-    </div>
-
     <div class="row justify-content-center">
-        <div class="col-lg-9">
-            
-            <div class="content-card">
+        <div class="col-lg-10">
+            <div class="main-content">
                 @if(isset($data))
-                    <h2 class="section-title">Tugas Pokok Analis Kebijakan</h2>
-                    <p class="mb-4">
+                    <h4 class="section-title">Tugas Pokok Analis Kebijakan</h4>
+                    <p class="text-secondary lh-lg mb-4">
                         {{ $data->tupoksi_utama }}
                     </p>
 
-                    <h2 class="section-title">Rincian Tugas & Peran</h2>
-                    <div class="tupoksi-list">
+                    <h4 class="section-title">Rincian Tugas & Peran</h4>
+                    <div class="text-secondary lh-lg mt-3">
                         {!! $data->rincian_tugas !!}
                     </div>
                 @else
-                    <p class="text-center">Data Analisis Kebijakan belum diatur.</p>
+                    <div class="text-center py-5 text-muted">
+                        <i class="bi bi-info-circle fs-1 d-block mb-3"></i>
+                        <p>Data Analisis Kebijakan belum diatur.</p>
+                    </div>
                 @endif
             </div>
-
         </div>
     </div>
 </div>
-<div class="content-card">
-    @if(isset($data))
-        @endif
-</div>
 
-<footer class="text-center">
+<footer class="text-center pb-4 text-muted">
     <p class="mb-0">Sistem Informasi Eksekutif &copy; 2026 Pemerintah Kota Sukabumi</p>
     <p class="small text-uppercase m-0">Bagian Organisasi Sekretariat Daerah</p>
 </footer>

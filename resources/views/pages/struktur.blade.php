@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,133 +7,95 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
-        body { 
-            background-color: #f8f9fa; 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            color: #333; 
+        body { background-color: #f4f7f9; font-family: 'Segoe UI', sans-serif; }
+        
+        /* Header Formal */
+        .page-header { 
+            background: linear-gradient(135deg, #004a99 0%, #0066cc 100%); 
+            padding: 50px 0 90px 0; 
+            color: #ffffff; 
         }
-
-        .navbar { 
-            background-color: #ffffff !important; 
-            border-bottom: 3px solid #0056b3; 
-            padding: 10px 0; 
-        }
-
-        .header-section {
-            background: #ffffff;
-            padding: 30px 0;
-            border-bottom: 1px solid #dee2e6;
-            margin-bottom: 30px;
-        }
-
-        .content-card { 
-            background: #ffffff;
+        .logo-img { width: 50px; height: 50px; object-fit: contain; }
+        
+        /* Kartu Konten */
+        .main-content { 
+            background: #ffffff; 
             border-radius: 12px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
             padding: 40px; 
-            margin-bottom: 50px;
+            margin-top: -60px; 
+            margin-bottom: 60px; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            border-top: 4px solid #0056b3; 
         }
-
-        .title-line {
-            height: 4px;
-            width: 80px;
-            background-color: #0056b3;
-            margin: 15px auto;
+        
+        /* Ukuran Gambar yang Pas */
+        .struktur-img { 
+            max-width: 100%; 
+            max-height: 400px; /* Dikecilkan sedikit agar proporsional */
+            object-fit: contain;
+            transition: 0.3s;
         }
-
-        .img-container {
-            background: #fdfdfd;
-            border: 2px dashed #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            cursor: zoom-in;
-            transition: transform 0.3s ease;
-        }
-
-        .img-container:hover {
-            transform: scale(1.01);
-        }
-
-        .struktur-img {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-        }
-
-        .legend-box {
-            background: #f1f8ff;
-            border-left: 5px solid #0056b3;
-            padding: 15px;
-            margin-top: 25px;
-            font-size: 0.95rem;
-        }
-
-        footer {
-            padding: 30px 0;
-            color: #666;
-            font-size: 0.85rem;
-            border-top: 1px solid #dee2e6;
-        }
+        .img-container:hover .struktur-img { opacity: 0.9; }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light sticky-top shadow-sm">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="{{ asset('img/logosetda.png') }}" alt="Logo" width="35" class="me-3"> 
-            <span style="font-weight: 800; color: #0056b3;">SETDA KOTA SUKABUMI</span>
+<div class="page-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <img src="{{ asset('img/logosetda.png') }}" 
+                 onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Coat_of_arms_of_Sukabumi.svg/1200px-Coat_of_arms_of_Sukabumi.svg.png';" 
+                 alt="Logo" class="logo-img me-3">
+            <div>
+                <h3 class="fw-bold m-0 text-white">STRUKTUR ORGANISASI</h3>
+                <small class="text-white-50 text-uppercase">Sekretariat Daerah Kota Sukabumi</small>
+            </div>
+        </div>
+        <a href="{{ url('/') }}" class="btn btn-outline-light px-4 rounded-pill fw-bold">
+            <i class="bi bi-house-door me-2"></i> BERANDA
         </a>
-        <a href="/" class="btn btn-outline-dark btn-sm fw-bold px-4">
-            <i class="bi bi-arrow-left me-1"></i> KEMBALI
-        </a>
-    </div>
-</nav>
-
-<div class="header-section text-center">
-    <div class="container">
-        <h2 class="fw-bold text-uppercase mb-0">Struktur Organisasi</h2>
-        <div class="title-line"></div>
-        <p class="text-muted">Sekretariat Daerah Kota Sukabumi</p>
     </div>
 </div>
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-12">
-            
-            <div class="content-card">
-                <div class="text-center mb-4">
-                    <p class="fw-bold mb-3"><i class="bi bi-info-circle me-2"></i>Klik gambar untuk memperbesar tampilan bagan</p>
+        <div class="col-lg-10">
+            <div class="main-content">
+                
+                <div class="text-center mb-5">
+                    <div class="img-container bg-light p-3 border rounded shadow-sm d-inline-block">
+                        <a href="{{ $data && $data->gambar_struktur ? asset('storage/' . $data->gambar_struktur) : asset('img/struktur_organisasi.png') }}" target="_blank">
+                            <img src="{{ $data && $data->gambar_struktur ? asset('storage/' . $data->gambar_struktur) : asset('img/struktur_organisasi.png') }}" 
+                                 alt="Bagan Struktur" class="struktur-img">
+                        </a>
+                        <div class="mt-2 small text-muted fst-italic">
+                            <i class="bi bi-zoom-in"></i> Klik gambar untuk memperbesar
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Pastikan nama file gambar sesuai dengan yang ada di folder public/img -->
-                <div class="img-container">
-                    <a href="{{ asset('img/struktur_organisasi.png') }}" target="_blank">
-                        <img src="{{ asset('img/struktur_organisasi.png') }}" alt="Bagan Struktur Organisasi SETDA" class="struktur-img">
-                    </a>
-                </div>
-
-                <div class="legend-box mt-5">
-                    <h5 class="fw-bold"><i class="bi bi-journal-text me-2"></i>Keterangan Struktur:</h5>
-                    <p class="mb-0">Berdasarkan bagan di atas, Sekretariat Daerah dipimpin oleh <strong>Sekretaris Daerah</strong> yang membawahi:</p>
-                    <ul class="mt-2">
-                        <li><strong>Asisten Pemerintahan dan Kesejahteraan Rakyat (Asda I)</strong></li>
-                        <li><strong>Asisten Perekonomian dan Pembangunan (Asda II)</strong></li>
-                        <li><strong>Asisten Administrasi Umum (Asda III)</strong></li>
-                        <li>Serta berbagai Bagian dan Kelompok Jabatan Fungsional lainnya.</li>
-                    </ul>
+                <div class="border-start border-primary border-4 ps-4">
+                    <h5 class="fw-bold text-primary mb-3">
+                        <i class="bi bi-diagram-3 me-2"></i>Keterangan Struktur
+                    </h5>
+                    <div class="text-secondary lh-lg">
+                        @if($data && $data->keterangan)
+                            {!! nl2br(e($data->keterangan)) !!}
+                        @else
+                            <p>Berdasarkan bagan di atas, Sekretariat Daerah dipimpin oleh <strong>Sekretaris Daerah</strong> yang membawahi:</p>
+                            <ul>
+                                <li><strong>Asisten Pemerintahan dan Kesejahteraan Rakyat (Asda I)</strong></li>
+                                <li><strong>Asisten Perekonomian dan Pembangunan (Asda II)</strong></li>
+                                <li><strong>Asisten Administrasi Umum (Asda III)</strong></li>
+                                <li>Serta berbagai Bagian dan Kelompok Jabatan Fungsional lainnya.</li>
+                            </ul>
+                        @endif
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
-
-<footer class="text-center bg-white">
-    <p class="mb-0">Sistem Informasi Eksekutif &copy; 2026 Pemerintah Kota Sukabumi</p>
-    <p class="small text-uppercase m-0">Bagian Organisasi Sekretariat Daerah</p>
-</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

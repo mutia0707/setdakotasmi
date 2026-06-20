@@ -308,7 +308,7 @@
         </li>
         
                             <li>
-                                <a class="dropdown-item" href="{{ route('analis-kebijakan') }}">Analis Kebijakan</a>
+                                <a class="dropdown-item" href="{{ route('analisis-kebijakan') }}">Analisis Kebijakan</a>
                         </li>
                             <li class="dropdown-submenu">
                                 <a class="dropdown-item" href="#">Asisten <i class="fa-solid fa-chevron-right"></i></a>
@@ -343,7 +343,7 @@
     <a class="dropdown-item" href="{{ route('rpd') }}">Rencana Pembangunan Daerah (RPD) 2024-2026</a>
 </li>
                                    <li>
-    <a class="dropdown-item" href="{{ route('fokus_utama') }}">Fokus Utama</a>
+    <a class="dropdown-item" href="{{ route('fokusutama') }}">Fokus Utama</a>
 </li>
                                     <li>
     <a class="dropdown-item" href="{{ route('sinkronisasi') }}">Sinkronisasi</a>

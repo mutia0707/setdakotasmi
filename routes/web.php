@@ -11,7 +11,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\TupoksiController;
 use App\Http\Controllers\AnalisisKebijakanController;
-
+use App\Http\Controllers\AsistenController;
+use App\Http\Controllers\StrukturOrganisasiController;
+use App\Http\Controllers\RenstraController;
+use App\Http\Controllers\RpdController;
 /*
 |--------------------------------------------------------------------------
 | 1. ROUTE PUBLIK (FRONTEND)
@@ -19,56 +22,74 @@ use App\Http\Controllers\AnalisisKebijakanController;
 */
 Route::get('/', function () { return view('home'); })->name('home');
 
-// Profil
-Route::get('/profil-setda', [ProfilController::class, 'showProfilSetda'])->name('profil-setda');
-Route::get('/tentang/visi-misi', [ProfilController::class, 'showVisiMisi'])->name('visi-misi');
-Route::get('/tupoksi', [TupoksiController::class, 'showTupoksiPublik'])->name('tupoksi');
-Route::get('/analisis-kebijakan', [AnalisisKebijakanController::class, 'showAnalisKebijakan'])->name('analis-kebijakan');
-Route::get('/struktur-organisasi', function () { return view('pages.struktur'); })->name('struktur');
+// --- Profil & Kelembagaan ---
+Route::controller(ProfilController::class)->group(function () {
+    Route::get('/profil-setda', 'showProfilSetda')->name('profil-setda');
+    Route::get('/tentang/visi-misi', 'showVisiMisi')->name('visi-misi');
+});
 
-// Berita & Agenda
-Route::get('/berita-kota', [BeritaController::class, 'index'])->name('berita.index');
-Route::get('/berita-kota/{slug}', [BeritaController::class, 'show'])->name('berita.show');
+Route::get('/tupoksi', [TupoksiController::class, 'showTupoksiPublik'])->name('tupoksi');
+Route::get('/analisis-kebijakan', [AnalisisKebijakanController::class, 'showAnalisKebijakan'])->name('analisis-kebijakan');
+Route::get('/struktur-organisasi', [StrukturOrganisasiController::class, 'show'])->name('struktur');
+
+// --- Program & Perencanaan ---
+Route::get('/program/renstra', [RenstraController::class, 'show'])->name('renstra');
+Route::get('program/rpd', [RpdController::class, 'show'])->name('rpd');
+Route::get('/program/fokus-utama', [RpdController::class, 'showFokus'])->name('fokusutama');
+Route::get('/program/sinkronisasi', [RpdController::class, 'showSinkronisasi'])->name('sinkronisasi');
+Route::get('/program/lakip', function () { return view('pages.lakip'); })->name('lakip');
+Route::get('/program/spm', function () { return view('pages.spm'); })->name('spm');
+
+// --- Pelayanan & Administrasi ---
+Route::get('/lppd', function () { return view('pages.lppd'); })->name('lppd');
+Route::get('/alursurat', function () { return view('pages.alursurat'); })->name('alursurat');
+
+Route::controller(AsistenController::class)->group(function () {
+    Route::get('/asda-1', 'show')->defaults('kode', 'asda1')->name('asda1');
+    Route::get('/asda-2', 'show')->defaults('kode', 'asda2')->name('asda2');
+    Route::get('/asda-3', 'show')->defaults('kode', 'asda3')->name('asda3');
+});
+
+Route::prefix('pelayanan')->group(function () {
+    Route::view('/perlengkapan', 'pages.perlengkapan')->name('perlengkapan');
+    Route::view('/spbe', 'pages.spbe')->name('spbe');
+    Route::view('/rb', 'pages.rb')->name('rb');
+    Route::view('/kelembagaan', 'pages.kelembagaan')->name('kelembagaan');
+    Route::view('/bumd', 'pages.bumd')->name('bumd');
+    Route::view('/tpid', 'pages.tpid')->name('tpid');
+    Route::view('/tp2d', 'pages.tp2d')->name('tp2d');
+    Route::view('/umkm', 'pages.ukm')->name('umkm');
+    Route::view('/lppd', 'pages.pelayananlppd')->name('pelayananlppd');
+    Route::view('/kunjungan-pimpinan', 'pages.kunjungan')->name('kunjungan');
+    Route::view('/pemilu-pilkada', 'pages.pemilu')->name('pemilu');
+    Route::view('/kerja-sama', 'pages.kerjasama')->name('kerjasama');
+    Route::view('/bantuan-hukum', 'pages.bantuanhukum')->name('bantuanhukum');
+    Route::get('/humas-dokumentasi', [DokumenController::class, 'humasPublik'])->name('publik.humas.index');
+});
+
+// --- Berita & Agenda ---
+Route::controller(BeritaController::class)->group(function () {
+    Route::get('/berita-kota', 'index')->name('berita.index');
+    Route::get('/berita-kota/{slug}', 'show')->name('berita.show');
+    Route::get('/galeri-foto', 'galeriFoto')->name('galeri.foto');
+    Route::get('/galeri-video', 'galeriVideo')->name('galeri.video');
+});
+
 Route::get('/agenda-pimpinan', [AgendaController::class, 'index'])->name('agenda.pimpinan');
 
-// Bidang ASDA & Program (Statik)
-Route::view('/asda-1', 'pages.asda1')->name('asda1');
-Route::view('/asda-2', 'pages.asda2')->name('asda2');
-Route::view('/asda-3', 'pages.asda3')->name('asda3');
-Route::view('/program/renstra', 'pages.renstra')->name('renstra');
-Route::view('/program/rpd', 'pages.rpd')->name('rpd');
-Route::view('/program/fokus-utama', 'pages.fokusutama')->name('fokus_utama');
-Route::view('/program/sinkronisasi', 'pages.sinkronisasi')->name('sinkronisasi');
-Route::view('/program/lakip', 'pages.lakip')->name('lakip');
-Route::view('/lppd', 'pages.lppd')->name('lppd');
-Route::view('/program/spm', 'pages.spm')->name('spm');
-Route::view('/alursurat', 'pages.alursurat')->name('alursurat');
-Route::view('/pelayanan/perlengkapan', 'pages.perlengkapan')->name('perlengkapan');
-Route::view('/pelayanan/spbe', 'pages.spbe')->name('spbe');
-Route::view('/pelayanan/rb', 'pages.rb')->name('rb');
-Route::view('/pelayanan/kelembagaan', 'pages.kelembagaan')->name('kelembagaan');
-Route::view('/pelayanan/bumd', 'pages.bumd')->name('bumd');
-Route::view('/pelayanan/tpid', 'pages.tpid')->name('tpid');
-Route::view('/pelayanan/tp2d', 'pages.tp2d')->name('tp2d');
-Route::view('/pelayanan/umkm', 'pages.ukm')->name('umkm');
-Route::view('/pelayanan/lppd', 'pages.pelayananlppd')->name('pelayananlppd');
-Route::view('/pelayanan/kunjungan-pimpinan', 'pages.kunjungan')->name('kunjungan');
-Route::view('/pelayanan/pemilu-pilkada', 'pages.pemilu')->name('pemilu');
-Route::view('/pelayanan/kerja-sama', 'pages.kerjasama')->name('kerjasama');
-Route::view('/pelayanan/bantuan-hukum', 'pages.bantuanhukum')->name('bantuanhukum');
-Route::get('/pelayanan/humas-dokumentasi', [DokumenController::class, 'humasPublik'])->name('publik.humas.index');
+// --- Galeri & Informasi ---
+Route::controller(GaleriController::class)->group(function () {
+    Route::get('/galeri/photos', 'indexFoto')->name('publik.photos');
+    Route::get('/galeri/video', 'indexVideo')->name('publik.video');
+});
 
-// Galeri & Informasi
-Route::get('/galeri/photos', [GaleriController::class, 'indexFoto'])->name('publik.photos');
-Route::get('/galeri/video', [GaleriController::class, 'indexVideo'])->name('publik.video');
-Route::get('/galeri-foto', [BeritaController::class, 'galeriFoto'])->name('galeri.foto');
-Route::get('/galeri-video', [BeritaController::class, 'galeriVideo'])->name('galeri.video');
-Route::get('/informasi/penghargaan', function () { return view('pages.penghargaan'); })->name('penghargaan');
-Route::get('/informasi/surat-edaran', function () { return view('pages.suratedaran'); })->name('surat.edaran');
-Route::get('/informasi/download', function () { return view('pages.download'); })->name('download.index');
-Route::get('/informasi/hibah', function () { return view('pages.hibah'); })->name('hibah.index');
-Route::get('/informasi/dokumen-unduhan', [DokumenController::class, 'index'])->name('publik.dokumen.index');
-
+Route::prefix('informasi')->group(function () {
+    Route::view('/penghargaan', 'pages.penghargaan')->name('penghargaan');
+    Route::view('/surat-edaran', 'pages.suratedaran')->name('surat.edaran');
+    Route::view('/download', 'pages.download')->name('download.index');
+    Route::view('/hibah', 'pages.hibah')->name('hibah.index');
+    Route::get('/dokumen-unduhan', [DokumenController::class, 'index'])->name('publik.dokumen.index');
+});
 /*
 |--------------------------------------------------------------------------
 | 2. AREA LOGIN
@@ -106,10 +127,39 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/analisis-kebijakan/edit', [AnalisisKebijakanController::class, 'edit'])->name('admin.analisis-kebijakan.edit');
         Route::post('/analisis-kebijakan/update', [AnalisisKebijakanController::class, 'update'])->name('admin.analisis-kebijakan.update');
 
-        // Fitur Ganti Foto
-        Route::post('/ganti-foto-sambutan', [AdminController::class, 'updateSambutan'])->name('admin.sambutan.update');
-        Route::post('/ganti-foto-berita-utama', [AdminController::class, 'updateFotoBeritaUtama'])->name('admin.beritautama.update');
-        Route::post('/ganti-foto-pejabat', [AdminController::class, 'updateFotoPejabat'])->name('admin.pejabat.update');
+        // Halaman sub-menu Asisten
+    Route::get('/asisten-menu', function () {
+        return view('auth.asisten-menu');
+    })->name('admin.asisten.menu');
+
+// --- Manajemen Asisten ---
+    Route::get('/asisten-edit/{kode}', [AsistenController::class, 'edit'])->name('admin.asisten.edit');
+    Route::post('/asisten-update/{kode}', [AsistenController::class, 'update'])->name('admin.asisten.update');
+
+    // --- Struktur Organisasi ---
+    Route::get('/struktur-edit', [StrukturOrganisasiController::class, 'edit'])->name('admin.struktur.edit');
+    Route::post('/struktur-update', [StrukturOrganisasiController::class, 'update'])->name('admin.struktur.update');
+
+    Route::get('/renstra/edit', [RenstraController::class, 'edit'])->name('admin.renstra.edit');
+    Route::post('/renstra/update', [RenstraController::class, 'update'])->name('admin.renstra.update');
+    
+    // Menu Utama Perencanaan (Halaman Gabungan)
+    Route::get('/perencanaan-menu', [RpdController::class, 'menuPerencanaan'])->name('admin.perencanaan.menu');
+    
+    // Rute Sinkronisasi
+    Route::get('/sinkronisasi/edit', [RpdController::class, 'editSinkronisasi'])->name('admin.sinkronisasi.edit');
+    Route::post('/sinkronisasi/update', [RpdController::class, 'updateSinkronisasi'])->name('admin.sinkronisasi.update');
+    
+    // Rute Lainnya (Pastikan sudah ada)
+    Route::get('/rpd/edit', [RpdController::class, 'edit'])->name('admin.rpd.edit');
+    Route::post('/rpd/update', [RpdController::class, 'update'])->name('admin.rpd.update');
+    Route::get('/fokus/edit', [RpdController::class, 'editFokus'])->name('admin.fokus.edit');
+    Route::post('/fokus/update', [RpdController::class, 'updateFokus'])->name('admin.fokus.update');
+
+    // Fitur Ganti Foto
+    Route::post('/ganti-foto-sambutan', [AdminController::class, 'updateSambutan'])->name('admin.sambutan.update');
+    Route::post('/ganti-foto-berita-utama', [AdminController::class, 'updateFotoBeritaUtama'])->name('admin.beritautama.update');
+    Route::post('/ganti-foto-pejabat', [AdminController::class, 'updateFotoPejabat'])->name('admin.pejabat.update');
 
         // Kelola Berita
         Route::get('/kelola-berita', [AdminController::class, 'index'])->name('admin.berita.index');
