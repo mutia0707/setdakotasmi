@@ -68,7 +68,13 @@
         <h5 class="section-divider">MANAJEMEN MENU</h5>
         
         <div class="row g-4">
-            @foreach([['Profil', 'info-circle', 'admin.profil-setda.edit'], ['Visi Misi', 'patch-check', 'admin.visi-misi.edit'], ['Struktur', 'diagram-3', 'admin.struktur.edit'], ['Asisten', 'person-badge', 'admin.asisten.menu']] as $m)
+           @foreach([
+    ['Profil', 'info-circle', 'admin.profil-setda.edit'], 
+    ['Visi Misi', 'patch-check', 'admin.visi-misi.edit'], 
+    ['Tupoksi', 'list-task', 'admin.tupoksi.edit'],
+    ['Struktur', 'diagram-3', 'admin.struktur.edit'], 
+    ['Asisten', 'person-badge', 'admin.asisten.menu']
+] as $m)
             <div class="col-md-3">
                 <div class="card card-menu p-4 bg-gradient-dark text-center">
                     <div class="icon-box"><i class="bi bi-{{$m[1]}}"></i></div>
@@ -81,12 +87,17 @@
             @php
                 $kontenMenus = [
                     ['nama' => 'PERENCANAAN', 'ikon' => 'grid-3x3-gap', 'route' => 'admin.perencanaan.menu', 'sub' => 'Renstra, RPD, Fokus, Sinkronisasi'],
+                    ['nama' => 'PELAPORAN', 'ikon' => 'bar-chart-fill', 'route' => 'admin.pelaporan.menu', 'sub' => 'LKIP, LPPD, SPM'],
+                    ['nama' => 'ALUR SURAT', 'ikon' => 'envelope-paper', 'route' => 'admin.alursurat.edit', 'sub' => null],
+                    ['nama' => 'PERLENGKAPAN', 'ikon' => 'house-gear', 'route' => 'admin.perlengkapan.edit', 'sub' => null],
+                   ['nama' => 'BAGIAN ORGANISASI', 'ikon' => 'diagram-3', 'route' => 'admin.bagian-organisasi.menu', 'sub' => 'SPBE, RB, Kelembagaan'],
                     ['nama' => 'BERITA', 'ikon' => 'newspaper', 'route' => 'admin.berita.index', 'sub' => null],
                     ['nama' => 'GALERI', 'ikon' => 'images', 'route' => 'admin.galeri.index', 'sub' => null],
                     ['nama' => 'DOKUMEN', 'ikon' => 'file-earmark-arrow-down', 'route' => 'admin.dokumen.index', 'sub' => null],
                     ['nama' => 'ANALISIS', 'ikon' => 'graph-up', 'route' => 'admin.analisis-kebijakan.edit', 'sub' => null],
                 ];
             @endphp
+            
 
             @foreach($kontenMenus as $m)
             <div class="col-md-3">

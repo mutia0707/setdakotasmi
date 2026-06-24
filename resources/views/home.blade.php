@@ -374,7 +374,7 @@
                                     <li>
             <a class="dropdown-item" href="{{ route('alursurat') }}">Alur Pelayanan Surat</a>
         </li>
-                                    <li><a class="dropdown-item" href="#">Pelayanan Perlengkapan dan Rumah Tangga</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('perlengkapan') }}">Pelayanan Perlengkapan dan Rumah Tangga</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">

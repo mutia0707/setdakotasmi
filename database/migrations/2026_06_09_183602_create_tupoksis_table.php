@@ -6,25 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-   public function up()
+    public function up()
 {
-    Schema::table('tupoksis', function (Blueprint $table) {
-        $table->timestamps(); // Ini akan membuat kolom created_at dan updated_at
+    Schema::create('tupoksis', function (Blueprint $table) {
+        $table->id();
+        $table->text('tupoksi')->nullable();
+        $table->timestamps();
     });
 }
-
-public function down()
-{
-    Schema::table('tupoksis', function (Blueprint $table) {
-        $table->dropTimestamps();
-    });
-}
-
-    /**
-     * Reverse the migrations.
-     */
-   
+    public function down()
+    {
+        Schema::dropIfExists('tupoksis');
+    }
 };
