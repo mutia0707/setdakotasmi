@@ -355,7 +355,7 @@
                                 <ul class="dropdown-menu">
                                     <li>
     <a class="dropdown-item" href="{{ route('lakip') }}">LAKIP</a>
-</li>
+</li>xml_error_string
                                     <li>
             <a class="dropdown-item" href="{{ route('lppd') }}">LPPD</a>
         </li>

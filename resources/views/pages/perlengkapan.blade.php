@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,51 +7,58 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
-        body { background-color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; }
-        .navbar { border-bottom: 1px solid #eee; padding: 15px 0; }
-        .header-title { margin-top: 40px; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .divider { height: 2px; width: 60px; background: #333; margin: 0 auto 40px auto; }
-        .content-section { max-width: 900px; margin: 0 auto; }
-        footer { margin-top: 80px; padding: 30px 0; border-top: 1px solid #eee; color: #999; font-size: 0.85rem; }
+        body { background-color: #f4f7f9; font-family: 'Segoe UI', sans-serif; color: #333; }
+        
+        /* Header Biru Seragam */
+        .page-header { background: linear-gradient(135deg, #004a99 0%, #0066cc 100%); padding: 60px 0 110px 0; color: #ffffff; }
+        .logo-img { width: 60px; height: 60px; object-fit: contain; }
+        
+        /* Main Content "Menggantung" */
+        .main-content { background: #ffffff; border-radius: 8px; padding: 50px; margin-top: -70px; margin-bottom: 60px; box-shadow: 0 5px 25px rgba(0,0,0,0.08); border-top: 4px solid #0056b3; }
+        
+        /* Button Style */
+        .btn-sop { padding: 15px 40px; font-weight: 600; border-radius: 50px; transition: all 0.3s; }
+        .btn-sop:hover { transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        footer { margin-top: 20px; color: #999; font-size: 0.85rem; }
     </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="{{ asset('img/logosetda.png') }}" alt="Logo" width="30" class="me-2">
-            <span style="font-weight: 700; font-size: 1.1rem;">SETDA KOTA SUKABUMI</span>
-        </a>
-        <div class="ms-auto">
-            <a href="/" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center">
-                <i class="bi bi-arrow-left me-2"></i> Kembali
-            </a>
+<div class="page-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <img src="{{ asset('img/logosetda.png') }}" class="logo-img me-4" alt="Logo">
+            <div>
+                <h2 class="fw-bold m-0 text-white">PELAYANAN</h2>
+                <small class="text-white-50 text-uppercase">Perlengkapan & Rumah Tangga</small>
+            </div>
         </div>
-    </div>
-</nav>
-
-<div class="container">
-    <div class="text-center">
-        <h2 class="header-title">Pelayanan Perlengkapan dan Rumah Tangga</h2>
-        <div class="divider"></div>
-    </div>
-
-    <div class="content-section text-center">
-        @if(isset($data) && $data && $data->file_pdf)
-            <p class="text-muted mb-4">Klik tombol di bawah untuk mengunduh dokumen SOP Pelayanan Perlengkapan dan Rumah Tangga.</p>
-            <a href="{{ asset($data->file_pdf) }}" target="_blank" class="btn btn-dark px-5 py-3 fw-bold">
-                <i class="bi bi-file-pdf me-2"></i> Download SOP Perlengkapan & Rumah Tangga (PDF)
-            </a>
-        @else
-            <p class="text-muted">Dokumen belum tersedia.</p>
-        @endif
+        <a href="{{ url('/') }}" class="btn btn-outline-light px-4 rounded-pill fw-bold"><i class="bi bi-house-door me-2"></i> BERANDA</a>
     </div>
 </div>
 
-<footer class="text-center">
-    <p>Sistem Informasi Eksekutif &copy; 2026 Pemerintah Kota Sukabumi</p>
-</footer>
+<div class="container">
+    <div class="main-content text-center">
+        <h4 class="fw-bold text-primary mb-4 border-bottom pb-2">Dokumen SOP Perlengkapan & Rumah Tangga</h4>
+        
+        @if(isset($data) && $data && $data->file_pdf)
+            <p class="mb-4 text-muted">Klik tombol di bawah untuk mengunduh dokumen SOP Pelayanan Perlengkapan dan Rumah Tangga secara resmi.</p>
+            <a href="{{ asset($data->file_pdf) }}" target="_blank" class="btn btn-primary btn-sop">
+                <i class="bi bi-file-pdf me-2"></i> Download SOP Perlengkapan (PDF)
+            </a>
+        @else
+            <div class="py-5">
+                <i class="bi bi-folder-x fs-1 text-secondary"></i>
+                <p class="mt-3 text-muted">Dokumen SOP belum tersedia saat ini.</p>
+            </div>
+        @endif
+    </div>
+    
+    <footer class="text-center">
+        <p>Sistem Informasi Eksekutif &copy; 2026 Pemerintah Kota Sukabumi</p>
+    </footer>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

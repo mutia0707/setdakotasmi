@@ -2,21 +2,14 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAKIP - SETDA Kota Sukabumi</title>
+    <title>{{ $data->judul ?? 'Tata Pemerintahan' }} - SETDA Kota Sukabumi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
         body { background-color: #f4f7f9; font-family: 'Segoe UI', sans-serif; color: #333; }
-        
-        /* Header Biru Seragam */
         .page-header { background: linear-gradient(135deg, #004a99 0%, #0066cc 100%); padding: 60px 0 110px 0; color: #ffffff; }
         .logo-img { width: 60px; height: 60px; object-fit: contain; }
-        
-        /* Main Content "Menggantung" */
         .main-content { background: #ffffff; border-radius: 8px; padding: 50px; margin-top: -70px; margin-bottom: 60px; box-shadow: 0 5px 25px rgba(0,0,0,0.08); border-top: 4px solid #0056b3; }
-        
-        /* Card Download */
         .download-card { padding: 20px; border: 1px solid #eee; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; transition: all 0.2s; }
         .download-card:hover { border-color: #0056b3; background-color: #fcfcfc; }
         .drive-icon { font-size: 1.8rem; color: #1a73e8; margin-right: 15px; }
@@ -29,8 +22,8 @@
         <div class="d-flex align-items-center">
             <img src="{{ asset('img/logosetda.png') }}" class="logo-img me-4" alt="Logo">
             <div>
-                <h2 class="fw-bold m-0 text-white">LAKIP</h2>
-                <small class="text-white-50 text-uppercase">Laporan Akuntabilitas Kinerja Instansi Pemerintah</small>
+                <h2 class="fw-bold m-0 text-white">{{ $data->judul ?? 'TATA PEMERINTAHAN' }}</h2>
+                <small class="text-white-50 text-uppercase">Sekretariat Daerah Kota Sukabumi</small>
             </div>
         </div>
         <a href="{{ url('/') }}" class="btn btn-outline-light px-4 rounded-pill fw-bold"><i class="bi bi-house-door me-2"></i> BERANDA</a>
@@ -39,29 +32,32 @@
 
 <div class="container">
     <div class="main-content">
-        <h4 class="fw-bold text-primary mb-4 border-bottom pb-2">Dokumen LAKIP SETDA</h4>
-        <p class="mb-4">Silakan klik tombol di bawah ini untuk mengakses dokumen LAKIP melalui Google Drive resmi SETDA Kota Sukabumi.</p>
+        @if($data && $data->judul != '')
+            <h3 class="fw-bold mb-4">{{ $data->judul }}</h3>
+            <div class="mb-4">
+                {!! nl2br(e($data->konten)) !!}
+            </div>
 
-        @forelse($data as $item)
-        <div class="download-card shadow-sm">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-google-drive drive-icon"></i>
-                <div>
-                    <h6 class="mb-0 fw-bold">LAKIP SETDA TAHUN {{ $item->tahun ?? '-' }}</h6>
-                    <small class="text-muted">Akses Folder Google Drive</small>
+            @if($data->gambar)
+                <div class="mb-4">
+                    <img src="{{ asset('storage/' . $data->gambar) }}" class="img-fluid rounded shadow-sm" alt="Dokumentasi">
                 </div>
-            </div>
-            <a href="{{ $item->link_drive ?? '#' }}" target="_blank" class="btn btn-primary btn-sm px-3">Buka Link</a>
-        </div>
-        @empty
-            <div class="text-center py-5">
-                <p class="text-muted">Belum ada data dokumen LAKIP yang tersedia.</p>
-            </div>
-        @endforelse
-        
+            @endif
+
+            @if($data->file_pdf)
+                <div class="download-card">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-file-earmark-pdf-fill drive-icon"></i>
+                        <span>File Lampiran (PDF)</span>
+                    </div>
+                    <a href="{{ asset('storage/' . $data->file_pdf) }}" target="_blank" class="btn btn-primary btn-sm">Download</a>
+                </div>
+            @endif
+        @else
+            <p class="text-muted">Konten untuk bagian ini belum diisi oleh Admin.</p>
+        @endif
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

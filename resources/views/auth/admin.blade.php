@@ -90,7 +90,9 @@
                     ['nama' => 'PELAPORAN', 'ikon' => 'bar-chart-fill', 'route' => 'admin.pelaporan.menu', 'sub' => 'LKIP, LPPD, SPM'],
                     ['nama' => 'ALUR SURAT', 'ikon' => 'envelope-paper', 'route' => 'admin.alursurat.edit', 'sub' => null],
                     ['nama' => 'PERLENGKAPAN', 'ikon' => 'house-gear', 'route' => 'admin.perlengkapan.edit', 'sub' => null],
-                   ['nama' => 'BAGIAN ORGANISASI', 'ikon' => 'diagram-3', 'route' => 'admin.bagian-organisasi.menu', 'sub' => 'SPBE, RB, Kelembagaan'],
+                    ['nama' => 'BAGIAN ORGANISASI', 'ikon' => 'diagram-3', 'route' => 'admin.bagian-organisasi.menu', 'sub' => 'SPBE, RB, Kelembagaan'],
+                    ['nama' => 'PEREKONOMIAN', 'ikon' => 'graph-up', 'route' => 'admin.perekonomian.index', 'sub' => 'BUMD, TPID, TP2D, UMKM'],
+                    ['nama' => 'TATA PEMERINTAHAN', 'ikon' => 'bank', 'route' => 'admin.tatapemerintahan.index', 'sub' => 'Kunjungan Pimpinan, Fasilitasi Pemilu'],
                     ['nama' => 'BERITA', 'ikon' => 'newspaper', 'route' => 'admin.berita.index', 'sub' => null],
                     ['nama' => 'GALERI', 'ikon' => 'images', 'route' => 'admin.galeri.index', 'sub' => null],
                     ['nama' => 'DOKUMEN', 'ikon' => 'file-earmark-arrow-down', 'route' => 'admin.dokumen.index', 'sub' => null],
@@ -99,18 +101,22 @@
             @endphp
             
 
-            @foreach($kontenMenus as $m)
-            <div class="col-md-3">
-                <div class="card card-menu p-4 bg-gradient-green text-center">
-                    <div class="icon-box"><i class="bi bi-{{$m['ikon']}}"></i></div>
-                    <h6 class="menu-title">{{ $m['nama'] }}</h6>
-                    @if($m['sub'])
-                        <p class="small text-white-75 mb-3" style="font-size: 0.75rem;">{{ $m['sub'] }}</p>
-                    @endif
-                    <a href="{{ route($m['route']) }}" class="btn btn-outline-light w-100 mt-auto fw-bold text-uppercase">Kelola</a>
-                </div>
-            </div>
-            @endforeach
+         @foreach($kontenMenus as $m)
+    <div class="col-md-3">
+        <div class="card card-menu p-4 bg-gradient-green text-center">
+            <div class="icon-box"><i class="bi bi-{{$m['ikon']}}"></i></div>
+            <h6 class="menu-title">{{ $m['nama'] }}</h6>
+            @if($m['sub'])
+                <p class="small text-white-75 mb-3" style="font-size: 0.75rem;">{{ $m['sub'] }}</p>
+            @endif
+            
+            {{-- Perbaikan: Langsung panggil route dengan string karena semua data di array adalah string --}}
+            <a href="{{ route($m['route']) }}" class="btn btn-outline-light w-100 mt-auto fw-bold text-uppercase">
+                Kelola
+            </a>
+        </div>
+    </div>
+@endforeach
         </div>
     </div>
 

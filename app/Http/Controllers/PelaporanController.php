@@ -39,11 +39,21 @@ class PelaporanController extends Controller
 
         return redirect()->route('admin.pelaporan.menu')->with('success', strtoupper($jenis) . ' berhasil diperbarui!');
     }
-
-    // ===== PUBLIK =====
-    public function showPublik($jenis)
+public function showPublik($jenis)
     {
-        $data = DB::table('pelaporans')->where('jenis', $jenis)->first();
+        if ($jenis == 'lkip') {
+            // Mengambil semua data LAKIP
+            $data = DB::table('pelaporans')
+                      ->where('jenis', 'lkip')
+                      ->orderBy('tahun', 'desc')
+                      ->get();
+        } else {
+            // Mengambil data tunggal untuk LPPD/SPM
+            $data = DB::table('pelaporans')
+                      ->where('jenis', $jenis)
+                      ->first();
+        }
+        
         return view('pages.pelaporan', compact('data', 'jenis'));
     }
 }
