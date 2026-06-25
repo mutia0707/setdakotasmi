@@ -35,20 +35,32 @@ class DokumenController extends Controller
 
     // 3. Proses Upload (Dipanggil oleh form admin)
     public function store(Request $request) {
-        $request->validate(['file_pdf' => 'required|mimes:pdf|max:10000']);
-        
-        $file = $request->file('file_pdf');
+    $request->validate([
+        'judul'  => 'required|string|max:255',
+        'bagian' => 'required|string',
+    ]);
+
+    $filename = null;
+    if ($request->hasFile('file_pdf')) {
+        $file     = $request->file('file_pdf');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('berkas_dokumen'), $filename);
-        
-        Dokumen::create([
-            'judul' => $request->judul,
-            'bagian' => $request->bagian,
-            'file_pdf' => $filename
-        ]);
-        
-        return back()->with('success', 'Dokumen berhasil diupload!');
+        $folder   = public_path('berkas_dokumen');
+
+        if (!file_exists($folder)) {
+            mkdir($folder, 0755, true);
+        }
+
+        $file->move($folder, $filename);
     }
+
+    Dokumen::create([
+        'judul'    => $request->judul,
+        'bagian'   => $request->bagian,
+        'file_pdf' => $filename,
+    ]);
+
+    return back()->with('success', 'Dokumen berhasil diupload!');
+}
 
     // 4. Proses Update / Edit Data (BARU: Untuk memproses form Modal Edit)
     public function update(Request $request, $id) {
@@ -86,5 +98,9 @@ public function humasPublik() {
     
     // Melempar data ke file tampilan khusus humas.blade.php
     return view('pages.humas', compact('dokumens'));
+}
+public function kesraPublik() {
+    $dokumens = Dokumen::where('bagian', 'kesra')->orderBy('id', 'desc')->get();
+    return view('pages.kesra', compact('dokumens'));
 }
 }

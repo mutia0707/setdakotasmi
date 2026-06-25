@@ -40,14 +40,13 @@
         <div class="intro-text mb-4">
             {!! $data->konten ?? 'Konten untuk bagian ini belum diisi oleh Admin.' !!}
         </div>
-
-        @if(isset($data->file_pdf))
-            <div class="mt-4 text-center">
-                <a href="{{ asset('storage/' . $data->file_pdf) }}" class="btn btn-danger" target="_blank">
-                    <i class="bi bi-file-pdf"></i> Download Dokumen PDF
-                </a>
-            </div>
-        @endif
+@if(isset($data->file_pdf) && $data->file_pdf)
+    <div class="mt-4 text-center">
+        <a href="{{ asset($data->file_pdf) }}" class="btn btn-danger" target="_blank">
+            <i class="bi bi-file-pdf"></i> Download Dokumen PDF
+        </a>
+    </div>
+@endif
     </div>
 </div>
 

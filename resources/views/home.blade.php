@@ -422,16 +422,16 @@
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">
-                                <a class="dropdown-item" href="#">Bagian Kerjasama dan Bantuan Hukum<i class="fa-solid fa-chevron-right"></i></a>
-                                <ul class="dropdown-menu">
-                                   <li>
-                                    <a class="dropdown-item" href="{{ route('kerjasama') }}">Pelayanan Kerja Sama Daerah</a>
-                                </li>
-                                   <li>
-                                    <a class="dropdown-item" href="{{ route('bantuanhukum') }}">Pelayanan Bantuan Hukum</a>
-                                </li>
-                                </ul>
-                            </li>
+    <a class="dropdown-item" href="#">Bagian Kerjasama dan Bantuan Hukum<i class="fa-solid fa-chevron-right"></i></a>
+    <ul class="dropdown-menu">
+       <li>
+        <a class="dropdown-item" href="{{ route('pelayanan.publik') }}">Pelayanan Kerja Sama Daerah</a>
+    </li>
+       <li>
+        <a class="dropdown-item" href="{{ route('pelayanan.bantuan-hukum') }}">Pelayanan Bantuan Hukum</a>
+    </li>
+    </ul>
+</li>
                             <li class="dropdown-submenu">
                                 <li>
                                 <a class="dropdown-item" href="{{ route('publik.humas.index') }}">Bagian Humas</a>
@@ -446,13 +446,12 @@
     <hr class="dropdown-divider my-1 opacity-25">
 </li>
 <li>
-    <a class="dropdown-item d-flex justify-content-between align-items-center py-2 px-3 fw-normal text-dark" href="{{ route('admin.dokumen.index') }}?bagian=kesra">
-        <span>Bagian Kesejahteraan Rakyat</span>
-        <i class="bi bi-chevron-right text-info small"></i>
-    </a>
+   <a class="dropdown-item" href="{{ route('kesra.publik') }}">
+    Bagian Kesejahteraan Rakyat
+</a>
 </li>
-                        </ul>
-                    </li>
+      </ul>
+         </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropInfo" data-bs-toggle="dropdown">Informasi</a>

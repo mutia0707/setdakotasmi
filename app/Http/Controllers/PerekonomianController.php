@@ -7,16 +7,10 @@ use Illuminate\Support\Facades\DB;
 
 class PerekonomianController extends Controller
 {
-    public function show($slug)
+   public function show($slug)
 {
-    // Mengambil data berdasarkan slug (misal: 'bumd', 'tpid', 'tp2d', 'umkm')
-    $data = \Illuminate\Support\Facades\DB::table('perekonomian')
-            ->where('slug', $slug)
-            ->first();
-
-    // Jika data tidak ditemukan, beri judul default agar tidak error
-    $judul = strtoupper($slug); 
-
+    $data = DB::table('perekonomian')->where('slug', $slug)->first();
+    $judul = strtoupper($slug);
     return view('pages.perekonomian', compact('data', 'slug', 'judul'));
 }
     // Tambahkan method ini agar error hilang
@@ -33,15 +27,33 @@ public function edit($slug)
     return view('auth.perekonomian_edit', compact('data', 'slug'));
 }
 
-    public function update(Request $request, $slug)
-    {
-        $updateData = ['konten' => $request->konten, 'updated_at' => now()];
+  public function update(Request $request, $slug)
+{
+    $judul = strtoupper($slug);
+    $updateData = [
+        'judul'      => $judul,
+        'konten'     => $request->konten,
+        'updated_at' => now(),
+    ];
 
-        if ($request->hasFile('file_pdf')) {
-            $updateData['file_pdf'] = $request->file('file_pdf')->store('perekonomian', 'public');
+    try {
+        if (!empty($_FILES['file_pdf']['tmp_name']) && is_uploaded_file($_FILES['file_pdf']['tmp_name'])) {
+            $fileName = time() . '_' . basename($_FILES['file_pdf']['name']);
+            $destination = public_path('uploads/perekonomian');
+
+            if (!file_exists($destination)) {
+                mkdir($destination, 0755, true);
+            }
+
+            if (move_uploaded_file($_FILES['file_pdf']['tmp_name'], $destination . '/' . $fileName)) {
+                $updateData['file_pdf'] = 'uploads/perekonomian/' . $fileName;
+            }
         }
-
-        DB::table('perekonomian')->updateOrInsert(['slug' => $slug], $updateData);
-        return back()->with('success', 'Data berhasil diperbarui!');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Upload gagal: ' . $e->getMessage());
     }
+
+    DB::table('perekonomian')->updateOrInsert(['slug' => $slug], $updateData);
+    return back()->with('success', 'Data berhasil diperbarui!');
+}
 }
