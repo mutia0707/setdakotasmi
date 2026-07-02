@@ -24,7 +24,8 @@ use App\Http\Controllers\TataPemerintahanController;
 use App\Http\Controllers\PelayananHukumController;
 use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\SuratEdaranController;
-
+use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\HibahController;
 /*
 |--------------------------------------------------------------------------
 | 1. ROUTE PUBLIK (FRONTEND)
@@ -94,11 +95,10 @@ Route::prefix('pelayanan')->group(function () {
 Route::controller(BeritaController::class)->group(function () {
     Route::get('/berita-kota', 'index')->name('berita.index');
     Route::get('/berita-kota/{slug}', 'show')->name('berita.show');
-    Route::get('/galeri-foto', 'galeriFoto')->name('galeri.foto');
-    Route::get('/galeri-video', 'galeriVideo')->name('galeri.video');
 });
 
-Route::get('/agenda-pimpinan', [AgendaController::class, 'index'])->name('agenda.pimpinan');
+// Tambahkan baris ini di routes/web.php
+Route::get('/agenda-pimpinan', [AgendaController::class, 'tampilkanAgendaPublik'])->name('agenda.pimpinan');
 
 Route::controller(GaleriController::class)->group(function () {
     Route::get('/galeri/photos', 'indexFoto')->name('publik.photos');
@@ -106,28 +106,24 @@ Route::controller(GaleriController::class)->group(function () {
 });
 
 Route::prefix('informasi')->group(function () {
-    Route::get('/informasi/penghargaan', [PenghargaanController::class, 'index'])->name('penghargaan');
-    // Penghargaan Admin
-Route::get('/penghargaan', [PenghargaanController::class, 'adminIndex'])->name('admin.penghargaan.index');
-Route::post('/penghargaan/store', [PenghargaanController::class, 'store'])->name('admin.penghargaan.store');
-Route::post('/penghargaan/update/{id}', [PenghargaanController::class, 'update'])->name('admin.penghargaan.update');
-Route::delete('/penghargaan/delete/{id}', [PenghargaanController::class, 'destroy'])->name('admin.penghargaan.destroy');
-
-
-
-// PUBLIK
-Route::get('/informasi/surat-edaran', [SuratEdaranController::class, 'index'])->name('surat.edaran');
-// ADMIN
-// Surat Edaran Admin
-Route::get('/surat-edaran', [SuratEdaranController::class, 'adminIndex'])->name('admin.surat.index');
-Route::post('/surat-edaran/store', [SuratEdaranController::class, 'store'])->name('admin.surat.store');
-Route::post('/surat-edaran/update/{id}', [SuratEdaranController::class, 'update'])->name('admin.surat.update');
-Route::delete('/surat-edaran/delete/{id}', [SuratEdaranController::class, 'destroy'])->name('admin.surat.destroy');
-
-    Route::view('/download', 'pages.download')->name('download.index');
-    Route::view('/hibah', 'pages.hibah')->name('hibah.index');
+    // Publik
+    Route::get('/penghargaan', [PenghargaanController::class, 'index'])->name('penghargaan');
+    Route::get('/surat-edaran', [SuratEdaranController::class, 'index'])->name('surat.edaran');
+    
+    // Perbaikan Rute Download Publik (Memanggil Controller agar data $files terkirim)
+    Route::get('/download', [DownloadController::class, 'indexPublik'])->name('download.index');
+    
+    Route::get('/informasi/hibah', [HibahController::class, 'indexPublik'])->name('hibah.index');
     Route::get('/dokumen-unduhan', [DokumenController::class, 'index'])->name('publik.dokumen.index');
 });
+
+    // Tambahkan baris ini di bagian paling bawah web.php
+Route::get('/download', [App\Http\Controllers\DownloadController::class, 'indexPublik'])->name('download.publik');
+    Route::view('/hibah', 'pages.hibah')->name('hibah.index');
+    Route::get('/dokumen-unduhan', [DokumenController::class, 'index'])->name('publik.dokumen.index');
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -234,19 +230,47 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pelayanan-hukum-menu', [PelayananHukumController::class, 'menu'])->name('admin.pelayanan-hukum.menu');
         Route::get('/pelayanan-hukum/{jenis}/edit', [PelayananHukumController::class, 'edit'])->name('admin.pelayanan-hukum.edit');
         Route::post('/pelayanan-hukum/{jenis}/update', [PelayananHukumController::class, 'update'])->name('admin.pelayanan-hukum.update');
+   
+        // Admin Penghargaan
+Route::get('/admin/penghargaan', [PenghargaanController::class, 'adminIndex'])->name('admin.penghargaan.index');
+Route::post('/admin/penghargaan/store', [PenghargaanController::class, 'store'])->name('admin.penghargaan.store');
+Route::post('/admin/penghargaan/update/{id}', [PenghargaanController::class, 'update'])->name('admin.penghargaan.update');
+Route::delete('/admin/penghargaan/delete/{id}', [PenghargaanController::class, 'destroy'])->name('admin.penghargaan.destroy');
+
+// Admin Surat Edaran
+Route::get('/admin/surat-edaran', [SuratEdaranController::class, 'adminIndex'])->name('admin.surat.index');
+Route::post('/admin/surat-edaran/store', [SuratEdaranController::class, 'store'])->name('admin.surat.store');
+Route::post('/admin/surat-edaran/update/{id}', [SuratEdaranController::class, 'update'])->name('admin.surat.update');
+Route::delete('/admin/surat-edaran/delete/{id}', [SuratEdaranController::class, 'destroy'])->name('admin.surat.destroy');
+
+Route::get('/download/edit', [DownloadController::class, 'indexAdmin'])->name('admin.download.edit');
+Route::post('/download/store', [DownloadController::class, 'store'])->name('admin.download.store');
+Route::delete('/download/{id}', [DownloadController::class, 'destroy'])->name('admin.download.destroy');
+        
+Route::get('/admin/hibah', [HibahController::class, 'indexAdmin'])->name('admin.hibah.edit');
+Route::post('/admin/hibah/store', [HibahController::class, 'store'])->name('admin.hibah.store');
+Route::delete('/admin/hibah/{id}', [HibahController::class, 'destroy'])->name('admin.hibah.destroy');
+
+    Route::get('/kelola-berita', [BeritaController::class, 'adminIndex'])->name('admin.berita.index');
+    Route::post('/kelola-berita/store', [BeritaController::class, 'store'])->name('admin.berita.store');
+    Route::delete('/berita/delete/{id}', [BeritaController::class, 'destroy'])->name('admin.berita.delete');
+    Route::get('/berita/edit/{id}', [BeritaController::class, 'edit'])->name('admin.berita.edit');
+});
+
+
+ Route::prefix('staff')->group(function () {
+        // Menggunakan Controller lebih disarankan daripada function closure
+        Route::get('/agenda', [AgendaController::class, 'index'])->name('staff.agenda.index');
+        Route::post('/agenda', [AgendaController::class, 'store'])->name('staff.agenda.store');
+        Route::post('/agenda/update/{id}', [AgendaController::class, 'update'])->name('staff.agenda.update');
+        Route::get('/agenda/delete/{id}', [AgendaController::class, 'delete'])->name('staff.agenda.delete');
     });
 
     Route::prefix('staff')->group(function () {
-        Route::get('/agenda', function () {
-            if (strtolower(auth()->user()->role) !== 'staff') {
-                return redirect('/pintu-setda')->withErrors('Akses Ditolak');
-            }
-            $agendas = DB::table('agendas')->orderBy('tanggal', 'desc')->get();
-            return view('staff.agenda', compact('agendas')); 
-        })->name('staff.agenda.index');
-
-        Route::post('/agenda', [LoginController::class, 'storeAgenda'])->name('staff.agenda.store');
-        Route::post('/agenda/update/{id}', [LoginController::class, 'updateAgenda'])->name('staff.agenda.update');
-        Route::get('/agenda/delete/{id}', [LoginController::class, 'deleteAgenda'])->name('staff.agenda.delete');
+        // Hanya untuk role 'bagian_pelayanan'
+        Route::get('/berita', [BeritaController::class, 'index'])->name('staff.berita.index');
+        Route::post('/berita/store', [BeritaController::class, 'store'])->name('staff.berita.store');
+        Route::delete('/berita/destroy/{id}', [BeritaController::class, 'destroy'])->name('staff.berita.destroy');
     });
+    
 });

@@ -10,4 +10,7 @@ class Dokumen extends Model
     use HasFactory;
 
     protected $fillable = ['judul', 'bagian', 'file_pdf'];
+    protected $casts = [
+    'created_at' => 'datetime',
+];
 }

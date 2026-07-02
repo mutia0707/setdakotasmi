@@ -122,4 +122,23 @@ class LoginController extends Controller
 
         return redirect()->back()->with('success', 'Jadwal agenda berhasil dihapus dari sistem!');
     }
+
+
+
+    protected function authenticated(Request $request, $user)
+{
+    // Debug: Cek apakah user benar-benar terdeteksi rolenya
+    // dd($user->role); // Uncomment ini untuk tes, nanti akan muncul layar putih berisi nama role
+
+    if ($user->role === 'staff' || $user->role === 'admin') {
+        return redirect()->route('staff.agenda.index');
+    }
+
+    if ($user->role === 'bagian_pelayanan') {
+        return redirect()->route('staff.berita.index');
+    }
+
+    // Jika masuk ke sini, berarti role di database tidak cocok dengan pengecekan di atas
+    return redirect('/home'); 
+}
 }

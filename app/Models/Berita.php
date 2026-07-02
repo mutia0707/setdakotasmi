@@ -9,15 +9,14 @@ class Berita extends Model
 {
     use HasFactory;
 
-    // Nama tabel database kamu
     protected $table = 'beritas';
 
-    // WAJIB DAFTARKAN SEMUA KOLOM INI BIAR GAK DIBUANG SAMA LARAVEL
     protected $fillable = [
         'judul', 
         'slug', 
-        'isi_berita', 
+        'isi',           // Sesuaikan dengan controller (tadi kita pakai 'isi')
         'gambar', 
+        'bagian',        // WAJIB ditambah agar bisa tersimpan
         'tanggal_publish'
     ];
 }

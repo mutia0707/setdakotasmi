@@ -86,6 +86,7 @@
 
             @php
                 $kontenMenus = [
+                    ['nama' => 'ANALISIS', 'ikon' => 'graph-up', 'route' => 'admin.analisis-kebijakan.edit', 'sub' => null],
                     ['nama' => 'PERENCANAAN', 'ikon' => 'grid-3x3-gap', 'route' => 'admin.perencanaan.menu', 'sub' => 'Renstra, RPD, Fokus, Sinkronisasi'],
                     ['nama' => 'PELAPORAN', 'ikon' => 'bar-chart-fill', 'route' => 'admin.pelaporan.menu', 'sub' => 'LKIP, LPPD, SPM'],
                     ['nama' => 'ALUR SURAT', 'ikon' => 'envelope-paper', 'route' => 'admin.alursurat.edit', 'sub' => null],
@@ -94,12 +95,14 @@
                     ['nama' => 'PEREKONOMIAN', 'ikon' => 'graph-up', 'route' => 'admin.perekonomian.index', 'sub' => 'BUMD, TPID, TP2D, UMKM'],
                     ['nama' => 'TATA PEMERINTAHAN', 'ikon' => 'bank', 'route' => 'admin.tatapemerintahan.index', 'sub' => 'Kunjungan Pimpinan, Fasilitasi Pemilu'],
                     ['nama' => 'PELAYANAN DAN HUKUM', 'ikon' => 'shield-check', 'route' => 'admin.pelayanan-hukum.menu', 'sub' => 'Pelayanan Publik, Bantuan Hukum'],
+                    ['nama' => 'GALERI', 'ikon' => 'images', 'route' => 'admin.galeri.index', 'sub' => null],
                     ['nama' => 'PENGHARGAAN', 'ikon' => 'trophy-fill', 'route' => 'admin.penghargaan.index', 'sub' => 'Kelola Data Penghargaan'],
                     ['nama' => 'SURAT EDARAN', 'ikon' => 'envelope-paper-fill', 'route' => 'admin.surat.index', 'sub' => 'Kelola Surat Edaran Walikota'],
+                    ['nama' => 'DOWNLOAD', 'ikon' => 'file-earmark-arrow-down-fill', 'route' => 'admin.download.edit', 'sub' => 'Kelola Pusat Unduhan Dokumen'],
+                    ['nama' => 'HIBAH', 'ikon' => 'gift-fill', 'route' => 'admin.hibah.edit', 'sub' => 'Kelola Data Penerima Hibah'],
                     ['nama' => 'BERITA', 'ikon' => 'newspaper', 'route' => 'admin.berita.index', 'sub' => null],
-                    ['nama' => 'GALERI', 'ikon' => 'images', 'route' => 'admin.galeri.index', 'sub' => null],
                     ['nama' => 'DOKUMEN', 'ikon' => 'file-earmark-arrow-down', 'route' => 'admin.dokumen.index', 'sub' => null],
-                    ['nama' => 'ANALISIS', 'ikon' => 'graph-up', 'route' => 'admin.analisis-kebijakan.edit', 'sub' => null],
+                    
                 ];
             @endphp
             
