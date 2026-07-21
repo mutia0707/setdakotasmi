@@ -14,21 +14,22 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
     public function run(): void
-{
-    // Admin
-    User::factory()->create([
-        'name'     => 'Admin',
-        'email'    => 'admin@gmail.com',
-        'password' => bcrypt('password123'),
-        'role'     => 'admin', // sesuaikan dengan kolom di tabel users kamu
-    ]);
+    {
+        // Admin & Staff udah ada di database, skip biar ga duplicate
+        // User::factory()->create([
+        //     'name'     => 'Admin',
+        //     'email'    => 'admin@gmail.com',
+        //     'password' => bcrypt('password123'),
+        //     'role'     => 'admin',
+        // ]);
+        // User::factory()->create([
+        //     'name'     => 'Staff',
+        //     'email'    => 'staff@gmail.com',
+        //     'password' => bcrypt('password123'),
+        //     'role'     => 'staff',
+        // ]);
 
-    // Staff
-    User::factory()->create([
-        'name'     => 'Staff',
-        'email'    => 'staff@gmail.com',
-        'password' => bcrypt('password123'),
-        'role'     => 'staff',
-    ]);
-}
+        // 7 akun Bagian
+        $this->call(BagianUserSeeder::class);
+    }
 }

@@ -22,6 +22,7 @@
         .card-img-top { height: 200px; object-fit: cover; }
         .btn-detail { background-color: #0056b3; color: white; border-radius: 50px; font-weight: 600; padding: 8px 20px; }
         .btn-detail:hover { background-color: #004494; color: white; }
+        .badge-bagian { background-color: #e7f1ff; color: #0056b3; font-weight: 600; font-size: 0.75rem; padding: 5px 12px; border-radius: 50px; }
     </style>
 </head>
 <body>
@@ -59,16 +60,23 @@
                                     </div>
                                 @endif
                                 <div class="card-body d-flex flex-column">
-                                    <small class="text-primary fw-bold mb-2">
-                                        <i class="bi bi-calendar3 me-1"></i> {{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') }}
-                                    </small>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <small class="text-primary fw-bold">
+                                            <i class="bi bi-calendar3 me-1"></i> {{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') }}
+                                        </small>
+                                        @if($item->bagian)
+                                            <span class="badge-bagian">
+                                                <i class="bi bi-person-badge me-1"></i>{{ $item->bagian }}
+                                            </span>
+                                        @endif
+                                    </div>
                                     <h5 class="card-title fw-bold text-dark">{{ $item->judul }}</h5>
                                     <p class="text-muted small flex-grow-1">
                                         {{ Str::limit($item->isi_berita, 100) }}
                                     </p>
-                                    <!-- <a href="{{ route('berita.show', $item->slug) }}" class="btn btn-detail mt-3">
+                                    <a href="{{ route('berita.show', $item->slug) }}" class="btn btn-detail mt-3">
                                         Selengkapnya <i class="bi bi-arrow-right ms-1"></i>
-                                    </a> -->
+                                    </a>
                                 </div>
                             </div>
                         </div>

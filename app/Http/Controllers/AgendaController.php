@@ -21,8 +21,8 @@ class AgendaController extends Controller
         $query = DB::table('agendas');
         // Filter jabatan jika bukan admin
         if ($user->role === 'staff') {
-            $query->where('jabatan', $user->jabatan);
-        }
+    $query->where('bagian', $user->bagian);
+}
 
         $agendas = $query->orderBy('tanggal', 'desc')->get();
         return view('staff.agenda', compact('agendas'));
@@ -51,4 +51,12 @@ class AgendaController extends Controller
         DB::table('agendas')->where('id', $id)->delete();
         return back()->with('success', 'Agenda dihapus.');
     }
+    public function tampilkanAgendaPublik()
+{
+    $agendas = DB::table('agendas')
+        ->orderBy('tanggal', 'desc')
+        ->get();
+
+    return view('pages.agenda_pimpinan', compact('agendas'));
+}
 }

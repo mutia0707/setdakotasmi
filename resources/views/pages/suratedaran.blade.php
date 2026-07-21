@@ -55,10 +55,10 @@
                     <div class="flex-grow-1">
                         <h6 class="fw-bold mb-1">{{ $item->judul }}</h6>
                         <div class="d-flex align-items-center gap-2 flex-wrap">
-                            @if($item->nomor_surat)
-                                <span class="nomor-surat"><i class="bi bi-hash me-1"></i>{{ $item->nomor_surat }}</span>
+                            @if($item->nomor)
+                                <span class="nomor-surat"><i class="bi bi-hash me-1"></i>{{ $item->nomor }}</span>
                             @endif
-                           <span class="badge-tahun">{{ date('Y', strtotime($item->tanggal)) }}</span>
+                           <span class="badge-tahun">{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d M Y') }}</span>
                         </div>
                     </div>
                     <div>

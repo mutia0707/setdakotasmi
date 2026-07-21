@@ -9,20 +9,14 @@
     <style>
         body { background-color: #f8f9fa; }
         .bg-header { background-color: #0056b3; padding: 25px 0; color: white; }
-        .logo-img { width: 50px; height: 50px; object-fit: contain; }
     </style>
 </head>
 <body>
 
 <div class="bg-header mb-4">
     <div class="container d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-            <img src="{{ asset('img/logo.png') }}" 
-                 onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Coat_of_arms_of_Sukabumi.svg/1200px-Coat_of_arms_of_Sukabumi.svg.png';" 
-                 alt="Logo" class="logo-img me-3">
-            <h3 class="fw-bold m-0 text-uppercase">KELOLA VISI & MISI</h3>
-        </div>
-        
+        <h3 class="fw-bold m-0 text-uppercase"><i class="bi bi-patch-check me-2"></i>KELOLA VISI & MISI</h3>
+
         <a href="{{ url()->previous() }}" class="btn btn-light text-primary fw-bold px-4 rounded-pill">
             <i class="bi bi-arrow-left"></i> KEMBALI
         </a>

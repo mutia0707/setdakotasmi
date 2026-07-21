@@ -13,12 +13,12 @@
 </head>
 <body>
 
-<div class="p-4 mb-4 text-white" style="background-color: #343a40; border-bottom: 4px solid #212529;">
+<div class="p-4 mb-4 text-white" style="background-color: #0056b3; border-bottom: 4px solid #003d80;">
     <div class="container d-flex justify-content-between align-items-center">
         <h4 class="fw-bold m-0">
             <i class="bi bi-diagram-3 me-2"></i> KELOLA STRUKTUR ORGANISASI
         </h4>
-        <a href="{{ url('/admin/dashboard') }}" class="btn btn-light fw-bold text-dark">
+        <a href="{{ url('/admin/dashboard') }}" class="btn btn-light fw-bold text-primary">
             <i class="bi bi-arrow-left"></i> KEMBALI 
         </a>
     </div>
@@ -58,9 +58,11 @@
                         <textarea name="keterangan" class="form-control" rows="8">{{ $data->keterangan ?? '' }}</textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-success px-4 py-2">
-                        <i class="bi bi-save me-1"></i> Simpan Perubahan
-                    </button>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm">
+                            <i class="bi bi-save me-2"></i> Simpan Perubahan
+                        </button>
+                    </div>
                 </form>
 
             </div>

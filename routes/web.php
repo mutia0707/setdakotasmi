@@ -93,7 +93,7 @@ Route::prefix('pelayanan')->group(function () {
 });
 
 Route::controller(BeritaController::class)->group(function () {
-    Route::get('/berita-kota', 'index')->name('berita.index');
+    Route::get('/berita-kota', 'indexPublik')->name('berita.index');
     Route::get('/berita-kota/{slug}', 'show')->name('berita.show');
 });
 
@@ -144,7 +144,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->group(function () {
 
         Route::get('/dashboard', [AdminController::class, 'dashboardView'])->name('admin.dashboard');
-        Route::get('/admin/dashboard', [AdminController::class, 'dashboardView'])->name('auth.admin');
+        
 
         Route::get('/visi-misi-edit', [ProfilController::class, 'editVisiMisi'])->name('admin.visi-misi.edit');
         Route::post('/visi-misi-update', [ProfilController::class, 'updateVisiMisi'])->name('admin.visi-misi.update');
@@ -270,6 +270,7 @@ Route::delete('/admin/hibah/{id}', [HibahController::class, 'destroy'])->name('a
         // Hanya untuk role 'bagian_pelayanan'
         Route::get('/berita', [BeritaController::class, 'index'])->name('staff.berita.index');
         Route::post('/berita/store', [BeritaController::class, 'store'])->name('staff.berita.store');
+        Route::post('/berita/update/{id}', [BeritaController::class, 'update'])->name('staff.berita.update');
         Route::delete('/berita/destroy/{id}', [BeritaController::class, 'destroy'])->name('staff.berita.destroy');
     });
     

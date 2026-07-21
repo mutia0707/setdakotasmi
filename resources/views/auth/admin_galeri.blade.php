@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
         body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
-        .navbar-admin { background-color: #198754; border-bottom: 4px solid #146c43; }
+        .navbar-admin { background-color: #0056b3; border-bottom: 4px solid #003d80; }
         .btn-edit { background-color: #ffc107; border: none; font-weight: bold; }
         .btn-delete { background-color: #dc3545; border: none; font-weight: bold; color: white; }
     </style>
@@ -20,8 +20,8 @@
             <span class="navbar-brand fw-bold d-flex align-items-center">
                 <i class="bi bi-images me-2"></i> KELOLA MEDIA GALERI SETDA
             </span>
-            <a href="{{ route('auth.admin') }}" class="btn btn-sm btn-light fw-bold text-success">
-                <i class="bi bi-arrow-left-short fs-5 align-middle"></i> KEMBALI KE DASHBOARD
+            <a href="{{ route('auth.admin') }}" class="btn btn-sm btn-light fw-bold text-primary">
+                <i class="bi bi-arrow-left-short fs-5 align-middle"></i> KEMBALI 
             </a>
         </div>
     </nav>
@@ -29,7 +29,7 @@
     <div class="container mt-5">
         <div class="card border-0 shadow-sm p-4 mb-5" style="border-radius: 12px;">
             <h5 class="fw-bold text-dark text-uppercase mb-4">
-                <i class="bi bi-cloud-arrow-up-fill me-2 text-success"></i>Upload Dokumentasi Baru
+                <i class="bi bi-cloud-arrow-up-fill me-2 text-primary"></i>Upload Dokumentasi Baru
             </h5>
             
             @if(session('success_galeri'))
@@ -69,7 +69,7 @@
                         <input type="file" name="video_file" class="form-control" accept="video/mp4">
                     </div>
                     <div class="col-12 text-end mt-4">
-                        <button type="submit" class="btn btn-success fw-bold px-4 shadow-sm">
+                        <button type="submit" class="btn btn-primary fw-bold px-4 rounded-pill shadow-sm">
                             <i class="bi bi-plus-circle me-1"></i> UNGGAH KE GALERI
                         </button>
                     </div>
@@ -80,9 +80,9 @@
         <div class="card border-0 shadow-sm p-4 mb-5" style="border-radius: 12px;">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="fw-bold text-dark text-uppercase m-0">
-                    <i class="bi bi-images me-2 text-success"></i>Daftar Riwayat Unggahan
+                    <i class="bi bi-images me-2 text-primary"></i>Daftar Riwayat Unggahan
                 </h5>
-                <span class="badge bg-success px-3 py-2 rounded-pill">Total: {{ count($galeris) }} Konten</span>
+                <span class="badge bg-primary px-3 py-2 rounded-pill">Total: {{ count($galeris) }} Konten</span>
             </div>
 
             <div class="table-responsive">
@@ -110,7 +110,7 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <span class="badge bg-{{ $item->tipe === 'foto' ? 'success' : 'danger' }} d-block mb-1">{{ strtoupper($item->tipe) }}</span>
+                                <span class="badge bg-{{ $item->tipe === 'foto' ? 'primary' : 'danger' }} d-block mb-1">{{ strtoupper($item->tipe) }}</span>
                                 <small class="text-muted text-capitalize">{{ $item->kategori }}</small>
                             </td>
                             <td>{{ $item->judul }}</td>

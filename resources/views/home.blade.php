@@ -260,10 +260,6 @@
                 <a href="https://www.instagram.com/setda_kotasukabumi?igsh=YjRyaDAxYTh1MDR1" class="ms-2" target="_blank"><i class="fa-brands fa-instagram" style="color:white"></i></a>
                 <a href="https://x.com/Pemkot_Sukabumi" class="ms-2" target="_blank"><i class="fa-brands fa-x-twitter" style="color:white"></i></a>
                 <a href="https://www.youtube.com/channel/UCc5UtomjUXmcqD1Ic8xUkPQ" class="ms-2" target="_blank"><i class="fa-brands fa-youtube" style="color:white"></i></a>
-
-                <a href="{{ route('login') }}" style="margin-left: 15px; color: white; text-decoration: none; font-size: 14px;">
-        <i class="fas fa-lock"></i> Login
-    </a>
             </div>
         </div>
     </div>
@@ -285,48 +281,41 @@
                         <a class="nav-link dropdown-toggle" href="#" id="dropTentang" data-bs-toggle="dropdown">Tentang Kami</a>
                         <ul class="dropdown-menu">
                             <li class="dropdown-submenu">
-<li class="dropdown-submenu">
-    <!-- Header Profil -->
-    <a class="dropdown-item" href="#">
-        Profil <i class="fa-solid fa-chevron-right float-end mt-1" style="font-size: 0.8rem;"></i>
-    </a>
-    
-    <!-- Isi Sub-Menu Profil -->
-    <ul class="dropdown-menu">
-        <li>
-            <a class="dropdown-item" href="{{ route('profil-setda') }}">
-    Profil Setda
-</a>
-        </li>
-        <li>
-            <a class="dropdown-item" href="{{ route('visi-misi') }}">Visi dan Misi</a>
-        </li>
-    </ul>
-</li>
-     <li>
-            <a class="dropdown-item" href="{{ route('tupoksi') }}">Tupoksi</a>
-        </li>
-        
+                                <a class="dropdown-item" href="#">
+                                    Profil <i class="fa-solid fa-chevron-right float-end mt-1" style="font-size: 0.8rem;"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('profil-setda') }}">Profil Setda</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('visi-misi') }}">Visi dan Misi</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('tupoksi') }}">Tupoksi</a>
+                            </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('analisis-kebijakan') }}">Analisis Kebijakan</a>
-                        </li>
+                            </li>
                             <li class="dropdown-submenu">
                                 <a class="dropdown-item" href="#">Asisten <i class="fa-solid fa-chevron-right"></i></a>
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('asda1') }}">ASDA I (Pemerintahan & Kesra)</a>
-                                </li>
+                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('asda2') }}">ASDA II (Perekonomian & Pembangunan) </a>
-                                </li>
+                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('asda3') }}">ASDA III (Administrasi Umum)</a>
-</li>
+                                    </li>
                                 </ul>
                             </li>
                             <li>
-    <a class="dropdown-item" href="{{ route('struktur') }}">Struktur Organisasi</a>
-</li>
+                                <a class="dropdown-item" href="{{ route('struktur') }}">Struktur Organisasi</a>
+                            </li>
                         </ul>
                     </li>
 
@@ -337,28 +326,28 @@
                                 <a class="dropdown-item" href="#">Perencanaan<i class="fa-solid fa-chevron-right"></i></a>
                                 <ul class="dropdown-menu">
                                     <li>
-    <a class="dropdown-item" href="{{ route('renstra') }}">Rencana Strategis (Renstra) 2024-2026</a>
-</li>                        
-<li>
-    <a class="dropdown-item" href="{{ route('rpd') }}">Rencana Pembangunan Daerah (RPD) 2024-2026</a>
-</li>
-                                   <li>
-    <a class="dropdown-item" href="{{ route('fokusutama') }}">Fokus Utama</a>
-</li>
+                                        <a class="dropdown-item" href="{{ route('renstra') }}">Rencana Strategis (Renstra) 2024-2026</a>
+                                    </li>
                                     <li>
-    <a class="dropdown-item" href="{{ route('sinkronisasi') }}">Sinkronisasi</a>
-</li>
+                                        <a class="dropdown-item" href="{{ route('rpd') }}">Rencana Pembangunan Daerah (RPD) 2024-2026</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('fokusutama') }}">Fokus Utama</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('sinkronisasi') }}">Sinkronisasi</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">
                                 <a class="dropdown-item" href="#">Pelaporan<i class="fa-solid fa-chevron-right"></i></a>
                                 <ul class="dropdown-menu">
                                     <li>
-    <a class="dropdown-item" href="{{ route('lakip') }}">LAKIP</a>
-</li>xml_error_string
+                                        <a class="dropdown-item" href="{{ route('lakip') }}">LAKIP</a>
+                                    </li>
                                     <li>
-            <a class="dropdown-item" href="{{ route('lppd') }}">LPPD</a>
-        </li>
+                                        <a class="dropdown-item" href="{{ route('lppd') }}">LPPD</a>
+                                    </li>
                                     <li><a class="dropdown-item" href="{{ route('spm') }}">SPM</a></li>
                                 </ul>
                             </li>
@@ -372,42 +361,40 @@
                                 <a class="dropdown-item" href="#">Bagian Umum<i class="fa-solid fa-chevron-right"></i></a>
                                 <ul class="dropdown-menu">
                                     <li>
-            <a class="dropdown-item" href="{{ route('alursurat') }}">Alur Pelayanan Surat</a>
-        </li>
+                                        <a class="dropdown-item" href="{{ route('alursurat') }}">Alur Pelayanan Surat</a>
+                                    </li>
                                     <li><a class="dropdown-item" href="{{ route('perlengkapan') }}">Pelayanan Perlengkapan dan Rumah Tangga</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">
                                 <a class="dropdown-item" href="#">Bagian Organisasi<i class="fa-solid fa-chevron-right"></i></a>
                                 <ul class="dropdown-menu">
-                                   <li>
-                                    <a class="dropdown-item" href="{{ route('spbe') }}">Layanan SPBE</a>
-                                </li>
-                                   <li>
-                                    <a class="dropdown-item" href="{{ route('rb') }}">Reformasi Birokrasi</a>
-                                </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('spbe') }}">Layanan SPBE</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('rb') }}">Reformasi Birokrasi</a>
+                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('kelembagaan') }}">Kelembagaan</a>
                                     </li>
                                 </ul>
                             </li>
-                            
-                           
                             <li class="dropdown-submenu">
                                 <a class="dropdown-item" href="#">Bagian Perekonomian<i class="fa-solid fa-chevron-right"></i></a>
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('bumd') }}">Pelayanan BUMD</a>
-                                </li>
-                                   <li>
-                                    <a class="dropdown-item" href="{{ route('tpid') }}">Pelayanan TPID</a>
-                                </li>
-                                   <li>
-                                    <a class="dropdown-item" href="{{ route('tp2d') }}">Pelayanan TP2D</a>
-                                </li>
-                                   <li>
-                                    <a class="dropdown-item" href="{{ route('umkm') }}">Pemberdayaan UMKM</a>
-                                </li>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('tpid') }}">Pelayanan TPID</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('tp2d') }}">Pelayanan TP2D</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('umkm') }}">Pemberdayaan UMKM</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">
@@ -418,40 +405,36 @@
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('pemilu') }}">Fasilitasi Pemilu & Pilkada</a>
-                                </li>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">
-    <a class="dropdown-item" href="#">Bagian Kerjasama dan Bantuan Hukum<i class="fa-solid fa-chevron-right"></i></a>
-    <ul class="dropdown-menu">
-       <li>
-        <a class="dropdown-item" href="{{ route('pelayanan.publik') }}">Pelayanan Kerja Sama Daerah</a>
-    </li>
-       <li>
-        <a class="dropdown-item" href="{{ route('pelayanan.bantuan-hukum') }}">Pelayanan Bantuan Hukum</a>
-    </li>
-    </ul>
-</li>
-                            <li class="dropdown-submenu">
-                                <li>
-                                <a class="dropdown-item" href="{{ route('publik.humas.index') }}">Bagian Humas</a>
+                                <a class="dropdown-item" href="#">Bagian Kerjasama dan Bantuan Hukum<i class="fa-solid fa-chevron-right"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('pelayanan.publik') }}">Pelayanan Kerja Sama Daerah</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('pelayanan.bantuan-hukum') }}">Pelayanan Bantuan Hukum</a>
+                                    </li>
+                                </ul>
                             </li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item" href="{{ route('publik.humas.index') }}">Bagian Humas</a>
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('publik.humas.index') }}">Dokumen & Dokumentasi</a>
                                     </li>
                                 </ul>
                             </li>
-<li>
-    <hr class="dropdown-divider my-1 opacity-25">
-</li>
-<li>
-   <a class="dropdown-item" href="{{ route('kesra.publik') }}">
-    Bagian Kesejahteraan Rakyat
-</a>
-</li>
-      </ul>
-         </li>
+                            <li>
+                                <hr class="dropdown-divider my-1 opacity-25">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('kesra.publik') }}">Bagian Kesejahteraan Rakyat</a>
+                            </li>
+                        </ul>
+                    </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropInfo" data-bs-toggle="dropdown">Informasi</a>
@@ -475,7 +458,6 @@
                         <a class="nav-link dropdown-toggle" href="#" id="dropBerita" data-bs-toggle="dropdown">Berita</a>
                         <ul class="dropdown-menu">
                            <li><a class="dropdown-item" href="{{ route('berita.index') }}">Berita Kota</a></li>
-                            <!-- <li><a class="dropdown-item" href="https://www.sukabumiupdate.com/sukabumi/173670/diplomatic-forum-2026-digelar-di-kota-sukabumi-libatkan-16-negara-sahabat" target="_blank">Kegiatan</a></li> -->
                         </ul>
                     </li>
                 </ul>
@@ -489,8 +471,7 @@
         <div class="container mt-5 mb-5">
             <div class="row align-items-center shadow-sm p-4 rounded bg-white">
                 <div class="col-md-4 text-center mb-4 mb-md-0">
-                    <!-- Di file home.blade.php halaman Beranda -->
-<img src="{{ asset('img/sambutan.jpg?v=' . time()) }}" alt="Foto Sambutan" class="img-fluid rounded shadow-sm">
+                    <img src="{{ asset('img/sambutan.jpg?v=' . time()) }}" alt="Foto Sambutan" class="img-fluid rounded shadow-sm">
                 </div>
                 <div class="col-md-8 px-md-5">
                     <h2 class="section-title">Sambutan</h2>
@@ -516,8 +497,7 @@
                     <div class="news-card-single shadow-sm card border-0">
                         <div class="row g-0">
                             <div class="col-md-5 news-img-wrap">
-                                <!-- Cari bagian gambar berita terbaru kamu, ganti src-nya menjadi seperti ini -->
-<img src="{{ asset('img/berita_utama.jpg?v='.time()) }}" class="img-fluid rounded" alt="Berita Terbaru" onerror="this.src='https://placehold.co/600x400?text=Berita+Setda'">
+                                <img src="{{ asset('img/berita_utama.jpg?v='.time()) }}" class="img-fluid rounded" alt="Berita Terbaru" onerror="this.src='https://placehold.co/600x400?text=Berita+Setda'">
                             </div>
                             <div class="col-md-7">
                                 <div class="card-body p-4 d-flex flex-column h-100">
@@ -616,10 +596,10 @@
             }
         });
     </script>
-</body>
+
 @auth
     <div style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
-        <a href="{{ auth()->user()->role == 'admin' ? route('auth.admin') : route('staff.agenda.index') }}" 
+      <a href="{{ auth()->user()->role == 'admin' ? route('admin.dashboard') : route('staff.berita.index') }}"
            class="btn btn-dark shadow-lg d-flex align-items-center px-4 py-3 border-0" 
            style="border-radius: 50px; background: #212529; transition: 0.3s; color: white; text-decoration: none;">
             <i class="bi bi-speedometer2 fs-4 me-2"></i> 
@@ -634,8 +614,5 @@
     </style>
 @endauth
 
-    <script src="..."></script>
-
-</body> </html>
-
+</body>
 </html>

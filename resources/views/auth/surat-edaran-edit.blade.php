@@ -52,20 +52,34 @@
             <div class="section-icon me-3"><i class="bi bi-plus-circle-fill"></i></div>
             <h5 class="fw-bold mb-0" style="color:#004a99;">TAMBAH SURAT EDARAN BARU</h5>
         </div>
+
+        {{-- Pesan error validasi, biar gak "diam-diam gagal" lagi --}}
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <strong>Gagal menyimpan:</strong>
+                <ul class="mb-0 mt-1">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('admin.surat.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row g-3">
                 <div class="col-md-5">
                     <label class="fw-bold small mb-1 text-muted text-uppercase">Judul Surat Edaran</label>
-                    <input type="text" name="judul" class="form-control" placeholder="Ketik judul..." required>
+                    <input type="text" name="judul" class="form-control" placeholder="Ketik judul..." value="{{ old('judul') }}" required>
                 </div>
                 <div class="col-md-3">
                     <label class="fw-bold small mb-1 text-muted text-uppercase">Nomor Surat</label>
-                    <input type="text" name="nomor_surat" class="form-control" placeholder="001/SE/2024">
+                    <input type="text" name="nomor" class="form-control" placeholder="001/SE/2024" value="{{ old('nomor') }}">
                 </div>
                 <div class="col-md-2">
                     <label class="fw-bold small mb-1 text-muted text-uppercase">Tanggal</label>
-                    <input type="date" name="tanggal" class="form-control" required>
+                    <input type="date" name="tanggal" class="form-control" value="{{ old('tanggal') }}" required>
                 </div>
                 <div class="col-md-2">
                     <label class="fw-bold small mb-1 text-muted text-uppercase">File PDF</label>
@@ -103,8 +117,8 @@
                     <tr>
                         <td class="text-center fw-bold text-muted">{{ $index + 1 }}</td>
                         <td class="fw-semibold">{{ $item->judul }}</td>
-                        <td class="text-muted small">{{ $item->nomor_surat ?? '-' }}</td>
-                        <td><span class="badge-tanggal">{{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}</span></td>
+                        <td class="text-muted small">{{ $item->nomor ?? '-' }}</td>
+                        <td><span class="badge-tanggal">{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d M Y') }}</span></td>
                         <td class="text-center">
                             @if($item->file_pdf)
                                 <a href="{{ asset('storage/surat_edaran/' . $item->file_pdf) }}"
@@ -149,11 +163,11 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="fw-bold small text-muted text-uppercase mb-1">Nomor Surat</label>
-                                            <input type="text" name="nomor_surat" class="form-control" value="{{ $item->nomor_surat }}">
+                                            <input type="text" name="nomor" class="form-control" value="{{ $item->nomor }}">
                                         </div>
                                         <div class="mb-3">
                                             <label class="fw-bold small text-muted text-uppercase mb-1">Tanggal</label>
-                                            <input type="date" name="tanggal" class="form-control" value="{{ $item->tanggal }}" required>
+                                            <input type="date" name="tanggal" class="form-control" value="{{ \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d') }}" required>
                                         </div>
                                         <div class="mb-3">
                                             <label class="fw-bold small text-muted text-uppercase mb-1">Ganti File PDF (opsional)</label>

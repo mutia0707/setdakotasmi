@@ -12,10 +12,10 @@
 </head>
 <body>
 
-<div class="p-4 mb-4 text-white" style="background-color: #6c757d; border-bottom: 4px solid #5a6268;">
+<div class="p-4 mb-4 text-white" style="background-color: #0056b3; border-bottom: 4px solid #003d80;">
     <div class="container d-flex justify-content-between align-items-center">
         <h4 class="fw-bold m-0"><i class="bi bi-graph-up me-2"></i> KELOLA ANALISIS KEBIJAKAN</h4>
-        <a href="{{ route('auth.admin') }}" class="btn btn-light fw-bold text-secondary">
+        <a href="{{ route('auth.admin') }}" class="btn btn-light fw-bold text-primary">
             <i class="bi bi-arrow-left"></i> KEMBALI
         </a>
     </div>
@@ -39,7 +39,11 @@
                         <label class="fw-bold">Rincian Tugas</label>
                         <textarea name="rincian_tugas" class="form-control" rows="5">{{ $data->rincian_tugas ?? '' }}</textarea>
                     </div>
-                    <button type="submit" class="btn btn-secondary mt-3 w-100">Simpan Perubahan</button>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow-sm mt-3">
+                            <i class="bi bi-save me-2"></i> Simpan Perubahan
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
