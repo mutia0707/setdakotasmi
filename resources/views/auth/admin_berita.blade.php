@@ -13,12 +13,7 @@
         .table thead { background: linear-gradient(135deg, #004a99, #0066cc); color: white; }
         .table thead th { border: none; padding: 12px 16px; font-size: 0.85rem; }
         .table tbody tr:hover { background-color: #eaf2ff; }
-        .btn-edit-custom { background: #0066cc; color: white; border: none; font-weight: 600; font-size: 0.8rem; border-radius: 6px; }
-        .btn-edit-custom:hover { background: #004a99; color: white; }
         .section-icon { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #004a99, #0066cc); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; }
-        .form-control:focus, .form-select:focus { border-color: #0066cc; box-shadow: 0 0 0 0.2rem rgba(0,102,204,0.15); }
-        .modal-header-custom { background: linear-gradient(135deg, #004a99, #0066cc); color: white; }
-        .modal-header-custom .btn-close { filter: invert(1); }
         .badge-bagian { background-color: #eaf2ff; color: #0066cc; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
     </style>
 </head>
@@ -75,7 +70,7 @@
                         <th class="text-center" style="width:50px;">NO</th>
                         <th style="width:80px;">GAMBAR</th>
                         <th>JUDUL</th>
-                        <th style="width:140px;">BAGIAN</th>
+                        <th style="width:160px;">BAGIAN / UPLOADER</th>
                         <th style="width:130px;">TANGGAL PUBLISH</th>
                         <th class="text-center" style="width:160px;">TINDAKAN</th>
                     </tr>
@@ -94,7 +89,12 @@
                             @endif
                         </td>
                         <td class="fw-semibold">{{ $item->judul }}</td>
-                        <td><span class="badge-bagian">{{ $item->bagian }}</span></td>
+                        <!-- PERUBAHAN UTAMA: Menampilkan nama user/bagian yang mengupload dengan akurat -->
+                        <td>
+                            <span class="badge-bagian">
+                                {{ $item->user->name ?? $item->bagian ?? 'Admin' }}
+                            </span>
+                        </td>
                         <td class="text-muted small">{{ \Carbon\Carbon::parse($item->tanggal_publish)->translatedFormat('d M Y') }}</td>
                         <td class="text-center">
                             <a href="{{ route('berita.show', $item->slug) }}" target="_blank" class="btn btn-secondary btn-sm mb-1">

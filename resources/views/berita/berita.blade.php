@@ -36,9 +36,16 @@
                 <small class="text-white-50 text-uppercase">Sekretariat Daerah Kota Sukabumi</small>
             </div>
         </div>
-        <a href="{{ url('/') }}" class="btn btn-outline-light px-4 rounded-pill fw-bold">
-            <i class="bi bi-house-door me-2"></i> BERANDA
-        </a>
+        <div>
+            @auth
+                <a href="{{ route('staff.berita.index') }}" class="btn btn-light text-primary px-3 rounded-pill fw-bold me-2">
+                    <i class="bi bi-speedometer2 me-1"></i> Panel Staff
+                </a>
+            @endauth
+            <a href="{{ url('/') }}" class="btn btn-outline-light px-4 rounded-pill fw-bold">
+                <i class="bi bi-house-door me-2"></i> BERANDA
+            </a>
+        </div>
     </div>
 </div>
 
@@ -60,21 +67,23 @@
                                     </div>
                                 @endif
                                 <div class="card-body d-flex flex-column">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <small class="text-primary fw-bold">
+                                    <div class="mb-2">
+                                        <!-- Tanggal Berita -->
+                                        <div class="text-primary fw-bold small mb-1">
                                             <i class="bi bi-calendar3 me-1"></i> {{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') }}
-                                        </small>
-                                        @if($item->bagian)
+                                        </div>
+                                        <!-- Info Siapa yang Upload Otomatis -->
+                                        <div>
                                             <span class="badge-bagian">
-                                                <i class="bi bi-person-badge me-1"></i>{{ $item->bagian }}
+                                                <i class="bi bi-person-fill me-1"></i> Diunggah oleh: {{ $item->user->name ?? $item->user->bagian ?? 'Admin' }}
                                             </span>
-                                        @endif
+                                        </div>
                                     </div>
-                                    <h5 class="card-title fw-bold text-dark">{{ $item->judul }}</h5>
+                                    <h5 class="card-title fw-bold text-dark mt-2">{{ $item->judul }}</h5>
                                     <p class="text-muted small flex-grow-1">
-                                        {{ Str::limit($item->isi_berita, 100) }}
+                                        {{ Str::limit($item->isi_berita ?? $item->isi, 100) }}
                                     </p>
-                                    <a href="{{ route('berita.show', $item->slug) }}" class="btn btn-detail mt-3">
+                                    <a href="{{ route('berita.show', $item->slug ?? $item->id) }}" class="btn btn-detail mt-3">
                                         Selengkapnya <i class="bi bi-arrow-right ms-1"></i>
                                     </a>
                                 </div>

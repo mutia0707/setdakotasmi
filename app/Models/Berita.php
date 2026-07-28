@@ -14,9 +14,18 @@ class Berita extends Model
     protected $fillable = [
         'judul', 
         'slug', 
-        'isi',           // Sesuaikan dengan controller (tadi kita pakai 'isi')
+        'isi_berita',      // Sesuaikan dengan yang disimpan di controller
         'gambar', 
-        'bagian',        // WAJIB ditambah agar bisa tersimpan
+        'bagian',          // Menyimpan nama bagian (ASDA 1, dll)
+        'user_id',         // <--- WAJIB DITAMBAHKAN AGAR ID USER TERSIMPAN
         'tanggal_publish'
     ];
+
+    /**
+     * Relasi ke tabel User untuk memanggil nama uploader secara otomatis
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

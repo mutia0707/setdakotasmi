@@ -184,6 +184,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/berita/update/{id}', [AdminController::class, 'update'])->name('admin.berita.update');
         Route::delete('/berita/delete/{id}', [AdminController::class, 'destroy'])->name('admin.berita.delete');
 
+        Route::get('/admin/tambah-user', [AdminController::class, 'formTambahUser'])->name('tambah.user');
+    Route::post('/admin/tambah-user', [AdminController::class, 'simpanUser'])->name('simpan.user');
+
         Route::prefix('kelola-galeri')->group(function () {
             Route::get('/', [GaleriController::class, 'adminGaleri'])->name('admin.galeri.index');
             Route::post('/store', [GaleriController::class, 'store'])->name('admin.galeri.store');

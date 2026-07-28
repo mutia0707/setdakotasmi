@@ -44,68 +44,82 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-dark navbar-admin shadow-sm py-3">
+    <nav class="navbar navbar-dark navbar-admin shadow-sm py-3 mb-4">
         <div class="container">
-            <span class="navbar-brand fw-bold"><i class="bi bi-shield-lock-fill me-2"></i> ADMIN PANEL SETDA</span>
+            <span class="navbar-brand fw-bold"><i class="bi bi-shield-lock-fill me-2"></i> ADMIN PANEL SETDA KOTA SUKABUMI</span>
             <div class="d-flex align-items-center">
-                <a href="{{ url('/') }}" class="btn btn-sm btn-light me-3 fw-bold text-primary"><i class="bi bi-globe me-1"></i> LIHAT WEB</a>
+                <a href="{{ url('/') }}" class="btn btn-sm btn-light me-2 fw-bold text-primary"><i class="bi bi-globe me-1"></i> LIHAT WEB</a>
+                
+                {{-- Tombol khusus Super Admin untuk membuat user baru di Navbar --}}
+                @if(auth()->check() && auth()->user()->role === 'super_admin')
+                    <a href="{{ route('tambah.user') }}" class="btn btn-sm btn-warning me-2 fw-bold text-dark"><i class="bi bi-person-plus-fill me-1"></i> TAMBAH USER</a>
+                @endif
+
                 <button onclick="document.getElementById('logout-form').submit();" class="btn btn-sm btn-danger fw-bold"><i class="bi bi-power"></i> LOGOUT</button>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none"> @csrf </form>
             </div>
         </div>
     </nav>
 
-    <div class="row g-3 mb-5">
-    {{-- Foto Sambutan --}}
-    <div class="col-md-4">
-        <div class="card p-3 shadow-sm border-0 rounded-4">
-            <h6 class="fw-bold mb-3"><i class="bi bi-image me-2"></i> Foto Sambutan</h6>
-            <form action="{{ route('admin.sambutan.update') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="file" name="gambar_sambutan" class="form-control form-control-sm mb-2" required>
-                <button class="btn btn-grad-blue btn-sm w-100 fw-bold">UPDATE</button>
-            </form>
-        </div>
-    </div>
+    <div class="container">
+        {{-- Notifikasi Sukses Global jika ada --}}
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-    {{-- Foto Berita Utama --}}
-    <div class="col-md-4">
-        <div class="card p-3 shadow-sm border-0 rounded-4">
-            <h6 class="fw-bold mb-3"><i class="bi bi-newspaper me-2"></i> Foto Berita Utama</h6>
-            <form action="{{ route('admin.beritautama.update') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="file" name="foto_berita_utama" class="form-control form-control-sm mb-2" required>
-                <button class="btn btn-grad-green btn-sm w-100 fw-bold">UPDATE</button>
-            </form>
-        </div>
-    </div>
+        <div class="row g-3 mb-5">
+            {{-- Foto Sambutan --}}
+            <div class="col-md-4">
+                <div class="card p-3 shadow-sm border-0 rounded-4">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-image me-2"></i> Foto Sambutan</h6>
+                    <form action="{{ route('admin.sambutan.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="gambar_sambutan" class="form-control form-control-sm mb-2" required>
+                        <button class="btn btn-grad-blue btn-sm w-100 fw-bold">UPDATE</button>
+                    </form>
+                </div>
+            </div>
 
-    {{-- Foto Pejabat --}}
-    <div class="col-md-4">
-        <div class="card p-3 shadow-sm border-0 rounded-4">
-            <h6 class="fw-bold mb-3"><i class="bi bi-person-badge me-2"></i> Foto Pejabat</h6>
-            <form action="{{ route('admin.pejabat.update') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <select name="kode_pejabat" class="form-select form-select-sm mb-2" required>
-                    <option value="" disabled selected>Pilih Pejabat...</option>
-                    <option value="asisten1">Asisten Pemerintahan & Kesra</option>
-                    <option value="staf_ahli">Staf Ahli Bidang Administrasi Umum</option>
-                    <option value="asisten3">Asisten Daerah III</option>
-                    <option value="kabag_tata_pemerintahan">Bagian Tata Pemerintahan</option>
-                </select>
-                <input type="file" name="foto_pejabat" class="form-control form-control-sm mb-2" required>
-                <button class="btn btn-grad-yellow btn-sm w-100 fw-bold">UPDATE</button>
-            </form>
+            {{-- Foto Berita Utama --}}
+            <div class="col-md-4">
+                <div class="card p-3 shadow-sm border-0 rounded-4">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-newspaper me-2"></i> Foto Berita Utama</h6>
+                    <form action="{{ route('admin.beritautama.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="foto_berita_utama" class="form-control form-control-sm mb-2" required>
+                        <button class="btn btn-grad-green btn-sm w-100 fw-bold">UPDATE</button>
+                    </form>
+                </div>
+            </div>
+
+            {{-- Foto Pejabat --}}
+            <div class="col-md-4">
+                <div class="card p-3 shadow-sm border-0 rounded-4">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-person-badge me-2"></i> Foto Pejabat</h6>
+                    <form action="{{ route('admin.pejabat.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <select name="kode_pejabat" class="form-select form-select-sm mb-2" required>
+                            <option value="" disabled selected>Pilih Pejabat...</option>
+                            <option value="asisten1">Asisten Pemerintahan & Kesra</option>
+                            <option value="staf_ahli">Staf Ahli Bidang Administrasi Umum</option>
+                            <option value="asisten3">Asisten Daerah III</option>
+                            <option value="kabag_tata_pemerintahan">Bagian Tata Pemerintahan</option>
+                        </select>
+                        <input type="file" name="foto_pejabat" class="form-control form-control-sm mb-2" required>
+                        <button class="btn btn-grad-yellow btn-sm w-100 fw-bold">UPDATE</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+
         <h5 class="section-divider">MANAJEMEN MENU</h5>
 
-        <div class="row g-4">
+        <div class="row g-4 mb-5">
 
             @php
-                // Semua menu digabung jadi SATU array supaya perhitungan baris
-                // (untuk zigzag warna) konsisten mengikuti grid 4 kolom (col-md-3).
                 $allMenus = [
                     ['nama' => 'Profil',       'ikon' => 'info-circle',   'route' => 'admin.profil-setda.edit', 'sub' => null],
                     ['nama' => 'Visi Misi',    'ikon' => 'patch-check',   'route' => 'admin.visi-misi.edit',    'sub' => null],
@@ -113,30 +127,26 @@
                     ['nama' => 'Struktur',     'ikon' => 'diagram-3',     'route' => 'admin.struktur.edit',     'sub' => null],
                     ['nama' => 'Asisten',      'ikon' => 'person-badge',  'route' => 'admin.asisten.menu',      'sub' => null],
 
-                    ['nama' => 'ANALISIS',             'ikon' => 'graph-up',                    'route' => 'admin.analisis-kebijakan.edit', 'sub' => null],
-                    ['nama' => 'PERENCANAAN',          'ikon' => 'grid-3x3-gap',                'route' => 'admin.perencanaan.menu',        'sub' => 'Renstra, RPD, Fokus, Sinkronisasi'],
-                    ['nama' => 'PELAPORAN',            'ikon' => 'bar-chart-fill',              'route' => 'admin.pelaporan.menu',          'sub' => 'LKIP, LPPD, SPM'],
-                    ['nama' => 'ALUR SURAT',           'ikon' => 'envelope-paper',              'route' => 'admin.alursurat.edit',          'sub' => null],
-                    ['nama' => 'PERLENGKAPAN',         'ikon' => 'house-gear',                  'route' => 'admin.perlengkapan.edit',       'sub' => null],
-                    ['nama' => 'BAGIAN ORGANISASI',    'ikon' => 'diagram-3',                   'route' => 'admin.bagian-organisasi.menu',  'sub' => 'SPBE, RB, Kelembagaan'],
-                    ['nama' => 'PEREKONOMIAN',         'ikon' => 'graph-up',                    'route' => 'admin.perekonomian.index',      'sub' => 'BUMD, TPID, TP2D, UMKM'],
-                    ['nama' => 'TATA PEMERINTAHAN',    'ikon' => 'bank',                        'route' => 'admin.tatapemerintahan.index',  'sub' => 'Kunjungan Pimpinan, Fasilitasi Pemilu'],
-                    ['nama' => 'PELAYANAN DAN HUKUM',  'ikon' => 'shield-check',                'route' => 'admin.pelayanan-hukum.menu',    'sub' => 'Pelayanan Publik, Bantuan Hukum'],
+                    ['nama' => 'ANALISIS',            'ikon' => 'graph-up',                 'route' => 'admin.analisis-kebijakan.edit', 'sub' => null],
+                    ['nama' => 'PERENCANAAN',         'ikon' => 'grid-3x3-gap',             'route' => 'admin.perencanaan.menu',        'sub' => 'Renstra, RPD, Fokus, Sinkronisasi'],
+                    ['nama' => 'PELAPORAN',           'ikon' => 'bar-chart-fill',           'route' => 'admin.pelaporan.menu',          'sub' => 'LKIP, LPPD, SPM'],
+                    ['nama' => 'ALUR SURAT',          'ikon' => 'envelope-paper',           'route' => 'admin.alursurat.edit',          'sub' => null],
+                    ['nama' => 'PERLENGKAPAN',        'ikon' => 'house-gear',               'route' => 'admin.perlengkapan.edit',       'sub' => null],
+                    ['nama' => 'BAGIAN ORGANISASI',   'ikon' => 'diagram-3',                'route' => 'admin.bagian-organisasi.menu',  'sub' => 'SPBE, RB, Kelembagaan'],
+                    ['nama' => 'PEREKONOMIAN',        'ikon' => 'graph-up',                 'route' => 'admin.perekonomian.index',      'sub' => 'BUMD, TPID, TP2D, UMKM'],
+                    ['nama' => 'TATA PEMERINTAHAN',   'ikon' => 'bank',                     'route' => 'admin.tatapemerintahan.index',  'sub' => 'Kunjungan Pimpinan, Fasilitasi Pemilu'],
+                    ['nama' => 'PELAYANAN DAN HUKUM', 'ikon' => 'shield-check',             'route' => 'admin.pelayanan-hukum.menu',    'sub' => 'Pelayanan Publik, Bantuan Hukum'],
 
-                    ['nama' => 'GALERI',       'ikon' => 'images',                          'route' => 'admin.galeri.index',      'sub' => null],
-                    ['nama' => 'PENGHARGAAN',  'ikon' => 'trophy-fill',                     'route' => 'admin.penghargaan.index', 'sub' => 'Kelola Data Penghargaan'],
-                    ['nama' => 'SURAT EDARAN', 'ikon' => 'envelope-paper-fill',             'route' => 'admin.surat.index',       'sub' => 'Kelola Surat Edaran Walikota'],
-                    ['nama' => 'DOWNLOAD',     'ikon' => 'file-earmark-arrow-down-fill',    'route' => 'admin.download.edit',     'sub' => 'Kelola Pusat Unduhan Dokumen'],
-                    ['nama' => 'HIBAH',        'ikon' => 'gift-fill',                       'route' => 'admin.hibah.edit',        'sub' => 'Kelola Data Penerima Hibah'],
-                    ['nama' => 'BERITA',       'ikon' => 'newspaper',                       'route' => 'admin.berita.index',      'sub' => null],
-                    ['nama' => 'DOKUMEN',      'ikon' => 'file-earmark-arrow-down',         'route' => 'admin.dokumen.index',     'sub' => null],
+                    ['nama' => 'GALERI',       'ikon' => 'images',                    'route' => 'admin.galeri.index',      'sub' => null],
+                    ['nama' => 'PENGHARGAAN',  'ikon' => 'trophy-fill',               'route' => 'admin.penghargaan.index', 'sub' => 'Kelola Data Penghargaan'],
+                    ['nama' => 'SURAT EDARAN', 'ikon' => 'envelope-paper-fill',       'route' => 'admin.surat.index',       'sub' => 'Kelola Surat Edaran Walikota'],
+                    ['nama' => 'DOWNLOAD',     'ikon' => 'file-earmark-arrow-down-fill', 'route' => 'admin.download.edit',    'sub' => 'Kelola Pusat Unduhan Dokumen'],
+                    ['nama' => 'HIBAH',        'ikon' => 'gift-fill',                 'route' => 'admin.hibah.edit',        'sub' => 'Kelola Data Penerima Hibah'],
+                    ['nama' => 'BERITA',       'ikon' => 'newspaper',                 'route' => 'admin.berita.index',      'sub' => null],
+                    ['nama' => 'DOKUMEN',      'ikon' => 'file-earmark-arrow-down',   'route' => 'admin.dokumen.index',     'sub' => null],
                 ];
 
-                // Urutan warna per baris, diulang setiap 3 baris.
-                // Ganti/tambah warna di sini kalau mau pola berbeda.
                 $warnaBaris = ['bg-row-blue', 'bg-row-green', 'bg-row-yellow'];
-
-                // Ada berapa kartu per baris? Grid pakai col-md-3 = 4 kartu/baris.
                 $kartuPerBaris = 4;
             @endphp
 

@@ -460,7 +460,10 @@
                            <li><a class="dropdown-item" href="{{ route('berita.index') }}">Berita Kota</a></li>
                         </ul>
                     </li>
-                </ul>
+                    <li class="nav-item">
+    <a class="nav-link" href="https://ppid.sukabumikota.go.id/" target="_blank">PPID</a>
+</li>
+                </ul>  
             </div>
         </div>
     </nav>
@@ -599,7 +602,7 @@
 
 @auth
     <div style="position: fixed; bottom: 30px; right: 30px; z-index: 9999;">
-      <a href="{{ auth()->user()->role == 'admin' ? route('admin.dashboard') : route('staff.berita.index') }}"
+      <a href="{{ in_array(strtolower(auth()->user()->role ?? ''), ['admin', 'super_admin', 'administrator']) ? route('admin.dashboard') : route('staff.agenda.index') }}"
            class="btn btn-dark shadow-lg d-flex align-items-center px-4 py-3 border-0" 
            style="border-radius: 50px; background: #212529; transition: 0.3s; color: white; text-decoration: none;">
             <i class="bi bi-speedometer2 fs-4 me-2"></i> 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
@@ -126,5 +127,34 @@ class AdminController extends Controller
         ]);
         $request->file('foto_pejabat')->move(public_path('img/pejabat'), $request->kode_pejabat . '.jpg');
         return redirect()->back()->with('success', 'Foto Pejabat Berhasil Diperbarui!');
+    }
+
+    /**
+     * Fitur Super Admin: Kelola / Tambah User Baru
+     */
+    public function formTambahUser()
+    {
+        return view('admin.tambah-user');
+    }
+
+    public function simpanUser(Request $request)
+    {
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users',
+            'password' => 'required|min:6',
+            'role'     => 'required|string'
+        ]);
+
+        DB::table('users')->insert([
+            'name'       => $request->name,
+            'email'      => $request->email,
+            'password'   => Hash::make($request->password),
+            'role'       => $request->role,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Akun user baru berhasil dibuat oleh Super Admin!');
     }
 }

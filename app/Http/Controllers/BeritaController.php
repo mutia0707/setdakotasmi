@@ -1,9 +1,13 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Berita;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+
 class BeritaController extends Controller
 {
     /**
@@ -32,7 +36,6 @@ class BeritaController extends Controller
      */
     public function index() 
     {
-        // Proteksi: Hanya role staff (semua akun 7 Bagian) yang boleh kelola berita
         if (auth()->user()->role !== 'staff') {
             return redirect('/staff/agenda')->with('error', 'Akses tidak diizinkan.');
         }
@@ -41,14 +44,38 @@ class BeritaController extends Controller
     }
 
     /**
+     * Menyimpan Berita Baru (Otomatis mencatat Bagian & User yang login)
+     */
+    public function store(Request $request)
+{
+    $request->validate([
+        'judul' => 'required',
+        'isi' => 'required',
+        'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+    ]);
+
+    $path = $request->hasFile('gambar') ? $request->file('gambar')->store('berita', 'public') : null;
+
+    Berita::create([
+        'judul' => $request->judul,
+        'slug' => $this->generateUniqueSlug($request->judul),
+        'isi_berita' => $request->isi,
+        'gambar' => $path,
+        'user_id' => Auth::id(),
+        'bagian' => Auth::user()->bagian ?? 'Admin',
+        'tanggal_publish' => date('Y-m-d'), // <--- TAMBAHKAN INI AGAR TIDAK ERROR
+    ]);
+
+    return redirect()->back()->with('success', 'Berita berhasil diunggah!');
+}
+
+    /**
      * Halaman ADMIN: /admin/kelola-berita
      * Admin bisa lihat & kelola SEMUA berita dari semua bagian (tidak difilter).
      */
     public function adminIndex()
     {
         $beritas = Berita::latest()->get();
-
-        // GANTI 'auth.kelola-berita' KALAU nama file blade kamu berbeda
         return view('auth.admin_berita', compact('beritas'));
     }
 
@@ -74,65 +101,54 @@ class BeritaController extends Controller
         return $slug;
     }
 
-    public function store(Request $request) 
-    {
-        $request->validate([
-            'judul' => 'required', 
-            'isi' => 'required',
-            'gambar' => 'image|mimes:jpeg,png,jpg|max:2048'
-        ]);
-        $berita = new Berita();
-        $berita->judul = $request->judul;
-        $berita->isi_berita = $request->isi;
-        $berita->slug = $this->generateUniqueSlug($request->judul);
-        $berita->bagian = auth()->user()->bagian;
-        $berita->tanggal_publish = now();
-        if ($request->hasFile('gambar')) {
-            $berita->gambar = $request->file('gambar')->store('berita', 'public');
-        }
-        $berita->save();
-        return redirect()->route('staff.berita.index')->with('success', 'Berita berhasil diupload!');
-    }
     public function destroy($id) 
     {
         $berita = Berita::findOrFail($id);
         
-        // Admin boleh hapus berita dari bagian manapun.
-        // Staff cuma boleh hapus berita dari bagiannya sendiri.
         if (auth()->user()->role !== 'admin' && $berita->bagian !== auth()->user()->bagian) {
             abort(403);
         }
 
-        if ($berita->gambar) Storage::disk('public')->delete($berita->gambar);
+        if ($berita->gambar) {
+            Storage::disk('public')->delete($berita->gambar);
+        }
+        
         $berita->delete();
         
         return back()->with('success', 'Berita berhasil dihapus!');
     }
+
     public function update(Request $request, $id)
-{
-    $berita = Berita::findOrFail($id);
+    {
+        $berita = Berita::findOrFail($id);
 
-    if ($berita->bagian !== auth()->user()->bagian) abort(403);
-
-    $request->validate([
-        'judul' => 'required',
-        'isi' => 'required',
-        'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
-    ]);
-
-    $berita->judul = $request->judul;
-    $berita->isi_berita = $request->isi;
-    $berita->slug = $this->generateUniqueSlug($request->judul, $berita->id);
-
-    if ($request->hasFile('gambar')) {
-        if ($berita->gambar) {
-            Storage::disk('public')->delete($berita->gambar);
+        if (auth()->user()->role !== 'admin' && $berita->bagian !== auth()->user()->bagian) {
+            abort(403);
         }
-        $berita->gambar = $request->file('gambar')->store('berita', 'public');
+
+        $request->validate([
+            'judul' => 'required',
+            'isi' => 'required',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+
+        $berita->judul = $request->judul;
+        $berita->isi_berita = $request->isi;
+        $berita->slug = $this->generateUniqueSlug($request->judul, $berita->id);
+
+        if ($request->hasFile('gambar')) {
+            if ($berita->gambar) {
+                Storage::disk('public')->delete($berita->gambar);
+            }
+            $berita->gambar = $request->file('gambar')->store('berita', 'public');
+        }
+
+        $berita->save();
+
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diupdate!');
+        }
+
+        return redirect()->route('staff.berita.index')->with('success', 'Berita berhasil diupdate!');
     }
-
-    $berita->save();
-
-    return redirect()->route('staff.berita.index')->with('success', 'Berita berhasil diupdate!');
-}
 }

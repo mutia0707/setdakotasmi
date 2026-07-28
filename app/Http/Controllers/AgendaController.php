@@ -9,54 +9,106 @@ use Carbon\Carbon;
 
 class AgendaController extends Controller
 {
+    // Menampilkan halaman panel agenda staff (Hanya menampilkan agenda milik user yang login)
     public function index()
     {
-        $user = Auth::user();
+        $divisiLogin = Auth::user()->name;
 
-        // Proteksi: Hanya 'staff' atau 'admin' yang boleh masuk
-        if ($user->role !== 'staff' && $user->role !== 'admin') {
-            return redirect('/')->withErrors('Akses Ditolak.');
-        }
+        // Filter data berdasarkan nama user yang sedang login di dalam teks kegiatan
+        $agendas = DB::table('agendas')
+                    ->where('nama_kegiatan', 'LIKE', '[' . $divisiLogin . ']%')
+                    ->orderBy('tanggal', 'desc')
+                    ->get();
 
-        $query = DB::table('agendas');
-        // Filter jabatan jika bukan admin
-        if ($user->role === 'staff') {
-    $query->where('bagian', $user->bagian);
-}
-
-        $agendas = $query->orderBy('tanggal', 'desc')->get();
         return view('staff.agenda', compact('agendas'));
     }
 
+    // Menyimpan agenda baru (Otomatis menggunakan nama user/divisi yang login)
     public function store(Request $request)
     {
-        $user = Auth::user();
-        if ($user->role !== 'staff' && $user->role !== 'admin') abort(403);
+        $request->validate([
+            'tanggal' => 'required|date',
+            'nama_kegiatan' => 'required|string|max:1000',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
 
-        $hari = Carbon::parse($request->tanggal)->translatedFormat('l');
+        $divisiLogin = Auth::user()->name;
+        $namaHari = Carbon::parse($request->tanggal)->locale('id')->dayName;
+        $kegiatanLengkap = "[" . $divisiLogin . "] " . $request->nama_kegiatan;
+
+        $namaFoto = null;
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $namaFoto = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('storage/agenda'), $namaFoto);
+        }
 
         DB::table('agendas')->insert([
             'tanggal'       => $request->tanggal,
-            'hari'          => $hari,
-            'nama_kegiatan' => $request->nama_kegiatan,
-            'jabatan'       => $user->jabatan,
+            'hari'          => $namaHari,
+            'nama_kegiatan' => $kegiatanLengkap, 
+            'foto'          => $namaFoto,
             'created_at'    => now(),
+            'updated_at'    => now(),
         ]);
 
-        return redirect()->route('staff.agenda.index')->with('success', 'Agenda berhasil ditambahkan.');
+        return redirect()->back()->with('success', 'Jadwal agenda berhasil disimpan!');
     }
 
+    // Memperbarui agenda
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'tanggal' => 'required|date',
+            'nama_kegiatan' => 'required|string|max:1000',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $agendaLama = DB::table('agendas')->where('id', $id)->first();
+        $divisiLogin = Auth::user()->name;
+        $namaHari = Carbon::parse($request->tanggal)->locale('id')->dayName;
+        $kegiatanLengkap = "[" . $divisiLogin . "] " . $request->nama_kegiatan;
+
+        $namaFoto = $agendaLama->foto;
+        if ($request->hasFile('foto')) {
+            if ($namaFoto && file_exists(public_path('storage/agenda/' . $namaFoto))) {
+                unlink(public_path('storage/agenda/' . $namaFoto));
+            }
+
+            $file = $request->file('foto');
+            $namaFoto = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('storage/agenda'), $namaFoto);
+        }
+
+        DB::table('agendas')->where('id', $id)->update([
+            'tanggal'       => $request->tanggal,
+            'hari'          => $namaHari,
+            'nama_kegiatan' => $kegiatanLengkap,
+            'foto'          => $namaFoto,
+            'updated_at'    => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Jadwal agenda berhasil diperbarui!');
+    }
+
+    // Menghapus agenda
     public function delete($id)
     {
-        DB::table('agendas')->where('id', $id)->delete();
-        return back()->with('success', 'Agenda dihapus.');
-    }
-    public function tampilkanAgendaPublik()
-{
-    $agendas = DB::table('agendas')
-        ->orderBy('tanggal', 'desc')
-        ->get();
+        $agenda = DB::table('agendas')->where('id', $id)->first();
+        if ($agenda && $agenda->foto) {
+            if (file_exists(public_path('storage/agenda/' . $agenda->foto))) {
+                unlink(public_path('storage/agenda/' . $agenda->foto));
+            }
+        }
 
-    return view('pages.agenda_pimpinan', compact('agendas'));
-}
+        DB::table('agendas')->where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Jadwal agenda berhasil dihapus!');
+    }
+
+    // Menampilkan agenda di halaman utama/publik website (Menampilkan SEMUA agenda dari semua ASDA)
+    public function tampilkanAgendaPublik()
+    {
+        $agendas = DB::table('agendas')->orderBy('tanggal', 'desc')->get();
+        return view('pages.agenda_pimpinan', compact('agendas'));
+    }
 }

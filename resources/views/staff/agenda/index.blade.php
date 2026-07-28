@@ -29,7 +29,7 @@
                 </h4>
             </div>
             <div class="col-auto">
-                <a href="/" class="btn btn-outline-light btn-sm me-2 fw-bold" target="_blank">Kembali ke Web</a>
+                <a href="{{ route('berita.index') }}" class="btn btn-outline-light btn-sm me-2 fw-bold" target="_blank">Lihat Web Publik</a>
                 <a href="{{ route('logout') }}" class="btn btn-light btn-sm text-danger fw-bold" 
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">LOGOUT</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
