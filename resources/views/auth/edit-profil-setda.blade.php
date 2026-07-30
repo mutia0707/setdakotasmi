@@ -16,9 +16,11 @@
 <div class="bg-header mb-4">
     <div class="container d-flex justify-content-between align-items-center">
         <h3 class="fw-bold m-0"><i class="bi bi-pencil-square me-2"></i> EDIT PROFIL SETDA</h3>
-        <a href="{{ url()->previous() }}" class="btn btn-light text-primary fw-bold px-4 rounded-pill">
-            <i class="bi bi-arrow-left"></i> KEMBALI
-        </a>
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-light text-primary fw-bold px-4 rounded-pill">
+    <i class="bi bi-arrow-left"></i> KEMBALI
+</a>
+    </div>
+</div>
     </div>
 </div>
 

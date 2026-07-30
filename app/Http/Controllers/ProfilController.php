@@ -27,11 +27,11 @@ class ProfilController extends Controller
     }
 
     public function updateSetda(Request $request)
-    {
-        $request->validate(['isi_profil' => 'required|string']);
-        ProfilSetda::updateOrCreate(['id' => 1], ['isi_profil' => $request->isi_profil]);
-        return back()->with('success', 'Profil Setda berhasil diperbarui!');
-    }
+{
+    $request->validate(['isi_profil' => 'required|string']);
+    ProfilSetda::updateOrCreate(['id' => 1], ['isi_profil' => $request->isi_profil]);
+    return redirect()->route('admin.profil-setda.edit')->with('success', 'Profil Setda berhasil diperbarui!');
+}
 
     /*
     |--------------------------------------------------------------------------

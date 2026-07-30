@@ -141,7 +141,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 */
 Route::middleware(['auth'])->group(function () {
 
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->middleware('role:admin,super_admin')->group(function () {
 
         Route::get('/dashboard', [AdminController::class, 'dashboardView'])->name('admin.dashboard');
         
@@ -184,9 +184,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/berita/update/{id}', [AdminController::class, 'update'])->name('admin.berita.update');
         Route::delete('/berita/delete/{id}', [AdminController::class, 'destroy'])->name('admin.berita.delete');
 
-        Route::get('/admin/tambah-user', [AdminController::class, 'formTambahUser'])->name('tambah.user');
-    Route::post('/admin/tambah-user', [AdminController::class, 'simpanUser'])->name('simpan.user');
-
+       Route::middleware(['role:super_admin'])->group(function () {
+            Route::get('/tambah-user', [AdminController::class, 'formTambahUser'])->name('tambah.user');
+            Route::post('/tambah-user', [AdminController::class, 'simpanUser'])->name('simpan.user');
+        });
         Route::prefix('kelola-galeri')->group(function () {
             Route::get('/', [GaleriController::class, 'adminGaleri'])->name('admin.galeri.index');
             Route::post('/store', [GaleriController::class, 'store'])->name('admin.galeri.store');
@@ -194,12 +195,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/delete/{id}', [GaleriController::class, 'delete'])->name('admin.galeri.delete');
         });
 
-        Route::prefix('dokumen')->group(function () {
-            Route::get('/', [DokumenController::class, 'adminIndex'])->name('admin.dokumen.index');
-            Route::post('/store', [DokumenController::class, 'store'])->name('admin.dokumen.store');
-            Route::post('/update/{id}', [DokumenController::class, 'update'])->name('admin.dokumen.edit');
-            Route::delete('/delete/{id}', [DokumenController::class, 'destroy'])->name('admin.dokumen.destroy');
-        });
+        Route::prefix('/dokumen')->middleware('role:bagian,admin,super_admin')->group(function () {
+        Route::get('/', [DokumenController::class, 'adminIndex'])->name('admin.dokumen.index');
+        Route::post('/store', [DokumenController::class, 'store'])->name('admin.dokumen.store');
+        Route::post('/update/{id}', [DokumenController::class, 'update'])->name('admin.dokumen.edit');
+        Route::delete('/delete/{id}', [DokumenController::class, 'destroy'])->name('admin.dokumen.destroy');
+    });
 
         // Pelaporan Admin
         Route::get('/pelaporan-menu', [PelaporanController::class, 'menuPelaporan'])->name('admin.pelaporan.menu');
@@ -261,15 +262,17 @@ Route::delete('/admin/hibah/{id}', [HibahController::class, 'destroy'])->name('a
 });
 
 
- Route::prefix('staff')->group(function () {
+Route::prefix('staff')->middleware('role:staff,bagian,admin,super_admin')->group(function () {
         // Menggunakan Controller lebih disarankan daripada function closure
         Route::get('/agenda', [AgendaController::class, 'index'])->name('staff.agenda.index');
         Route::post('/agenda', [AgendaController::class, 'store'])->name('staff.agenda.store');
         Route::post('/agenda/update/{id}', [AgendaController::class, 'update'])->name('staff.agenda.update');
         Route::get('/agenda/delete/{id}', [AgendaController::class, 'delete'])->name('staff.agenda.delete');
+        Route::post('/agenda/lock/{id}', [AgendaController::class, 'lock']);
+Route::post('/agenda/unlock/{id}', [AgendaController::class, 'unlock']);
     });
 
-    Route::prefix('staff')->group(function () {
+   Route::prefix('staff')->middleware('role:bagian,admin,super_admin')->group(function () {
         // Hanya untuk role 'bagian_pelayanan'
         Route::get('/berita', [BeritaController::class, 'index'])->name('staff.berita.index');
         Route::post('/berita/store', [BeritaController::class, 'store'])->name('staff.berita.store');

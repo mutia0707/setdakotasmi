@@ -46,10 +46,36 @@
 
     <nav class="navbar navbar-dark navbar-admin shadow-sm py-3 mb-4">
         <div class="container">
-            <span class="navbar-brand fw-bold"><i class="bi bi-shield-lock-fill me-2"></i> ADMIN PANEL SETDA KOTA SUKABUMI</span>
+            <span class="navbar-brand fw-bold">
+    <i class="bi bi-shield-lock-fill me-2"></i>
+    @if(auth()->check() && auth()->user()->role === 'super_admin')
+        SUPER ADMIN PANEL SETDA KOTA SUKABUMI
+    @else
+        ADMIN PANEL SETDA KOTA SUKABUMI
+    @endif
+</span>
             <div class="d-flex align-items-center">
+                {{-- Ikon Notifikasi --}}
+                <div class="dropdown me-2">
+                    <a href="#" class="btn btn-sm btn-light position-relative" data-bs-toggle="dropdown">
+                        <i class="bi bi-bell-fill"></i>
+                        @if(auth()->user()->unreadNotifications->count())
+                            <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
+                                {{ auth()->user()->unreadNotifications->count() }}
+                            </span>
+                        @endif
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end p-2" style="min-width:300px;">
+                        @forelse(auth()->user()->unreadNotifications->take(5) as $notif)
+                            <li class="small border-bottom py-2">{{ $notif->data['message'] }}</li>
+                        @empty
+                            <li class="small text-muted">Tidak ada notifikasi baru</li>
+                        @endforelse
+                    </ul>
+                </div>
+
                 <a href="{{ url('/') }}" class="btn btn-sm btn-light me-2 fw-bold text-primary"><i class="bi bi-globe me-1"></i> LIHAT WEB</a>
-                
+
                 {{-- Tombol khusus Super Admin untuk membuat user baru di Navbar --}}
                 @if(auth()->check() && auth()->user()->role === 'super_admin')
                     <a href="{{ route('tambah.user') }}" class="btn btn-sm btn-warning me-2 fw-bold text-dark"><i class="bi bi-person-plus-fill me-1"></i> TAMBAH USER</a>
